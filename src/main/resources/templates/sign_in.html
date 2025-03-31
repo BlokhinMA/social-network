@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Вход</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+
+<form class="center sign-form">
+
+    <p class="sign-text">Вход</p>
+
+    <label for="username">Логин</label><br>
+    <input type="text" id="username" name="username" placeholder="Логин" required><br>
+    <br>
+    <label for="password">Пароль</label><br>
+    <input type="password" id="password" name="password" placeholder="Пароль" required>
+    <br>
+    <br>
+
+    <button>Войти</button>
+
+    <p><a th:href="@{/sign_up}">Зарегистрироваться</a></p>
+
+</form>
+
+<script>
+
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', function (event) {
+
+        event.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        fetch('/api/auth', {
+            method: 'POST',
+            // headers: {
+            //     'Content-Type': 'application/x-www-form-urlencoded'
+            // },
+            body: new URLSearchParams({ username: username, password: password })
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location = '/my_profile';
+                    return null;
+                }
+                return response.json();
+            })
+            .then(result => {
+                if (result !== null) {
+                    console.log(result.error);
+                }
+            });
+
+    });
+
+</script>
+
+</body>
+
+</html>

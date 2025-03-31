@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Фотографии</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Фотографии</h1>
+
+<table>
+    <tr>
+        <td>id</td>
+        <td>name</td>
+        <td>original_file_name</td>
+        <td>size</td>
+        <td>content_type</td>
+        <td>image</td>
+        <td>creation_time_stamp</td>
+        <td>album_id</td>
+    </tr>
+    <tr th:each="photo : ${photos}">
+        <td th:text="${photo.id}"></td>
+        <td th:text="${photo.name}"></td>
+        <td th:text="${photo.originalFileName}"></td>
+        <td th:text="${photo.size}"></td>
+        <td th:text="${photo.contentType}"></td>
+        <td><img th:src="@{/photo_entity/{id}(id=${photo.id})}"></td>
+        <td th:text="${photo.creationTimeStamp}"></td>
+        <td th:text="${photo.albumId}"></td>
+    </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Мои друзья</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Мои друзья</h1>
+
+<p><a th:href="@{/find_friends}">Найти друзей</a></p>
+<p><a th:href="@{/friends/requests}">Заявки в друзья</a></p>
+
+<p>Мои друзья</p>
+<div th:each="friend : ${friends}">
+    <form th:action="@{/delete_friend}" method="post">
+        <a th:href="@{/profile/{login}(login=${friend.login})}" th:text="${friend.login}"></a>
+        <input type="hidden" name="friendLogin" th:value="${friend.login}">
+        <button>удалить</button>
+    </form>
+</div>
+
+</body>
+</html>

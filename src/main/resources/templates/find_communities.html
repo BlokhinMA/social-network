@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Найти сообщества</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Найти сообщества</h1>
+
+<form th:action="@{/find_communities}">
+    <label for="word">Введите ключевые слова</label>
+    <input type="search" id="word" name="word" required th:value="${word}">
+    <br>
+    <button>искать</button>
+</form>
+
+<div th:each="community : ${communities}">
+    <p><a th:href="@{/community/{id}(id=${community.id})}" th:text="${community.name}"></a></p>
+</div>
+
+</body>
+</html>

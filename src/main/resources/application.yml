@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: socialnetwork
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/social_media
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    open-in-view: false
+
+server:
+  port: 8081
+  servlet:
+    session:
+      cookie:
+        same-site: strict
+  
+logging:
+  file:
+    name: my.log
+
+jwt:
+  secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration: 86_400_000

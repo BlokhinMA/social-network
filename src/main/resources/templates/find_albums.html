@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Найти альбомы</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Найти альбомы</h1>
+
+<form th:action="@{/find_albums}">
+    <label for="word">Введите ключевые слова</label>
+    <input type="search" id="word" name="word" required th:value="${word}">
+    <button>искать</button>
+</form>
+
+<div th:each="album : ${albums}">
+    <p><a th:href="@{/album/{id}(id=${album.id})}" th:text="${album.title}"></a></p>
+</div>
+
+</body>
+</html>

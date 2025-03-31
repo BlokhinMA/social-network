@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Мои сообщества</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Мои сообщества</h1>
+
+<p><a th:href="@{/community_management}">Управление сообществами</a></p>
+<p><a th:href="@{/find_communities}">Найти сообщества</a></p>
+
+<p>Мои сообщества</p>
+<div th:each="community : ${communities}">
+    <p><a th:href="@{/community/{id}(id=${community.id})}" th:text="${community.name}"></a></p>
+</div>
+
+</body>
+</html>

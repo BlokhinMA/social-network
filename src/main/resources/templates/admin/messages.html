@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Сообщения</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Сообщения</h1>
+
+<table>
+    <tr>
+        <td>id</td>
+        <td>from_user_login</td>
+        <td>to_user_login</td>
+        <td>message</td>
+        <td>writing_time_stamp</td>
+    </tr>
+    <tr th:each="message : ${messages}">
+        <td th:text="${message.id}"></td>
+        <td th:text="${message.fromUserLogin}"></td>
+        <td th:text="${message.toUserLogin}"></td>
+        <td th:text="${message.message}"></td>
+        <td th:text="${message.writingTimeStamp}"></td>
+    </tr>
+</table>
+
+</body>
+</html>
