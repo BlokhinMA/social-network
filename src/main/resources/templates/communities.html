@@ -3,7 +3,7 @@
 
 <head>
     <th:block th:replace="~{index :: meta}"></th:block>
-    <title th:text="|Сообщества пользователя ${memberLogin}|">Сообщества</title>
+<!--    <title th:text="|Сообщества пользователя ${memberLogin}|">Сообщества</title>-->
 </head>
 
 <body>
@@ -11,11 +11,13 @@
 <th:block th:replace="~{index :: header}"></th:block>
 <th:block th:replace="~{my_profile :: menu}"></th:block>
 
-<h1 th:text="|Сообщества пользователя ${memberLogin}|"></h1>
+<h1>Сообщества</h1>
 
-<div th:each="community : ${communities}">
-    <p><a th:href="@{/community/{id}(id=${community.id})}" th:text="${community.name}"></a></p>
-</div>
+<!--<h1 th:text="|Сообщества пользователя ${memberLogin}|"></h1>-->
+
+<!--<div th:each="community : ${communities}">-->
+<!--    <p><a th:href="@{/community/{id}(id=${community.id})}" th:text="${community.name}"></a></p>-->
+<!--</div>-->
 
 </body>
 </html>

@@ -9,17 +9,17 @@ import java.time.LocalDateTime;
 public class CommunityPost {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
     @Column(nullable = false)
     private String postText;
     @Column(nullable = false)
     private LocalDateTime creationTimeStamp = LocalDateTime.now();
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private User author;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private Community community;
 
@@ -30,6 +30,12 @@ public class CommunityPost {
         this.id = id;
         this.postText = postText;
         this.creationTimeStamp = creationTimeStamp;
+        this.author = author;
+        this.community = community;
+    }
+
+    public CommunityPost(String postText, User author, Community community) {
+        this.postText = postText;
         this.author = author;
         this.community = community;
     }

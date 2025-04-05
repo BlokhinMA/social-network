@@ -17,13 +17,13 @@
 <p><a th:href="@{/friends/requests}">Заявки в друзья</a></p>
 
 <p>Мои друзья</p>
-<div th:each="friend : ${friends}">
-    <form th:action="@{/delete_friend}" method="post">
-        <a th:href="@{/profile/{login}(login=${friend.login})}" th:text="${friend.login}"></a>
-        <input type="hidden" name="friendLogin" th:value="${friend.login}">
-        <button>удалить</button>
-    </form>
-</div>
+<!--<div th:each="friend : ${friends}">-->
+<!--    <form th:action="@{/delete_friend}" method="post">-->
+<!--        <a th:href="@{/profile/{login}(login=${friend.login})}" th:text="${friend.login}"></a>-->
+<!--        <input type="hidden" name="friendLogin" th:value="${friend.login}">-->
+<!--        <button>удалить</button>-->
+<!--    </form>-->
+<!--</div>-->
 
 </body>
 </html>

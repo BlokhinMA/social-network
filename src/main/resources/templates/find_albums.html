@@ -13,15 +13,15 @@
 
 <h1>Найти альбомы</h1>
 
-<form th:action="@{/find_albums}">
-    <label for="word">Введите ключевые слова</label>
-    <input type="search" id="word" name="word" required th:value="${word}">
-    <button>искать</button>
-</form>
+<!--<form th:action="@{/find_albums}">-->
+<!--    <label for="word">Введите ключевые слова</label>-->
+<!--    <input type="search" id="word" name="word" required th:value="${word}">-->
+<!--    <button>искать</button>-->
+<!--</form>-->
 
-<div th:each="album : ${albums}">
-    <p><a th:href="@{/album/{id}(id=${album.id})}" th:text="${album.title}"></a></p>
-</div>
+<!--<div th:each="album : ${albums}">-->
+<!--    <p><a th:href="@{/album/{id}(id=${album.id})}" th:text="${album.title}"></a></p>-->
+<!--</div>-->
 
 </body>
 </html>

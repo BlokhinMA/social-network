@@ -13,23 +13,23 @@
 
 <h1>Найти друзей</h1>
 
-<form th:action="@{/find_friends}">
-    <label for="word">Введите имя пользователя или имя или фамилию</label>
-    <input type="search" id="word" name="word" placeholder="Например, ivan_ivanov или Иван Иванов" required th:value="${word}">
-    <button>искать</button>
-</form>
+<!--<form th:action="@{/find_friends}">-->
+<!--    <label for="word">Введите имя пользователя или имя или фамилию</label>-->
+<!--    <input type="search" id="word" name="word" placeholder="Например, ivan_ivanov или Иван Иванов" required th:value="${word}">-->
+<!--    <button>искать</button>-->
+<!--</form>-->
 
-<div th:each="possibleFriend : ${possibleFriends}">
-    <form th:action="@{/add_friend}" method="post">
-        <p><a th:href="@{/profile/{login}(login=${possibleFriend.login})}" th:text="${possibleFriend.login}"></a></p>
-        <input type="hidden" name="friendLogin" th:value="${possibleFriend.login}">
-        <input type="hidden" name="word" th:value="${word}">
-        <button>добавить</button>
-    </form>
-    <th:block th:if="${condition}">
-        <h2 style="color: red">Пользователя с таким логином не существует или данный пользователь уже есть в друзьях</h2>
-    </th:block>
-</div>
+<!--<div th:each="possibleFriend : ${possibleFriends}">-->
+<!--    <form th:action="@{/add_friend}" method="post">-->
+<!--        <p><a th:href="@{/profile/{login}(login=${possibleFriend.login})}" th:text="${possibleFriend.login}"></a></p>-->
+<!--        <input type="hidden" name="friendLogin" th:value="${possibleFriend.login}">-->
+<!--        <input type="hidden" name="word" th:value="${word}">-->
+<!--        <button>добавить</button>-->
+<!--    </form>-->
+<!--    <th:block th:if="${condition}">-->
+<!--        <h2 style="color: red">Пользователя с таким логином не существует или данный пользователь уже есть в друзьях</h2>-->
+<!--    </th:block>-->
+<!--</div>-->
 
 </body>
 </html>

@@ -9,17 +9,17 @@ import java.time.LocalDateTime;
 public class PhotoComment {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
     @Column(nullable = false)
     private String comment;
     @Column(nullable = false)
     private LocalDateTime commentingTimeStamp = LocalDateTime.now();
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private User commentingUser;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private Photo photo;
 

@@ -3,7 +3,7 @@
 
 <head>
     <th:block th:replace="~{index :: meta}"></th:block>
-    <title th:text="'Альбомы пользователя ' + ${userLogin}">Альбомы</title>
+<!--    <title th:text="'Альбомы пользователя ' + ${userLogin}">Альбомы</title>-->
 </head>
 
 <body>
@@ -11,11 +11,13 @@
 <th:block th:replace="~{index :: header}"></th:block>
 <th:block th:replace="~{my_profile :: menu}"></th:block>
 
-<h1 th:text="|Альбомы пользователя ${userLogin}|"></h1>
+<h1>Альбомы</h1>
 
-<div th:each="album : ${albums}">
-    <p><a th:href="@{/album/{id}(id=${album.id})}" th:text="${album.title}"></a></p>
-</div>
+<!--<h1 th:text="|Альбомы пользователя ${userLogin}|"></h1>-->
+
+<!--<div th:each="album : ${albums}">-->
+<!--    <p><a th:href="@{/album/{id}(id=${album.id})}" th:text="${album.title}"></a></p>-->
+<!--</div>-->
 
 </body>
 </html>

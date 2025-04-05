@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class Photo {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
     @Column(nullable = false)
@@ -25,7 +25,7 @@ public class Photo {
     private byte[] bytes;
     @Column(nullable = false)
     private LocalDateTime creationTimeStamp = LocalDateTime.now();
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private Album album;
 

@@ -1,8 +1,9 @@
 package ru.sstu.socialnetwork.dtos;
 
-import jakarta.validation.constraints.*;
-
-import java.time.LocalDate;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 public class UserDto {
 
@@ -24,9 +25,9 @@ public class UserDto {
     @Pattern(regexp = "\\S+", message = "Поле \"Фамилия\" не должно содержать пробелы")
     private String lastName;
     @NotNull(message = "Поле \"Дата рождения\" не должно быть null")
-
-    @PastOrPresent(message = "Указанная дата должна быть либо в прошлом, либо в настоящем (сегодняшняя)")
-    private LocalDate birthDate;
+    //@PastOrPresent(message = "Указанная дата должна быть либо в прошлом, либо в настоящем (сегодняшняя)")
+    @Pattern(regexp = "(\\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\\d|3[0-1])",message = "Указанная дата должна быть корректной в формате гггг-мм-дд")
+    private String birthDate;
     @NotNull(message = "Поле \"Пароль\" не должно быть null")
     @Size(min = 1, max = 255, message = "Поле \"Пароль\" должно содержать минимум 1 и максимум 255 символов")
     private String password;
@@ -36,7 +37,7 @@ public class UserDto {
     public UserDto() {
     }
 
-    public UserDto(String login, String email, String firstName, String lastName, LocalDate birthDate, String password, String confirmedPassword) {
+    public UserDto(String login, String email, String firstName, String lastName, String birthDate, String password, String confirmedPassword) {
         this.login = login;
         this.email = email;
         this.firstName = firstName;
@@ -78,11 +79,11 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-    public LocalDate getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 

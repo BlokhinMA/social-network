@@ -8,7 +8,7 @@ import ru.sstu.socialnetwork.entities.enums.AccessType;
 public class Album {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
     @Column(nullable = false)
@@ -16,7 +16,7 @@ public class Album {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AccessType accessType;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private User user;
 

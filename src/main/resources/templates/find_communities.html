@@ -8,21 +8,26 @@
 
 <body>
 
-<th:block th:replace="~{index :: header}"></th:block>
-<th:block th:replace="~{my_profile :: menu}"></th:block>
+    <th:block th:replace="~{index :: header}"></th:block>
+    <th:block th:replace="~{my_profile :: menu}"></th:block>
 
-<h1>Найти сообщества</h1>
+    <h1>Найти сообщества</h1>
 
-<form th:action="@{/find_communities}">
-    <label for="word">Введите ключевые слова</label>
-    <input type="search" id="word" name="word" required th:value="${word}">
-    <br>
-    <button>искать</button>
-</form>
+    <form>
+        <label for="word">Введите ключевые слова</label>
+        <input type="search" id="word" name="word" required>
+        <br>
+        <button>искать</button>
+    </form>
 
-<div th:each="community : ${communities}">
-    <p><a th:href="@{/community/{id}(id=${community.id})}" th:text="${community.name}"></a></p>
-</div>
+    <!--<div th:each="community : ${communities}">-->
+    <!--    <p><a th:href="@{/community/{id}(id=${community.id})}" th:text="${community.name}"></a></p>-->
+    <!--</div>-->
+
+    <div id="communities"></div>
+
+    <script th:src="@{js/communities/find.js}"></script>
 
 </body>
+
 </html>

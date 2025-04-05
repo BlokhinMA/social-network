@@ -18,9 +18,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/current_user")
-    public ResponseEntity<?> currentUser(Principal principal) {
-        return ResponseEntity.ok(userService.getCurrentUsername(principal));
+    @GetMapping("/get_current_user")
+    public ResponseEntity<?> getCurrentUser(Principal principal) {
+        return ResponseEntity.ok(userService.getCurrentUser(principal));
     }
 
 }

@@ -7,12 +7,12 @@ import jakarta.persistence.*;
 public class Community {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
     @Column(nullable = false)
     private String name;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private User creator;
 
@@ -21,6 +21,11 @@ public class Community {
 
     public Community(Long id, String name, User creator) {
         this.id = id;
+        this.name = name;
+        this.creator = creator;
+    }
+
+    public Community(String name, User creator) {
         this.name = name;
         this.creator = creator;
     }

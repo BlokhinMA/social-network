@@ -12,9 +12,10 @@ import ru.sstu.socialnetwork.dtos.UserDto;
 import ru.sstu.socialnetwork.entities.User;
 import ru.sstu.socialnetwork.entities.enums.Role;
 import ru.sstu.socialnetwork.exceptions.PasswordsNotMatchException;
-import ru.sstu.socialnetwork.exceptions.UserAlreadyExistsException;
+import ru.sstu.socialnetwork.exceptions.ResourceAlreadyExistsException;
 import ru.sstu.socialnetwork.repositories.UserRepository;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Service
@@ -37,7 +38,7 @@ public class AuthService {
     public AuthResponse register(UserDto userDto) {
         if (userRepository.findByLogin(userDto.getLogin()).isPresent()
                 || userRepository.findByEmail(userDto.getEmail()).isPresent())
-            throw new UserAlreadyExistsException();
+            throw new ResourceAlreadyExistsException("Пользователь с таким login или email уже существует");
         if (!Objects.equals(userDto.getPassword(), userDto.getConfirmedPassword()))
             throw new PasswordsNotMatchException();
         User user = new User(
@@ -45,7 +46,7 @@ public class AuthService {
                 userDto.getEmail(),
                 userDto.getFirstName(),
                 userDto.getLastName(),
-                userDto.getBirthDate(),
+                LocalDate.parse(userDto.getBirthDate()),
                 passwordEncoder.encode(userDto.getPassword()),
                 Role.ROLE_USER
         );
@@ -63,6 +64,7 @@ public class AuthService {
                         authRequest.getPassword()
                 )
         );
+        // todo проверить, действительно ли зашел пользователь, если что-то не так, токен не должен передавать в cookie
         User user = userRepository.findByLogin(authRequest.getUsername()).orElseThrow();
         String jwtToken = jwtUtil.generateToken(user);
 

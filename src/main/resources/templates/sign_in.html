@@ -36,15 +36,15 @@
 
         event.preventDefault();
 
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
 
         fetch('/api/auth', {
             method: 'POST',
-            // headers: {
-            //     'Content-Type': 'application/x-www-form-urlencoded'
-            // },
-            body: new URLSearchParams({ username: username, password: password })
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
         })
             .then(response => {
                 if (response.ok) {

@@ -15,26 +15,11 @@
         <header class="header">
 
             <div class="right">
-                <p><span>Вы вошли под логином <i id="username"></i></span></p>
+                <span>Вы вошли под логином <i id="username"></i></span>
                 <button id="logout-button">выйти</button>
             </div>
 
-            <script>
-
-                fetch('/api/users/current_user', {
-                    method: 'GET'
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        }
-                    })
-                    .then(data => {
-                        const username = document.getElementById('username');
-                        username.innerText(data);
-                    });
-
-            </script>
+            <script th:src="@{/js/users/get_current_user.js}"></script>
 
             <script>
 
@@ -43,10 +28,7 @@
                 logoutButton.addEventListener('click', function () {
 
                     fetch('/api/users/logout', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        }
+                        method: 'GET'
                     })
                         .then(response => {
                             if (response.ok)
@@ -57,27 +39,27 @@
 
             </script>
 
-            <!-- <p><a th:href="@{/my_profile}">Мой профиль</a></p>
-        <p><a th:href="@{/my_friends}">Мои друзья</a></p>
-        <p><a th:href="@{/my_albums}">Мои альбомы</a></p>
-        <p><a th:href="@{/my_communities}">Мои сообщества</a></p> -->
+            <p><a th:href="@{/my_profile}">Мой профиль</a></p>
+            <p><a th:href="@{/my_friends}">Мои друзья</a></p>
+            <p><a th:href="@{/my_albums}">Мои альбомы</a></p>
+            <p><a th:href="@{/my_communities}">Мои сообщества</a></p>
 
             <hr>
 
             <!--<th:block th:if="${thisUser.role.getAuthority} == 'ADMIN'">
-            <p><a th:href="@{/admin/users}">Пользователи</a></p>
-            <p><a th:href="@{/admin/albums}">Альбомы</a></p>
-            <p><a th:href="@{/admin/photos}">Фото</a></p>
-            <p><a th:href="@{/admin/photo_tags}">Теги фото</a></p>
-            <p><a th:href="@{/admin/photo_ratings}">Оценки фото</a></p>
-            <p><a th:href="@{/admin/photo_comments}">Комментарии фото</a></p>
-            <p><a th:href="@{/admin/communities}">Сообщества</a></p>
-            <p><a th:href="@{/admin/community_members}">Участники сообществ</a></p>
-            <p><a th:href="@{/admin/community_posts}">Посты сообществ</a></p>
+        <p><a th:href="@{/admin/users}">Пользователи</a></p>
+        <p><a th:href="@{/admin/albums}">Альбомы</a></p>
+        <p><a th:href="@{/admin/photos}">Фото</a></p>
+        <p><a th:href="@{/admin/photo_tags}">Теги фото</a></p>
+        <p><a th:href="@{/admin/photo_ratings}">Оценки фото</a></p>
+        <p><a th:href="@{/admin/photo_comments}">Комментарии фото</a></p>
+        <p><a th:href="@{/admin/communities}">Сообщества</a></p>
+        <p><a th:href="@{/admin/community_members}">Участники сообществ</a></p>
+        <p><a th:href="@{/admin/community_posts}">Посты сообществ</a></p>
 
-            <hr>
+        <hr>
 
-        </th:block>-->
+    </th:block>-->
 
         </header>
 

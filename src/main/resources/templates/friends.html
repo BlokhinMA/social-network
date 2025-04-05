@@ -3,7 +3,7 @@
 
 <head>
     <th:block th:replace="~{index :: meta}"></th:block>
-    <title th:text="|Друзья пользователя ${userLogin}|"></title>
+<!--    <title th:text="|Друзья пользователя ${userLogin}|"></title>-->
 </head>
 
 <body>
@@ -11,11 +11,13 @@
 <th:block th:replace="~{index :: header}"></th:block>
 <th:block th:replace="~{my_profile :: menu}"></th:block>
 
-<h1 th:text="|Друзья пользователя ${userLogin}|"></h1>
+<h1>Друзья</h1>
 
-<div th:each="friend : ${friends}">
-    <p><a th:href="@{/profile/{login}(login=${friend.login})}" th:text="${friend.login}"></a></p>
-</div>
+<!--<h1 th:text="|Друзья пользователя ${userLogin}|"></h1>-->
+
+<!--<div th:each="friend : ${friends}">-->
+<!--    <p><a th:href="@{/profile/{login}(login=${friend.login})}" th:text="${friend.login}"></a></p>-->
+<!--</div>-->
 
 </body>
 </html>
