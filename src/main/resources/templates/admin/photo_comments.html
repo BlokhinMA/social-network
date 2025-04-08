@@ -8,27 +8,28 @@
 
 <body>
 
-<th:block th:replace="~{index :: header}"></th:block>
-<th:block th:replace="~{my_profile :: menu}"></th:block>
+    <th:block th:replace="~{index :: header}"></th:block>
+    <th:block th:replace="~{my_profile :: menu}"></th:block>
 
-<h1>Комментарии фотографий</h1>
+    <h1>Комментарии фотографий</h1>
 
-<table>
-    <tr>
-        <td>id</td>
-        <td>comment</td>
-        <td>commenting_time_stamp</td>
-        <td>commenting_user_login</td>
-        <td>photo_id</td>
-    </tr>
-    <tr th:each="photoComment : ${photoComments}">
-        <td th:text="${photoComment.id}"></td>
-        <td th:text="${photoComment.comment}"></td>
-        <td th:text="${photoComment.commentingTimeStamp}"></td>
-        <td th:text="${photoComment.commentingUserLogin}"></td>
-        <td th:text="${photoComment.photoId}"></td>
-    </tr>
-</table>
+    <table>
+        <tr>
+            <td>id</td>
+            <td>comment</td>
+            <td>commenting_time_stamp</td>
+            <td>commenting_user_login</td>
+            <td>photo_id</td>
+        </tr>
+        <tr th:each="photoComment : ${photoComments}">
+            <td th:text="${photoComment.id}"></td>
+            <td th:text="${photoComment.comment}"></td>
+            <td th:text="${photoComment.commentingTimeStamp}"></td>
+            <td th:text="${photoComment.commentingUserLogin}"></td>
+            <td th:text="${photoComment.photoId}"></td>
+        </tr>
+    </table>
 
 </body>
+
 </html>

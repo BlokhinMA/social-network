@@ -7,7 +7,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sstu.socialnetwork.dtos.AuthRequest;
-import ru.sstu.socialnetwork.dtos.AuthResponse;
 import ru.sstu.socialnetwork.dtos.UserDto;
 import ru.sstu.socialnetwork.entities.User;
 import ru.sstu.socialnetwork.entities.enums.Role;
@@ -35,7 +34,7 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
 
-    public AuthResponse register(UserDto userDto) {
+    public User register(UserDto userDto) {
         if (userRepository.findByLogin(userDto.getLogin()).isPresent()
                 || userRepository.findByEmail(userDto.getEmail()).isPresent())
             throw new ResourceAlreadyExistsException("Пользователь с таким login или email уже существует");
@@ -53,8 +52,7 @@ public class AuthService {
         user = userRepository.save(user);
         log.info("Пользователь {} зарегистрировался",
                 user);
-        String jwtToken = jwtUtil.generateToken(user);
-        return new AuthResponse(jwtToken);
+        return user;
     }
 
     public String auth(AuthRequest authRequest) {

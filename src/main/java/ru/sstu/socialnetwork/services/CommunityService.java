@@ -57,13 +57,13 @@ public class CommunityService {
         return getCommunityFromDB(id);
     }
 
-    public List<CommunityMember> showAllMembers(Long id) {
-        Community community = getCommunityFromDB(id);
+    public List<CommunityMember> showAllMembers(Long communityId) {
+        Community community = getCommunityFromDB(communityId);
         return communityMemberRepository.findAllByCommunity(community);
     }
 
-    public List<CommunityPost> showAllPosts(Long id) {
-        Community community = getCommunityFromDB(id);
+    public List<CommunityPost> showAllPosts(Long communityId) {
+        Community community = getCommunityFromDB(communityId);
         return communityPostRepository.findAllByCommunity(community);
     }
 
@@ -159,6 +159,9 @@ public class CommunityService {
     }
 
     public List<Community> find(String word) {
+//        log.info("Пользователь {} искал сообщества по ключевому слову {}",
+//                userService.getCurrentUser(principal),
+//                word);
         if (word != null && !word.isEmpty())
             return communityRepository.findAllLikeName(word);
         return null;

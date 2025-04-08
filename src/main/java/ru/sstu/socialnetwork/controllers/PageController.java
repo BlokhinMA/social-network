@@ -113,6 +113,11 @@ public class PageController {
         return redirectToSignIn(principal, "photo");
     }
 
+    @GetMapping("/profile/*")
+    public String profile(Principal principal) {
+        return redirectToSignIn(principal, "profile");
+    }
+
     private String redirectToMyProfile(Principal principal, String page) {
         if (principal != null)
             return "redirect:/my_profile";

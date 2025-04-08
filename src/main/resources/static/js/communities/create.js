@@ -1,4 +1,4 @@
-const form = document.querySelector('form');
+const form = document.getElementById('create');
 
 form.addEventListener('submit', function (event) {
 

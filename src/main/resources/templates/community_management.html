@@ -8,23 +8,24 @@
 
 <body>
 
-<th:block th:replace="~{index :: header}"></th:block>
-<th:block th:replace="~{my_profile :: menu}"></th:block>
+    <th:block th:replace="~{index :: header}"></th:block>
+    <th:block th:replace="~{my_profile :: menu}"></th:block>
 
-<h1>Управление сообществами</h1>
+    <h1>Управление сообществами</h1>
 
-<form>
-    <label for="name">Название сообщества</label><br>
-    <input type="text" id="name" name="name" placeholder="Название сообщества" required>
-    <button>Создать сообщество</button>
-</form>
+    <form id="create">
+        <label for="name">Название сообщества</label><br>
+        <input type="text" id="name" name="name" placeholder="Название сообщества" required>
+        <button>Создать сообщество</button>
+    </form>
 
-<script th:src="@{/js/communities/create.js}"></script>
+    <script th:src="@{/js/communities/create.js}"></script>
 
-<div id="communities"></div>
+    <div id="communities"></div>
 
-<script th:src="@{/js/communities/show_mine.js}"></script>
-<script th:src="@{/js/communities/delete.js}"></script>
+    <script th:src="@{/js/communities/show_mine.js}"></script>
+    <script th:src="@{/js/communities/delete.js}"></script>
 
 </body>
+
 </html>

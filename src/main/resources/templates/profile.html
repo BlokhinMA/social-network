@@ -3,21 +3,22 @@
 
 <head>
     <th:block th:replace="~{index :: meta}"></th:block>
-<!--    <title th:text="'Профиль пользователя ' + ${user.login}"></title>-->
+    <!--    <title th:text="'Профиль пользователя ' + ${user.login}"></title>-->
 </head>
 
 <body>
 
-<th:block th:replace="~{index :: header}"></th:block>
-<th:block th:replace="~{my_profile :: menu}"></th:block>
+    <th:block th:replace="~{index :: header}"></th:block>
+    <th:block th:replace="~{my_profile :: menu}"></th:block>
 
-<!--<h1 th:text="|Профиль пользователя ${user.login}|"></h1>-->
+    <!--<h1 th:text="|Профиль пользователя ${user.login}|"></h1>-->
 
-<!--<p><a th:href="@{/friends/{userLogin}(userLogin=${user.login})}" th:text="|Друзья пользователя ${user.login}|"></a></p>-->
-<!--<p><a th:href="@{/albums/{userLogin}(userLogin=${user.login})}" th:text="|Альбомы пользователя ${user.login}|"></a></p>-->
-<!--<p><a th:href="@{/communities/{memberLogin}(memberLogin=${user.login})}" th:text="|Сообщества пользователя ${user.login}|"></a></p>-->
-<!--<br>-->
-<!--<p><a th:href="@{/messages/{companion}(companion=${user.login})}">Написать сообщение</a></p>-->
+    <!--<p><a th:href="@{/friends/{userLogin}(userLogin=${user.login})}" th:text="|Друзья пользователя ${user.login}|"></a></p>-->
+    <!--<p><a th:href="@{/albums/{userLogin}(userLogin=${user.login})}" th:text="|Альбомы пользователя ${user.login}|"></a></p>-->
+    <!--<p><a th:href="@{/communities/{memberLogin}(memberLogin=${user.login})}" th:text="|Сообщества пользователя ${user.login}|"></a></p>-->
+    <!--<br>-->
+    <!--<p><a th:href="@{/messages/{companion}(companion=${user.login})}">Написать сообщение</a></p>-->
 
 </body>
+
 </html>

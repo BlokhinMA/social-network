@@ -16,7 +16,7 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     @Query(value = "SELECT c.* FROM communities c JOIN community_members m ON c.id = community_id WHERE member_id = ?1", nativeQuery = true)
     List<Community> findAllByMemberId(Long memberId);
 
-    @Query(value = "SELECT * FROM communities WHERE name LIKE ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM communities WHERE name LIKE %?1%", nativeQuery = true)
     List<Community> findAllLikeName(String name);
 
 }

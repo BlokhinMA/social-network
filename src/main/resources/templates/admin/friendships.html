@@ -8,25 +8,26 @@
 
 <body>
 
-<th:block th:replace="~{index :: header}"></th:block>
-<th:block th:replace="~{my_profile :: menu}"></th:block>
+    <th:block th:replace="~{index :: header}"></th:block>
+    <th:block th:replace="~{my_profile :: menu}"></th:block>
 
-<h1>Друзья</h1>
+    <h1>Друзья</h1>
 
-<table>
-    <tr>
-        <td>id</td>
-        <td>first_user_login</td>
-        <td>second_user_login</td>
-        <td>accepted</td>
-    </tr>
-    <tr th:each="friendship : ${friendships}">
-        <td th:text="${friendship.id}"></td>
-        <td th:text="${friendship.firstUserLogin}"></td>
-        <td th:text="${friendship.secondUserLogin}"></td>
-        <td th:text="${friendship.accepted}"></td>
-    </tr>
-</table>
+    <table>
+        <tr>
+            <td>id</td>
+            <td>first_user_login</td>
+            <td>second_user_login</td>
+            <td>accepted</td>
+        </tr>
+        <tr th:each="friendship : ${friendships}">
+            <td th:text="${friendship.id}"></td>
+            <td th:text="${friendship.firstUserLogin}"></td>
+            <td th:text="${friendship.secondUserLogin}"></td>
+            <td th:text="${friendship.accepted}"></td>
+        </tr>
+    </table>
 
 </body>
+
 </html>

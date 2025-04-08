@@ -39,14 +39,14 @@ public class CommunityController {
         return ResponseEntity.ok(communityService.show(id));
     }
 
-    @GetMapping("/show_all_members/{id}")
-    public ResponseEntity<?> showAllMembers(@PathVariable Long id) {
-        return ResponseEntity.ok(communityService.showAllMembers(id));
+    @GetMapping("/show_all_members/{communityId}")
+    public ResponseEntity<?> showAllMembers(@PathVariable Long communityId) {
+        return ResponseEntity.ok(communityService.showAllMembers(communityId));
     }
 
-    @GetMapping("/show_all_posts/{id}")
-    public ResponseEntity<?> showAllPosts(@PathVariable Long id) {
-        return ResponseEntity.ok(communityService.showAllPosts(id));
+    @GetMapping("/show_all_posts/{communityId}")
+    public ResponseEntity<?> showAllPosts(@PathVariable Long communityId) {
+        return ResponseEntity.ok(communityService.showAllPosts(communityId));
     }
 
     @PostMapping("/create")

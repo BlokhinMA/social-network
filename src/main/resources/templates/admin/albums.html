@@ -8,25 +8,25 @@
 
 <body>
 
-<th:block th:replace="~{index :: header}"></th:block>
-<th:block th:replace="~{my_profile :: menu}"></th:block>
+    <th:block th:replace="~{index :: header}"></th:block>
+    <th:block th:replace="~{my_profile :: menu}"></th:block>
 
-<h1>Альбомы</h1>
+    <h1>Альбомы</h1>
 
-<table>
-    <tr>
-        <td>id</td>
-        <td>title</td>
-        <td>access_type</td>
-        <td>user_login</td>
-    </tr>
-    <tr th:each="album : ${albums}">
-        <td th:text="${album.id}"></td>
-        <td th:text="${album.title}"></td>
-        <td th:text="${album.accessType}"></td>
-        <td th:text="${album.userLogin}"></td>
-    </tr>
-</table>
+    <table>
+        <tr>
+            <td>id</td>
+            <td>title</td>
+            <td>access_type</td>
+            <td>user_login</td>
+        </tr>
+        <tr th:each="album : ${albums}">
+            <td th:text="${album.id}"></td>
+            <td th:text="${album.title}"></td>
+            <td th:text="${album.accessType}"></td>
+            <td th:text="${album.userLogin}"></td>
+        </tr>
+    </table>
 
 </body>
 

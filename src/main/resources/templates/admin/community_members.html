@@ -8,23 +8,24 @@
 
 <body>
 
-<th:block th:replace="~{index :: header}"></th:block>
-<th:block th:replace="~{my_profile :: menu}"></th:block>
+    <th:block th:replace="~{index :: header}"></th:block>
+    <th:block th:replace="~{my_profile :: menu}"></th:block>
 
-<h1>Участники сообществ</h1>
+    <h1>Участники сообществ</h1>
 
-<table>
-    <tr>
-        <td>id</td>
-        <td>member_login</td>
-        <td>community_id</td>
-    </tr>
-    <tr th:each="communityMember : ${communityMembers}">
-        <td th:text="${communityMember.id}"></td>
-        <td th:text="${communityMember.memberLogin}"></td>
-        <td th:text="${communityMember.communityId}"></td>
-    </tr>
-</table>
+    <table>
+        <tr>
+            <td>id</td>
+            <td>member_login</td>
+            <td>community_id</td>
+        </tr>
+        <tr th:each="communityMember : ${communityMembers}">
+            <td th:text="${communityMember.id}"></td>
+            <td th:text="${communityMember.memberLogin}"></td>
+            <td th:text="${communityMember.communityId}"></td>
+        </tr>
+    </table>
 
 </body>
+
 </html>

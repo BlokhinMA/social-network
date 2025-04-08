@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 public class CommunityDto {
 
-    @NotNull(message = "Поле \"Имя\" не должно быть null")
+    @NotNull(message = "Поле \"Название\" не должно быть null")
     @NotBlank(message = "Поле \"Название\" не должно состоять только из пробелов")
     @Size(min = 1, max = 255, message = "Поле \"Название\" должно содержать минимум 1 и максимум 255 символов")
     private String name; // todo разобраться с ошибками валидации
@@ -14,7 +14,7 @@ public class CommunityDto {
     public CommunityDto() {
     }
 
-    public CommunityDto(String name, Long creatorId) {
+    public CommunityDto(String name) {
         this.name = name;
     }
 

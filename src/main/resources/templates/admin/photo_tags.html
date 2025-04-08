@@ -8,23 +8,24 @@
 
 <body>
 
-<th:block th:replace="~{index :: header}"></th:block>
-<th:block th:replace="~{my_profile :: menu}"></th:block>
+    <th:block th:replace="~{index :: header}"></th:block>
+    <th:block th:replace="~{my_profile :: menu}"></th:block>
 
-<h1>Теги фотографий</h1>
+    <h1>Теги фотографий</h1>
 
-<table>
-    <tr>
-        <td>id</td>
-        <td>tag</td>
-        <td>photo_id</td>
-    </tr>
-    <tr th:each="photoTag : ${photoTags}">
-        <td th:text="${photoTag.id}"></td>
-        <td th:text="${photoTag.tag}"></td>
-        <td th:text="${photoTag.photoId}"></td>
-    </tr>
-</table>
+    <table>
+        <tr>
+            <td>id</td>
+            <td>tag</td>
+            <td>photo_id</td>
+        </tr>
+        <tr th:each="photoTag : ${photoTags}">
+            <td th:text="${photoTag.id}"></td>
+            <td th:text="${photoTag.tag}"></td>
+            <td th:text="${photoTag.photoId}"></td>
+        </tr>
+    </table>
 
 </body>
+
 </html>

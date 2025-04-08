@@ -8,60 +8,27 @@
 
 <body>
 
-<th:block th:replace="~{index :: header}"></th:block>
+    <th:block th:replace="~{index :: header}"></th:block>
 
-<form class="center sign-form">
+    <form class="center sign-form">
 
-    <p class="sign-text">Вход</p>
+        <p class="sign-text">Вход</p>
 
-    <label for="username">Логин</label><br>
-    <input type="text" id="username" name="username" placeholder="Логин" required><br>
-    <br>
-    <label for="password">Пароль</label><br>
-    <input type="password" id="password" name="password" placeholder="Пароль" required>
-    <br>
-    <br>
+        <label for="username">Логин</label><br>
+        <input type="text" id="username" name="username" placeholder="Логин" required><br>
+        <br>
+        <label for="password">Пароль</label><br>
+        <input type="password" id="password" name="password" placeholder="Пароль" required>
+        <br>
+        <br>
 
-    <button>Войти</button>
+        <button>Войти</button>
 
-    <p><a th:href="@{/sign_up}">Зарегистрироваться</a></p>
+        <p><a th:href="@{/sign_up}">Зарегистрироваться</a></p>
 
-</form>
+    </form>
 
-<script>
-
-    const form = document.querySelector('form');
-
-    form.addEventListener('submit', function (event) {
-
-        event.preventDefault();
-
-        const formData = new FormData(this);
-        const data = Object.fromEntries(formData.entries());
-
-        fetch('/api/auth', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => {
-                if (response.ok) {
-                    window.location = '/my_profile';
-                    return null;
-                }
-                return response.json();
-            })
-            .then(result => {
-                if (result !== null) {
-                    console.log(result.error);
-                }
-            });
-
-    });
-
-</script>
+    <script th:src="@{/js/users/auth.js}"></script>
 
 </body>
 
