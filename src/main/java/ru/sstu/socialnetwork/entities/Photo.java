@@ -3,7 +3,6 @@ package ru.sstu.socialnetwork.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 @Entity
 @Table(name = "photos")
@@ -13,8 +12,6 @@ public class Photo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Long id;
-    @Column(nullable = false)
-    private String name;
     @Column(nullable = false)
     private String originalFileName;
     @Column(nullable = false)
@@ -32,10 +29,9 @@ public class Photo {
     public Photo() {
     }
 
-    public Photo(Long id, String name, String originalFileName, Long size, String contentType, byte[] bytes,
+    public Photo(Long id, String originalFileName, Long size, String contentType, byte[] bytes,
                  LocalDateTime creationTimeStamp, Album album) {
         this.id = id;
-        this.name = name;
         this.originalFileName = originalFileName;
         this.size = size;
         this.contentType = contentType;
@@ -50,14 +46,6 @@ public class Photo {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getOriginalFileName() {
@@ -112,11 +100,9 @@ public class Photo {
     public String toString() {
         return "Photo{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
                 ", originalFileName='" + originalFileName + '\'' +
                 ", size=" + size +
                 ", contentType='" + contentType + '\'' +
-                ", bytes=" + Arrays.toString(bytes) +
                 ", creationTimeStamp=" + creationTimeStamp +
                 ", album=" + album +
                 '}';

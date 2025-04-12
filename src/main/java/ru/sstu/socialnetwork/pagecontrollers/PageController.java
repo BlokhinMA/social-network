@@ -1,4 +1,4 @@
-package ru.sstu.socialnetwork.controllers;
+package ru.sstu.socialnetwork.pagecontrollers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

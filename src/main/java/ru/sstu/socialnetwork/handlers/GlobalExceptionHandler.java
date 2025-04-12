@@ -32,9 +32,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e) {
+    public ResponseEntity<?> handleBadCredentialsException() {
         Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
+        response.put("error", "Неправильный логин или пароль");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
@@ -57,6 +57,20 @@ public class GlobalExceptionHandler {
         Map<String, String> response = new HashMap<>();
         response.put("error", e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
+
+    @ExceptionHandler(EmptyFileException.class)
+    public ResponseEntity<?> handleEmptyRequestException(EmptyFileException e) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(IncorrectRequestValuesException.class)
+    public ResponseEntity<?> handleIncorrectRequestValuesException(IncorrectRequestValuesException e) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
 }

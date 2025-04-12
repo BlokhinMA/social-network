@@ -16,8 +16,8 @@ img {
 
 .strip {
     width: 100%;
-	height: 10px;
-	background-color: white;
+    height: 10px;
+    background-color: white;
     border-radius: 20px;
 }
 
@@ -84,6 +84,11 @@ a:hover {
 
 .right {
     text-align: right;
+}
+
+.community-header {
+    display: inline;
+    margin-right: 5px;
 }
 
 /*  */

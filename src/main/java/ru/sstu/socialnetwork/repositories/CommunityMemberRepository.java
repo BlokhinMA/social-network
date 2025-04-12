@@ -12,7 +12,6 @@ import java.util.Optional;
 @Repository
 public interface CommunityMemberRepository extends JpaRepository<CommunityMember, Long> {
 
-    //@Query(value = "SELECT * FROM community_member WHERE member_id = ?1 AND community_id = ?2", nativeQuery = true)
     Optional<CommunityMember> findByMemberAndCommunity(User member, Community community);
 
     List<CommunityMember> findAllByCommunity(Community community);

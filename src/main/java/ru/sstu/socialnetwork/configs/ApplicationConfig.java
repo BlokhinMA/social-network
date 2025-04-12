@@ -1,6 +1,5 @@
 package ru.sstu.socialnetwork.configs;
 
-import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,14 +11,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.sstu.socialnetwork.repositories.UserRepository;
-import ru.sstu.socialnetwork.services.UserService;
 
 @Configuration
 public class ApplicationConfig {
 
     private final UserRepository userRepository;
-
-    private final Logger log = org.apache.logging.log4j.LogManager.getLogger(UserService.class);
 
     public ApplicationConfig(UserRepository userRepository) {
         this.userRepository = userRepository;

@@ -31,6 +31,7 @@ public class SecurityConfig {
                                 .requestMatchers("/", "/sign_up", "/sign_in", "/css/**").permitAll()
                                 .requestMatchers("/js/users/register.js", "/js/users/auth.js").permitAll()
                                 .requestMatchers("/favicon.ico").permitAll()
+                                .requestMatchers("/api/users").permitAll()
 //                        .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )

@@ -26,11 +26,6 @@ public class CommunityMember {
         this.community = community;
     }
 
-    public CommunityMember(User member, Community community) {
-        this.member = member;
-        this.community = community;
-    }
-
     public Long getId() {
         return id;
     }

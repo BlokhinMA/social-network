@@ -15,10 +15,10 @@ form.addEventListener('submit', function (event) {
         body: JSON.stringify(data)
     })
         .then(async response => {
-            const data = await response.json();
             if (response.ok) {
                 window.location = '/my_profile';
             } else {
+                const data = await response.json();
                 console.log(data.error);
             }
         });

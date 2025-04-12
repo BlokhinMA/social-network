@@ -25,7 +25,7 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
 
-    private final Logger log = org.apache.logging.log4j.LogManager.getLogger(UserService.class);
+    private final Logger log = org.apache.logging.log4j.LogManager.getLogger(AuthService.class);
 
     public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
@@ -62,7 +62,7 @@ public class AuthService {
                         authRequest.getPassword()
                 )
         );
-        // todo проверить, действительно ли зашел пользователь, если что-то не так, токен не должен передавать в cookie
+
         User user = userRepository.findByLogin(authRequest.getUsername()).orElseThrow();
         String jwtToken = jwtUtil.generateToken(user);
 

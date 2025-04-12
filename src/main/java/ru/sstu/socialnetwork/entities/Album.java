@@ -18,16 +18,16 @@ public class Album {
     private AccessType accessType;
     @ManyToOne
     @JoinColumn(nullable = false)
-    private User user;
+    private User owner;
 
     public Album() {
     }
 
-    public Album(Long id, String title, AccessType accessType, User user) {
+    public Album(Long id, String title, AccessType accessType, User owner) {
         this.id = id;
         this.title = title;
         this.accessType = accessType;
-        this.user = user;
+        this.owner = owner;
     }
 
     public Long getId() {
@@ -54,21 +54,21 @@ public class Album {
         this.accessType = accessType;
     }
 
-    public User getUser() {
-        return user;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     @Override
-    public String toString() {
+    public String toString() { // todo переписать везде метод toString
         return "Album{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", accessType='" + accessType + '\'' +
-                ", user=" + user +
+                ", owner=" + owner +
                 '}';
     }
 

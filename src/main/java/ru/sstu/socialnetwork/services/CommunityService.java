@@ -3,12 +3,14 @@ package ru.sstu.socialnetwork.services;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import ru.sstu.socialnetwork.dtos.CheckIsDto;
 import ru.sstu.socialnetwork.dtos.CommunityDto;
 import ru.sstu.socialnetwork.dtos.CommunityPostDto;
 import ru.sstu.socialnetwork.entities.Community;
 import ru.sstu.socialnetwork.entities.CommunityMember;
 import ru.sstu.socialnetwork.entities.CommunityPost;
 import ru.sstu.socialnetwork.entities.User;
+import ru.sstu.socialnetwork.exceptions.IncorrectRequestValuesException;
 import ru.sstu.socialnetwork.exceptions.ResourceAlreadyExistsException;
 import ru.sstu.socialnetwork.exceptions.ResourceNotFoundException;
 import ru.sstu.socialnetwork.repositories.CommunityMemberRepository;
@@ -17,6 +19,7 @@ import ru.sstu.socialnetwork.repositories.CommunityRepository;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CommunityService {
@@ -48,8 +51,8 @@ public class CommunityService {
         return communityRepository.findAllByMemberId(member.getId());
     }
 
-    public List<Community> showAll(String memberLogin) {
-        User member = userService.getUserByLogin(memberLogin);
+    public List<Community> showAll(Long memberId) {
+        User member = userService.getUserById(memberId);
         return communityRepository.findAllByMemberId(member.getId());
     }
 
@@ -69,7 +72,9 @@ public class CommunityService {
 
     public Community create(CommunityDto communityDto, Principal principal) {
         User creator = userService.getCurrentUser(principal);
-        Community community = new Community(communityDto.getName(), creator);
+        Community community = new Community();
+        community.setName(communityDto.getName());
+        community.setCreator(creator);
         Community createdCommunity = communityRepository.save(community);
         log.info("Пользователь {} добавил сообщество {}",
                 creator,
@@ -80,7 +85,8 @@ public class CommunityService {
     public Community delete(Long id, Principal principal) {
         User creator = userService.getCurrentUser(principal);
         Community community = getCommunityFromDB(id);
-        checkAuthorities(id, creator);
+        if (!isCreator(id, principal))
+            throw new AccessDeniedException(accessDeniedMessage);
         communityRepository.deleteById(id);
         log.info("Пользователь {} удалил сообщество {}",
                 creator,
@@ -93,18 +99,14 @@ public class CommunityService {
         Community community = getCommunityFromDB(communityId);
         if (isMember(principal, communityId))
             throw new ResourceAlreadyExistsException("Вы уже являетесь участником сообщества");
-        CommunityMember communityMember = new CommunityMember(member, community);
+        CommunityMember communityMember = new CommunityMember();
+        communityMember.setMember(member);
+        communityMember.setCommunity(community);
         CommunityMember joinedCommunityMember = communityMemberRepository.save(communityMember);
         log.info("Пользователь {} стал участником сообщества {}",
                 member,
                 joinedCommunityMember);
         return joinedCommunityMember;
-    }
-
-    public boolean isMember(Principal principal, Long communityId) {
-        User user = userService.getCurrentUser(principal);
-        Community community = getCommunityFromDB(communityId);
-        return communityMemberRepository.findByMemberAndCommunity(user, community).isPresent();
     }
 
     public CommunityMember leave(Principal principal, Long communityId) {
@@ -124,8 +126,9 @@ public class CommunityService {
         CommunityMember communityMember = communityMemberRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Данный пользователь не является участником " +
                         "сообщества или этого пользователя или сообщества не существует"));
-        checkAuthorities(communityMember.getCommunity().getId(), creator);
-        communityPostRepository.deleteById(id);
+        if (!isCreator(communityMember.getCommunity().getId(), principal))
+            throw new AccessDeniedException(accessDeniedMessage);
+        communityMemberRepository.deleteById(id);
         log.info("Пользователь {} выгнал участника сообщества {}",
                 creator,
                 communityMember);
@@ -137,7 +140,10 @@ public class CommunityService {
         Community community = getCommunityFromDB(communityPostDto.getCommunityId());
         if (!isMember(principal, communityPostDto.getCommunityId()))
             throw new AccessDeniedException(accessDeniedMessage);
-        CommunityPost communityPost = new CommunityPost(communityPostDto.getPostText(), author, community);
+        CommunityPost communityPost = new CommunityPost();
+        communityPost.setPostText(communityPostDto.getPostText());
+        communityPost.setAuthor(author);
+        communityPost.setCommunity(community);
         CommunityPost createdPost = communityPostRepository.save(communityPost);
         log.info("Пользователь {} добавил пост {}",
                 author,
@@ -149,7 +155,7 @@ public class CommunityService {
         User author = userService.getCurrentUser(principal);
         CommunityPost communityPost = communityPostRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Пост сообщества не найден или его не существует"));
-        if (!communityPost.getAuthor().equals(author))
+        if (!Objects.equals(communityPost.getAuthor(), author))
             throw new AccessDeniedException(accessDeniedMessage);
         communityPostRepository.deleteById(id);
         log.info("Пользователь {} удалил пост {}",
@@ -159,12 +165,9 @@ public class CommunityService {
     }
 
     public List<Community> find(String word) {
-//        log.info("Пользователь {} искал сообщества по ключевому слову {}",
-//                userService.getCurrentUser(principal),
-//                word);
-        if (word != null && !word.isEmpty())
-            return communityRepository.findAllLikeName(word);
-        return null;
+        if (word.isEmpty())
+            throw new IncorrectRequestValuesException("Некорректное ключевое слово");
+        return communityRepository.findAllLikeName(word);
     }
 
     public List<Community> showAll() {
@@ -184,10 +187,23 @@ public class CommunityService {
                 .orElseThrow(() -> new ResourceNotFoundException("Сообщество не найдено"));
     }
 
-    private void checkAuthorities(Long id, User creator) {
+    private boolean isMember(Principal principal, Long communityId) {
+        User currentUser = userService.getCurrentUser(principal);
+        Community community = getCommunityFromDB(communityId);
+        return communityMemberRepository.findByMemberAndCommunity(currentUser, community).isPresent();
+    }
+
+    private boolean isCreator(Long id, Principal principal) {
         Community community = getCommunityFromDB(id);
-        if (!community.getCreator().getLogin().equals(creator.getLogin()))
-            throw new AccessDeniedException(accessDeniedMessage);
+        return Objects.equals(community.getCreator().getLogin(), principal.getName());
+    }
+
+    public CheckIsDto checkIsMember(Principal principal, Long communityId) {
+        return new CheckIsDto(isMember(principal, communityId));
+    }
+
+    public CheckIsDto checkIsCreator(Long id, Principal principal) {
+        return new CheckIsDto(isCreator(id, principal));
     }
 
 }

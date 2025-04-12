@@ -1,4 +1,4 @@
-package ru.sstu.socialnetwork.restControllers;
+package ru.sstu.socialnetwork.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;

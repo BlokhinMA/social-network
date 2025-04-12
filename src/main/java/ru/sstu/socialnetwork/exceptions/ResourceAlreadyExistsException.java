@@ -6,12 +6,4 @@ public class ResourceAlreadyExistsException extends RuntimeException {
         super(message);
     }
 
-    public ResourceAlreadyExistsException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public ResourceAlreadyExistsException(Throwable cause) {
-        super(cause);
-    }
-
 }

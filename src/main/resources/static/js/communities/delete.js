@@ -2,7 +2,7 @@ const communitiesDiv = document.getElementById('communities');
 
 communitiesDiv.addEventListener('click', function (event) {
     if (event.target && event.target.classList.contains('deleteButton')) {
-        button = event.target;
+        const button = event.target;
         const id = button.getAttribute('id');
         fetch(`/api/communities/delete/${id}`, {
             method: 'DELETE'
@@ -21,8 +21,7 @@ communitiesDiv.addEventListener('click', function (event) {
                         communitiesDiv.insertAdjacentHTML('beforeend', htmlCode);
                     }
                 } else {
-                    error = data.name;
-                    htmlCode = `<span id="error">${error}</span>`
+                    htmlCode = `<span id="error" style="color: red;">${data.error}</span>`
                     button.insertAdjacentHTML('afterend', htmlCode);
                 }
             });

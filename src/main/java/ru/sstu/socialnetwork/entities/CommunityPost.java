@@ -1,5 +1,6 @@
 package ru.sstu.socialnetwork.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ public class CommunityPost {
     @Column(nullable = false)
     private String postText;
     @Column(nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
     private LocalDateTime creationTimeStamp = LocalDateTime.now();
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -30,12 +32,6 @@ public class CommunityPost {
         this.id = id;
         this.postText = postText;
         this.creationTimeStamp = creationTimeStamp;
-        this.author = author;
-        this.community = community;
-    }
-
-    public CommunityPost(String postText, User author, Community community) {
-        this.postText = postText;
         this.author = author;
         this.community = community;
     }

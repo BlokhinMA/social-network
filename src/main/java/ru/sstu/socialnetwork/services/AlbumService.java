@@ -1,107 +1,95 @@
 package ru.sstu.socialnetwork.services;
 
 import org.apache.logging.log4j.Logger;
-import ru.sstu.socialnetwork.repositories.*;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Service;
+import ru.sstu.socialnetwork.dtos.AlbumDto;
+import ru.sstu.socialnetwork.dtos.PhotoDto;
+import ru.sstu.socialnetwork.entities.Album;
+import ru.sstu.socialnetwork.entities.User;
+import ru.sstu.socialnetwork.entities.enums.AccessType;
+import ru.sstu.socialnetwork.exceptions.IncorrectRequestValuesException;
+import ru.sstu.socialnetwork.exceptions.ResourceNotFoundException;
+import ru.sstu.socialnetwork.repositories.AlbumRepository;
 
-import java.io.IOException;
-import java.rmi.RemoteException;
 import java.security.Principal;
+import java.util.List;
+import java.util.Objects;
 
+@Service
 public class AlbumService {
 
     private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(AlbumService.class);
     private final AlbumRepository albumRepository;
-    private final PhotoRepository photoRepository;
-    private final PhotoTagRepository photoTagRepository;
-    private final PhotoRatingRepository photoRatingRepository;
-    private final PhotoCommentRepository photoCommentRepository;
-    private final FriendshipRepository friendshipRepository;
-    private final UserRepository userRepository;
+    private final PhotoService photoService;
+    private final FriendshipService friendshipService;
+    private final UserService userService;
+    private final String accessDeniedMessage = "У Вас недостаточно прав на выполнение данной операции";
 
-    public AlbumService(AlbumRepository albumRepository, PhotoRepository photoRepository, PhotoTagRepository photoTagRepository, PhotoRatingRepository photoRatingRepository, PhotoCommentRepository photoCommentRepository, FriendshipRepository friendshipRepository, UserRepository userRepository) {
+    public AlbumService(AlbumRepository albumRepository,
+                        PhotoService photoService,
+                        FriendshipService friendshipService,
+                        UserService userService) {
         this.albumRepository = albumRepository;
-        this.photoRepository = photoRepository;
-        this.photoTagRepository = photoTagRepository;
-        this.photoRatingRepository = photoRatingRepository;
-        this.photoCommentRepository = photoCommentRepository;
-        this.friendshipRepository = friendshipRepository;
-        this.userRepository = userRepository;
+        this.photoService = photoService;
+        this.friendshipService = friendshipService;
+        this.userService = userService;
     }
 
-//    public void create(Album album, List<MultipartFile> files, Principal principal) throws IOException {
-//        if (principal == null)
-//            throw new RuntimeException();
-//
-//        album.setUserLogin(principal.getName());
-//        Album createdAlbum = albumRepository.save(album);
-//        log.info("Пользователь {} добавил альбом {}",
-//                userRepository.findByLogin(principal.getName()),
-//                createdAlbum);
-//        createPhotos(files, createdAlbum.getId(), principal);
-//    }
-//
-//    private Photo toPhotoEntity(MultipartFile file) throws IOException {
-//        Photo photo = new Photo();
-//        photo.setName(file.getName());
-//        photo.setOriginalFileName(file.getOriginalFilename());
-//        photo.setSize(file.getSize());
-//        photo.setContentType(file.getContentType());
-//        photo.setBytes(file.getBytes());
-//        return photo;
-//    }
-//
-//    public List<Album> showAll(Principal principal) {
-//        return albumRepository.findAllByUserLogin(principal.getName());
-//    }
-//
-//    public List<Album> showAll(String userLogin) {
-//        return albumRepository.findAllByUserLogin(userLogin);
-//    }
-//
-//    public Album show(Long id) {
-//        Album album = albumRepository.findById(id);
-//        album.setPhotos(photoRepository.findAllByAlbumId(id));
-//        return album;
-//    }
-//
-//    public void delete(Long id, Principal principal) {
-//        List<Photo> photos = photoRepository.findAllByAlbumId(id);
-//        for (Photo photo : photos) {
-//            Long photoId = photo.getId();
-//            photo.setTags(photoTagRepository.findAllByPhotoId(photoId));
-//            photo.setRatings(photoRatingRepository.findAllByPhotoId(photoId));
-//            photo.setComments(photoCommentRepository.findAllByPhotoId(photoId));
-//        }
-//        Album deletedAlbum = albumRepository.deleteById(id);
-//        deletedAlbum.setPhotos(photos);
-//        log.info("Пользователь {} удалил альбом {}",
-//                userRepository.findByLogin(principal.getName()),
-//                deletedAlbum);
-//    }
-//
-//    public boolean createPhotos(List<MultipartFile> files, Long albumId, Principal principal) throws IOException {
-//        if (Objects.requireNonNull(files.get(0).getOriginalFilename()).isEmpty())
-//            return false;
-//        List<Photo> photos = new ArrayList<>();
-//        List<Photo> createdPhotos = new ArrayList<>();
-//        for (int i = 0; i < files.size(); i++) {
-//            photos.add(toPhotoEntity(files.get(i)));
-//            photos.get(i).setAlbumId(albumId);
-//            Photo createdPhoto = photoRepository.save(photos.get(i));
-//            createdPhoto.setAlbum(albumRepository.findById(createdPhoto.getAlbumId()));
-//            createdPhotos.add(createdPhoto);
-//        }
-//        log.info("Пользователь {} добавил фотографии {}",
-//                userRepository.findByLogin(principal.getName()),
-//                createdPhotos);
-//        return true;
-//    }
-//
-//    public List<Album> find(String word) {
-//        if (word != null && !word.isEmpty())
-//            return albumRepository.findAllLikeName(word);
-//        return null;
-//    }
+    public Album create(AlbumDto albumDto, Principal principal) {
+        User owner = userService.getCurrentUser(principal);
+        Album album = new Album();
+        album.setTitle(albumDto.getTitle());
+        album.setAccessType(AccessType.valueOf(albumDto.getAccessType()));
+        album.setOwner(owner);
+        Album createdAlbum = albumRepository.save(album);
+        log.info("Пользователь {} добавил альбом {}",
+                owner,
+                createdAlbum);
+        if (albumDto.getFiles() != null) {
+            PhotoDto photoDto = new PhotoDto(albumDto.getFiles(), createdAlbum.getId());
+            photoService.create(photoDto, principal);
+        }
+        return createdAlbum;
+    }
+
+    public List<Album> showAll(Principal principal) {
+        User owner = userService.getCurrentUser(principal);
+        return albumRepository.findAllByOwner(owner);
+    }
+
+    public List<Album> showAll(Long ownerId) {
+        User owner = userService.getUserById(ownerId);
+        return albumRepository.findAllByOwner(owner);
+    }
+
+    public Album show(Long id, Principal principal) {
+        Album album = getAlbumFromDB(id);
+        if (album.getAccessType() == AccessType.FRIENDS && !friendshipService.isFriend(album.getOwner().getId(), principal)) {
+            throw new AccessDeniedException(accessDeniedMessage);
+        }
+        return album;
+    }
+
+    public Album delete(Long id, Principal principal) {
+        Album album = getAlbumFromDB(id);
+        User currentUser = userService.getCurrentUser(principal);
+        User owner = album.getOwner();
+        if (!Objects.equals(currentUser, owner)) {
+            throw new AccessDeniedException(accessDeniedMessage);
+        }
+        albumRepository.deleteById(album.getId());
+        log.info("Пользователь {} удалил альбом {}",
+                currentUser,
+                album);
+        return album;
+    }
+
+    public List<Album> find(String word) {
+        if (word.isEmpty())
+            throw new IncorrectRequestValuesException("Некорректное ключевое слово");
+        return albumRepository.findAllLikeName(word);
+    }
 //
 //    public boolean changeAccessType(Album album, Principal principal) {
 //        if (albumRepository.findById(album.getId()) == null)
@@ -121,5 +109,9 @@ public class AlbumService {
 //        return albumRepository.findAll();
 //    }
 
+    private Album getAlbumFromDB(Long id) {
+        return albumRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
+    }
 
 }

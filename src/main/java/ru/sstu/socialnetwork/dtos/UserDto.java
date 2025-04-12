@@ -25,7 +25,7 @@ public class UserDto {
     @Pattern(regexp = "\\S+", message = "Поле \"Фамилия\" не должно содержать пробелы")
     private String lastName;
     @NotNull(message = "Поле \"Дата рождения\" не должно быть null")
-    //@PastOrPresent(message = "Указанная дата должна быть либо в прошлом, либо в настоящем (сегодняшняя)")
+    //@PastOrPresent(message = "Указанная дата должна быть либо в прошлом, либо в настоящем (сегодняшняя)") todo: сделать
     @Pattern(regexp = "(\\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\\d|3[0-1])",message = "Указанная дата должна быть корректной в формате гггг-мм-дд")
     private String birthDate;
     @NotNull(message = "Поле \"Пароль\" не должно быть null")

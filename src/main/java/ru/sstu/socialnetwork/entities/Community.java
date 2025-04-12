@@ -25,11 +25,6 @@ public class Community {
         this.creator = creator;
     }
 
-    public Community(String name, User creator) {
-        this.name = name;
-        this.creator = creator;
-    }
-
     public Long getId() {
         return id;
     }

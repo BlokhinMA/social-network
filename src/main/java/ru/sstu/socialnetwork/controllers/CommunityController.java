@@ -1,4 +1,4 @@
-package ru.sstu.socialnetwork.restControllers;
+package ru.sstu.socialnetwork.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +29,9 @@ public class CommunityController {
         return ResponseEntity.ok(communityService.showAll(principal));
     }
 
-    @GetMapping("/show_subscriptions/{memberLogin}")
-    public ResponseEntity<?> showSubscriptions(@PathVariable("member_login") String memberLogin) {
-        return ResponseEntity.ok(communityService.showAll(memberLogin));
+    @GetMapping("/show_subscriptions/{memberId}")
+    public ResponseEntity<?> showSubscriptions(@PathVariable Long memberId) {
+        return ResponseEntity.ok(communityService.showAll(memberId));
     }
 
     @GetMapping("/show/{id}")
@@ -50,7 +50,7 @@ public class CommunityController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@Valid @RequestBody CommunityDto communityDto, Principal principal) {
+    public ResponseEntity<?> create(@ModelAttribute @Valid CommunityDto communityDto, Principal principal) {
         return ResponseEntity.ok(communityService.create(communityDto, principal));
     }
 
@@ -66,7 +66,12 @@ public class CommunityController {
 
     @GetMapping("/is_member/{communityId}")
     public ResponseEntity<?> isMember(Principal principal, @PathVariable Long communityId) {
-        return ResponseEntity.ok(communityService.isMember(principal, communityId));
+        return ResponseEntity.ok(communityService.checkIsMember(principal, communityId));
+    }
+
+    @GetMapping("/is_creator/{id}")
+    public ResponseEntity<?> isCreator(@PathVariable Long id, Principal principal) {
+        return ResponseEntity.ok(communityService.checkIsCreator(id, principal));
     }
 
     @DeleteMapping("/leave/{communityId}")
