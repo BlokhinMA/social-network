@@ -17,7 +17,8 @@ postsDiv.addEventListener('click', function (event) {
                 if (response.ok) {
                     const div = button.parentElement;
                     div.remove();
-                    if (postsDiv.children.length === 0) {
+                    if (postsDiv.children.length === 1) {
+                        postsDiv.children.item(0).remove();
                         htmlCode += `<p id="noOnePost">Нет постов</p>`;
                         postsDiv.insertAdjacentHTML('beforeend', htmlCode);
                     }

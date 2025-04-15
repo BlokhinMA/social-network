@@ -26,17 +26,20 @@ body.addEventListener('submit', function (event) {
                 let htmlCode = '';
                 if (response.ok) {
                     const noOneP = document.getElementById("noOnePost");
+                    const postsDiv = document.getElementById("posts");
+                    htmlCode = '<p>Посты</p>'
                     if (noOneP) {
                         noOneP.remove();
+                        postsDiv.insertAdjacentHTML('afterbegin', htmlCode);
                     }
-                    const postsDiv = document.getElementById("posts");
-                    htmlCode += `<div id="${data.id}">
+                    const firstChildPostsDiv = postsDiv.childNodes.item(0);
+                    htmlCode = `<div id="${data.id}">
                                     <p><a href="/profile/${data.author.id}">${data.author.firstName} ${data.author.lastName}</a></p>
                                     <p>${data.postText}</p>
                                     <p>${data.creationTimeStamp}</p>
                                     <button id="${data.id}" class="delete-post-button">удалить пост</button>
                                 </div>`;
-                    postsDiv.insertAdjacentHTML("afterbegin", htmlCode);
+                    firstChildPostsDiv.insertAdjacentHTML("afterend", htmlCode);
                     form.reset();
                 } else {
                     htmlCode += '<div id="error">'

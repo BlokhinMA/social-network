@@ -1,5 +1,8 @@
 const communityId = window.location.pathname.split('/').pop();
 
+let isCreator;
+let isMember;
+
 fetch(`/api/communities/show/${communityId}`, {
     method: 'GET'
 })
@@ -9,8 +12,8 @@ fetch(`/api/communities/show/${communityId}`, {
 
             const communityFooter = document.getElementById('community-footer');
             let htmlCode = `<h1 id="community-name" class="community-header">${data.community.name}</h1>`;
-            const isCreator = data.creator;
-            const isMember = data.member;
+            isCreator = data.creator;
+            isMember = data.member;
             if (isCreator) {
                 htmlCode += `<button>удалить сообщество</button>`;
             }
@@ -27,7 +30,7 @@ fetch(`/api/communities/show/${communityId}`, {
             } else {
                 htmlCode = '<p>Подписчики</p>';
                 data.members.forEach(member => {
-                    htmlCode += `<p><a href="/profile/${member.member.id}">${member.member.firstName} ${member.member.lastName}</a>`;
+                    htmlCode += `<p id="${member.id}"><a href="/profile/${member.member.id}">${member.member.firstName} ${member.member.lastName}</a>`;
                     if (isCreator && data.community.creator.id !== member.member.id) {
                         htmlCode += `<button id="${member.id}" class="kick-button">выгнать</button>`;
                     }
@@ -39,11 +42,11 @@ fetch(`/api/communities/show/${communityId}`, {
             const postsDiv = document.getElementById('posts');
             if (isCreator || isMember) {
                 htmlCode = `<form id="createPost">
-                            <label for="post-text">Добавить пост</label><br>
-                            <textarea id="post-text" name="postText" required></textarea>
-                            <input type="hidden" name="communityId" value="${communityId}">
-                            <button>добавить пост</button>
-                        </form>`;
+                                <label for="post-text">Добавить пост</label><br>
+                                <textarea id="post-text" name="postText" required></textarea>
+                                <input type="hidden" name="communityId" value="${communityId}">
+                                <button>добавить пост</button>
+                            </form>`;
                 postsDiv.insertAdjacentHTML('beforebegin', htmlCode);
             }
             htmlCode = '';
@@ -53,13 +56,13 @@ fetch(`/api/communities/show/${communityId}`, {
                 htmlCode += '<p>Посты</p>';
                 data.posts.forEach(post => {
                     htmlCode += `<div id="${post.id}">
-                                <p><a href="/profile/${post.author.id}">${post.author.firstName} ${post.author.lastName}</a></p>
-                                <p>${post.postText}</p>
-                                <p>${post.creationTimeStamp}</p>`;
+                                     <p><a href="/profile/${post.author.id}">${post.author.firstName} ${post.author.lastName}</a></p>
+                                     <p>${post.postText}</p>
+                                     <p>${post.creationTimeStamp}</p>`;
                     if (post.isAuthor) {
                         htmlCode += `<button id="${post.id}" class="delete-post-button">удалить пост</button>`;
                     }
-                    htmlCode += '</p>';
+                    htmlCode += '</div>';
                 });
             }
             postsDiv.insertAdjacentHTML('afterbegin', htmlCode);
