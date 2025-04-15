@@ -23,7 +23,7 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("Пользователь не найден"));
     }
 
-    public User getUserById(Long id) {
+    public User getUser(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Пользователь не найден"));
     }

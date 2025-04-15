@@ -1,39 +1,32 @@
-package ru.sstu.socialnetwork.entities;
+package ru.sstu.socialnetwork.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
+import ru.sstu.socialnetwork.entities.Community;
+import ru.sstu.socialnetwork.entities.User;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "community_posts")
-public class CommunityPost {
+public class CommunityPostResponseDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private Long id;
-    @Column(nullable = false)
     private String postText;
-    @Column(nullable = false)
     @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
     private LocalDateTime creationTimeStamp;
-    @ManyToOne
-    @JoinColumn(nullable = false)
     private User author;
-    @ManyToOne
-    @JoinColumn(nullable = false)
     private Community community;
+    private Boolean isAuthor;
 
-    public CommunityPost() {
+    public CommunityPostResponseDto() {
     }
 
-    public CommunityPost(Long id, String postText, LocalDateTime creationTimeStamp, User author, Community community) {
+    public CommunityPostResponseDto(Long id, String postText, LocalDateTime creationTimeStamp, User author,
+                                    Community community, Boolean isAuthor) {
         this.id = id;
         this.postText = postText;
         this.creationTimeStamp = creationTimeStamp;
         this.author = author;
         this.community = community;
+        this.isAuthor = isAuthor;
     }
 
     public Long getId() {
@@ -76,22 +69,12 @@ public class CommunityPost {
         this.community = community;
     }
 
-    @PrePersist
-    private void onCreate() {
-        if (creationTimeStamp == null) {
-            creationTimeStamp = LocalDateTime.now();
-        }
+    public Boolean getIsAuthor() {
+        return isAuthor;
     }
 
-    @Override
-    public String toString() {
-        return "CommunityPost{" +
-                "id=" + id +
-                ", postText='" + postText + '\'' +
-                ", creationTimeStamp=" + creationTimeStamp +
-                ", author=" + author +
-                ", community=" + community +
-                '}';
+    public void setIsAuthor(Boolean isAuthor) {
+        this.isAuthor = isAuthor;
     }
 
 }

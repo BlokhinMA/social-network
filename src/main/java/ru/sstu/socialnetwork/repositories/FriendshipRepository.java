@@ -14,7 +14,7 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     @Query(value = "SELECT * FROM users WHERE CONCAT(first_name, ' ', last_name) ILIKE %?1% AND id != ?2",
             nativeQuery = true)
-    List<User> findAllLikeFirstNameOrLastName(String word, Long userId);
+    List<User> findAllLikeFirstNameOrLastName(String keyword, Long userId);
 
     @Query(value = "SELECT u.* FROM users u JOIN friendships ON u.id = first_user_id " +
             "WHERE second_user_id = ?1 AND accepted = false", nativeQuery = true)

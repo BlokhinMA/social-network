@@ -18,24 +18,6 @@
                 <button id="logout-button">выйти</button>
             </div>
 
-            <!-- <script>
-
-                const logoutButton = document.getElementById('logout-button');
-
-                logoutButton.addEventListener('click', function () {
-
-                    fetch('/api/users/logout', {
-                        method: 'GET'
-                    })
-                        .then(response => {
-                            if (response.ok)
-                                window.location = '/';
-                        })
-
-                });
-
-            </script> -->
-
             <p><a th:href="@{/my_profile}">Мой профиль</a></p>
             <p><a th:href="@{/my_friends}">Мои друзья</a></p>
             <p><a th:href="@{/my_albums}">Мои альбомы</a></p>

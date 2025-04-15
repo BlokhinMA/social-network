@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sstu.socialnetwork.dtos.AlbumDto;
+import ru.sstu.socialnetwork.dtos.ChangeAlbumAccessTypeDto;
 import ru.sstu.socialnetwork.services.AlbumService;
 
 import java.security.Principal;
@@ -43,9 +44,14 @@ public class AlbumController {
         return ResponseEntity.ok(albumService.delete(id, principal));
     }
 
-    @GetMapping("/find/{word}")
-    public ResponseEntity<?> find(@PathVariable String word) {
-        return ResponseEntity.ok(albumService.find(word));
+    @GetMapping("/find/{keyword}")
+    public ResponseEntity<?> find(@PathVariable String keyword) {
+        return ResponseEntity.ok(albumService.find(keyword));
+    }
+
+    @PatchMapping("/change_access_type")
+    public ResponseEntity<?> changeAccessType(@RequestBody ChangeAlbumAccessTypeDto dto, Principal principal) {
+        return ResponseEntity.ok(albumService.changeAccessType(dto, principal));
     }
 
 }

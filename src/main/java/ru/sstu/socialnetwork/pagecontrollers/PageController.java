@@ -3,131 +3,117 @@ package ru.sstu.socialnetwork.pagecontrollers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.security.Principal;
-
 @Controller
 public class PageController {
 
     @GetMapping
-    public String index(Principal principal) {
-        return redirectToMyProfile(principal, "index");
+    public String index() {
+        return "index";
     }
 
     @GetMapping("/sign_up")
-    public String signUp(Principal principal) {
-        return redirectToMyProfile(principal, "sign_up");
+    public String signUp() {
+        return "sign_up";
     }
 
     @GetMapping("/sign_in")
-    public String signIn(Principal principal) {
-        return redirectToMyProfile(principal, "sign_in");
+    public String signIn() {
+        return "sign_in";
     }
 
     @GetMapping("/my_profile")
-    public String myProfile(Principal principal) {
-        return redirectToSignIn(principal, "my_profile");
+    public String myProfile() {
+        return "my_profile";
     }
 
     @GetMapping("/my_friends")
-    public String myFriends(Principal principal) {
-        return redirectToSignIn(principal, "my_friends");
+    public String myFriends() {
+        return "my_friends";
     }
 
     @GetMapping("/my_albums")
-    public String myAlbums(Principal principal) {
-        return redirectToSignIn(principal, "my_albums");
+    public String myAlbums() {
+        return "my_albums";
     }
 
     @GetMapping("/my_communities")
-    public String myCommunities(Principal principal) {
-        return redirectToSignIn(principal, "my_communities");
+    public String myCommunities() {
+        return "my_communities";
     }
 
     @GetMapping("/my_messages")
-    public String myMessages(Principal principal) {
-        return redirectToSignIn(principal, "my_messages");
+    public String myMessages() {
+        return "my_messages";
     }
 
     @GetMapping("/community_management")
-    public String communityManagement(Principal principal) {
-        return redirectToSignIn(principal, "community_management");
+    public String communityManagement() {
+        return "community_management";
     }
 
     @GetMapping("/friend_requests")
-    public String friendRequests(Principal principal) {
-        return redirectToSignIn(principal, "friend_requests");
+    public String friendRequests() {
+        return "friend_requests";
     }
 
     @GetMapping("/album/*")
-    public String album(Principal principal) {
-        return redirectToSignIn(principal, "album");
+    public String album() {
+        return "album";
     }
 
     @GetMapping("/albums/*")
-    public String albums(Principal principal) {
-        return redirectToSignIn(principal, "albums");
+    public String albums() {
+        return "albums";
     }
 
     @GetMapping("/communities/*")
-    public String communities(Principal principal) {
-        return redirectToSignIn(principal, "communities");
+    public String communities() {
+        return "communities";
     }
 
     @GetMapping("/community/*")
-    public String community(Principal principal) {
-        return redirectToSignIn(principal, "community");
+    public String community() {
+        return "community";
     }
 
     @GetMapping("/find_albums")
-    public String findAlbums(Principal principal) {
-        return redirectToSignIn(principal, "find_albums");
+    public String findAlbums() {
+        return "find_albums";
     }
 
     @GetMapping("/find_communities")
-    public String findCommunities(Principal principal) {
-        return redirectToSignIn(principal, "find_communities");
+    public String findCommunities() {
+        return "find_communities";
     }
 
     @GetMapping("/find_friends")
-    public String findFriends(Principal principal) {
-        return redirectToSignIn(principal, "find_friends");
+    public String findFriends() {
+        return "find_friends";
     }
 
     @GetMapping("/find_photos")
-    public String findPhotos(Principal principal) {
-        return redirectToSignIn(principal, "find_photos");
+    public String findPhotos() {
+        return "find_photos";
     }
 
     @GetMapping("/friends/*")
-    public String friends(Principal principal) {
-        return redirectToSignIn(principal, "friends");
+    public String friends() {
+        return "friends";
     }
 
     @GetMapping("/message/*")
-    public String message(Principal principal) {
-        return redirectToSignIn(principal, "message");
+    public String message() {
+        return "message";
     }
 
     @GetMapping("/photo/*")
-    public String photo(Principal principal) {
-        return redirectToSignIn(principal, "photo");
+    public String photo() {
+        return "photo";
     }
 
     @GetMapping("/profile/*")
-    public String profile(Principal principal) {
-        return redirectToSignIn(principal, "profile");
-    }
-
-    private String redirectToMyProfile(Principal principal, String page) {
-        if (principal != null)
-            return "redirect:/my_profile";
-        return page;
-    }
-
-    private String redirectToSignIn(Principal principal, String page) {
-        if (principal == null)
-            return "redirect:/sign_in";
-        return page;
+    public String profile() {
+        return "profile";
     }
 
 }

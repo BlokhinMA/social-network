@@ -1,5 +1,6 @@
 package ru.sstu.socialnetwork.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -21,7 +22,8 @@ public class Photo {
     @Column(nullable = false)
     private byte[] bytes;
     @Column(nullable = false)
-    private LocalDateTime creationTimeStamp = LocalDateTime.now();
+    @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
+    private LocalDateTime creationTimeStamp;
     @ManyToOne
     @JoinColumn(nullable = false)
     private Album album;
@@ -94,6 +96,13 @@ public class Photo {
 
     public void setAlbum(Album album) {
         this.album = album;
+    }
+
+    @PrePersist
+    private void onCreate() {
+        if (creationTimeStamp == null) {
+            creationTimeStamp = LocalDateTime.now();
+        }
     }
 
     @Override

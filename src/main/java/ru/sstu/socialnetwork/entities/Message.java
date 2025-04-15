@@ -1,5 +1,6 @@
 package ru.sstu.socialnetwork.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -21,7 +22,8 @@ public class Message {
     @Column(nullable = false)
     private String message;
     @Column(nullable = false)
-    private LocalDateTime writingTimeStamp  = LocalDateTime.now();
+    @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
+    private LocalDateTime writingTimeStamp;
 
     public Message() {
     }
@@ -72,6 +74,13 @@ public class Message {
 
     public void setWritingTimeStamp(LocalDateTime writingTimeStamp) {
         this.writingTimeStamp = writingTimeStamp;
+    }
+
+    @PrePersist
+    private void onCreate() {
+        if (writingTimeStamp == null) {
+            writingTimeStamp = LocalDateTime.now();
+        }
     }
 
     @Override

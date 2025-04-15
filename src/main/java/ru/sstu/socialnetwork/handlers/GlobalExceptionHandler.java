@@ -66,8 +66,15 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    @ExceptionHandler(IncorrectRequestValuesException.class)
-    public ResponseEntity<?> handleIncorrectRequestValuesException(IncorrectRequestValuesException e) {
+    @ExceptionHandler(IncorrectKeywordException.class)
+    public ResponseEntity<?> handleIncorrectRequestValuesException(IncorrectKeywordException e) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(IncorrectSearchTermException.class)
+    public ResponseEntity<?> handleIncorrectSearchTermException(IncorrectSearchTermException e) {
         Map<String, String> response = new HashMap<>();
         response.put("error", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);

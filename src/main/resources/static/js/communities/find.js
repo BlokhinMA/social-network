@@ -12,6 +12,7 @@ button.addEventListener('click', function () {
                 while (communities.firstChild) {
                     communities.removeChild(communities.firstChild);
                 }
+                let htmlCode;
                 if (Object.keys(data).length === 0) {
                     htmlCode = `<p>Ничего не найдено</p>`;
                     communities.insertAdjacentHTML('beforeend', htmlCode);

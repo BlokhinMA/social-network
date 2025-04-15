@@ -14,6 +14,6 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
     List<Album> findAllByOwner(User owner);
 
     @Query(value = "SELECT * FROM albums WHERE title ILIKE %?1%", nativeQuery = true)
-    List<Album> findAllLikeName(String word);
+    List<Album> findAllLikeName(String keyword);
 
 }

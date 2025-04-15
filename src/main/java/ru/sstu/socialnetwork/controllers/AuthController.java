@@ -31,12 +31,4 @@ public class AuthController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, authService.auth(authRequest)).build();
     }
 
-//    @PostMapping("/auth")
-//    public ResponseEntity<?> createAuthToken(@Valid @RequestBody AuthRequest jwtRequest) {
-//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword()));
-//        UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
-//        String token = jwtTokenUtils.generateToken(userDetails);
-//        return ResponseEntity.ok(new AuthResponse(token));
-//    }
-
 }

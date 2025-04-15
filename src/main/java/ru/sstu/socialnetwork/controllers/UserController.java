@@ -2,6 +2,7 @@ package ru.sstu.socialnetwork.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sstu.socialnetwork.entities.User;
@@ -22,6 +23,11 @@ public class UserController {
     @GetMapping("/get_current_user")
     public ResponseEntity<User> getCurrentUser(Principal principal) {
         return ResponseEntity.ok(userService.getCurrentUser(principal));
+    }
+
+    @GetMapping("/get_user/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUser(id));
     }
 
 }

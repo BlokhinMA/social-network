@@ -16,7 +16,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import ru.sstu.socialnetwork.services.JwtUtil;
 
 import java.io.IOException;
-import java.util.Objects;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -44,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         String jwt = "";
         for (Cookie cookie : cookies)
-            if (Objects.equals(cookie.getName(), "jwt")) {
+            if (cookie.getName().equals("jwt")) {
                 jwt = cookie.getValue();
                 break;
             }

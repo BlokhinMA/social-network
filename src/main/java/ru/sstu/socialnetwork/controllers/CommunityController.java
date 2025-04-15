@@ -35,23 +35,23 @@ public class CommunityController {
     }
 
     @GetMapping("/show/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id) {
-        return ResponseEntity.ok(communityService.show(id));
+    public ResponseEntity<?> show(@PathVariable Long id, Principal principal) {
+        return ResponseEntity.ok(communityService.show(id, principal));
     }
 
-    @GetMapping("/show_all_members/{communityId}")
-    public ResponseEntity<?> showAllMembers(@PathVariable Long communityId) {
-        return ResponseEntity.ok(communityService.showAllMembers(communityId));
-    }
-
-    @GetMapping("/show_all_posts/{communityId}")
-    public ResponseEntity<?> showAllPosts(@PathVariable Long communityId) {
-        return ResponseEntity.ok(communityService.showAllPosts(communityId));
-    }
+//    @GetMapping("/show_all_members/{communityId}")
+//    public ResponseEntity<?> showAllMembers(@PathVariable Long communityId) {
+//        return ResponseEntity.ok(communityService.showAllMembers(communityId));
+//    }
+//
+//    @GetMapping("/show_all_posts/{communityId}")
+//    public ResponseEntity<?> showAllPosts(@PathVariable Long communityId) {
+//        return ResponseEntity.ok(communityService.showAllPosts(communityId));
+//    }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@ModelAttribute @Valid CommunityDto communityDto, Principal principal) {
-        return ResponseEntity.ok(communityService.create(communityDto, principal));
+    public ResponseEntity<?> create(@RequestBody @Valid CommunityDto dto, Principal principal) {
+        return ResponseEntity.ok(communityService.create(dto, principal));
     }
 
     @DeleteMapping("/delete/{id}")
@@ -60,23 +60,23 @@ public class CommunityController {
     }
 
     @GetMapping("/join/{communityId}")
-    public ResponseEntity<?> join(Principal principal, @PathVariable Long communityId) {
-        return ResponseEntity.ok(communityService.join(principal, communityId));
+    public ResponseEntity<?> join(@PathVariable Long communityId, Principal principal) {
+        return ResponseEntity.ok(communityService.join(communityId, principal));
     }
 
-    @GetMapping("/is_member/{communityId}")
-    public ResponseEntity<?> isMember(Principal principal, @PathVariable Long communityId) {
-        return ResponseEntity.ok(communityService.checkIsMember(principal, communityId));
-    }
-
-    @GetMapping("/is_creator/{id}")
-    public ResponseEntity<?> isCreator(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(communityService.checkIsCreator(id, principal));
-    }
+//    @GetMapping("/is_member/{communityId}")
+//    public ResponseEntity<?> isMember(Principal principal, @PathVariable Long communityId) {
+//        return ResponseEntity.ok(communityService.checkIsMember(principal, communityId));
+//    }
+//
+//    @GetMapping("/is_creator/{id}")
+//    public ResponseEntity<?> isCreator(@PathVariable Long id, Principal principal) {
+//        return ResponseEntity.ok(communityService.checkIsCreator(id, principal));
+//    }
 
     @DeleteMapping("/leave/{communityId}")
-    public ResponseEntity<?> leave(Principal principal, @PathVariable Long communityId) {
-        return ResponseEntity.ok(communityService.leave(principal, communityId));
+    public ResponseEntity<?> leave(@PathVariable Long communityId, Principal principal) {
+        return ResponseEntity.ok(communityService.leave(communityId, principal));
     }
 
     @DeleteMapping("/kick/{id}")
@@ -94,24 +94,9 @@ public class CommunityController {
         return ResponseEntity.ok(communityService.deletePost(id, principal));
     }
 
-    @GetMapping("/find/{word}")
-    public ResponseEntity<?> find(@PathVariable String word) {
-        return ResponseEntity.ok(communityService.find(word));
-    }
-
-    @GetMapping("/show_all")
-    public ResponseEntity<?> showAll() {
-        return ResponseEntity.ok(communityService.showAll());
-    }
-
-    @GetMapping("/show_all_members")
-    public ResponseEntity<?> showAllMembers() {
-        return ResponseEntity.ok(communityService.showAllMembers());
-    }
-
-    @GetMapping("/show_all_posts")
-    public ResponseEntity<?> showAllPosts() {
-        return ResponseEntity.ok(communityService.showAllPosts());
+    @GetMapping("/find/{keyword}")
+    public ResponseEntity<?> find(@PathVariable String keyword) {
+        return ResponseEntity.ok(communityService.find(keyword));
     }
 
 }

@@ -5,6 +5,7 @@ fetch('/api/communities/show_my_subscriptions', {
         const data = await response.json();
         if (response.ok) {
             const communities = document.getElementById('communities');
+            let htmlCode;
             if (Object.keys(data).length === 0) {
                 htmlCode = `<p id="noOne">Вы пока не вступили ни в одно сообщество</p>`;
                 communities.insertAdjacentHTML('beforeend', htmlCode);

@@ -1,18 +1,21 @@
 package ru.sstu.socialnetwork.services;
 
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.sstu.socialnetwork.dtos.PhotoDto;
-import ru.sstu.socialnetwork.entities.Album;
-import ru.sstu.socialnetwork.entities.Photo;
-import ru.sstu.socialnetwork.entities.User;
+import ru.sstu.socialnetwork.dtos.*;
+import ru.sstu.socialnetwork.entities.*;
 import ru.sstu.socialnetwork.exceptions.EmptyFileException;
+import ru.sstu.socialnetwork.exceptions.IncorrectKeywordException;
+import ru.sstu.socialnetwork.exceptions.IncorrectSearchTermException;
 import ru.sstu.socialnetwork.exceptions.ResourceNotFoundException;
 import ru.sstu.socialnetwork.repositories.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +66,169 @@ public class PhotoService {
         return createdPhotos;
     }
 
+    public Photo show(Long id) {
+        return getPhotoFromDB(id);
+    }
+
+    public List<Long> showAll(Long albumId) {
+        albumRepository.findById(albumId)
+                .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
+        return photoRepository.findAllIdByAlbumId(albumId);
+    }
+
+    public Photo delete(Long id, Principal principal) {
+        Photo photo = getPhotoFromDB(id);
+        Album album = getAlbumFromDB(photo.getAlbum().getId());
+        User currentUser = userService.getCurrentUser(principal);
+        User owner = album.getOwner();
+        checkRights(currentUser, owner);
+        photoCommentRepository.deleteAllByPhoto(photo);
+        photoRatingRepository.deleteAllByPhoto(photo);
+        photoTagRepository.deleteAllByPhoto(photo);
+        photoRepository.deleteById(photo.getId());
+        log.info("Пользователь {} удалил фотографию {}",
+                currentUser,
+                photo);
+        return photo;
+    }
+
+    public PhotoTag createTag(PhotoTagDto dto, Principal principal) {
+        Photo photo = getPhotoFromDB(dto.getPhotoId());
+        Album album = photo.getAlbum();
+        User currentUser = userService.getCurrentUser(principal);
+        User owner = album.getOwner();
+        checkRights(currentUser, owner);
+        PhotoTag tag = new PhotoTag();
+        tag.setTag(dto.getTag());
+        tag.setPhoto(photo);
+        PhotoTag createdTag = photoTagRepository.save(tag);
+        log.info("Пользователь {} добавил тег {}",
+                currentUser,
+                createdTag);
+        return createdTag;
+    }
+
+    public PhotoTag deleteTag(Long id, Principal principal) {
+        PhotoTag tag = photoTagRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Тега не существует"));
+        Photo photo = tag.getPhoto();
+        Album album = photo.getAlbum();
+        User currentUser = userService.getCurrentUser(principal);
+        User owner = album.getOwner();
+        checkRights(currentUser, owner);
+        photoTagRepository.deleteById(tag.getId());
+        log.info("Пользователь {} удалил тег {}",
+                currentUser,
+                tag);
+        return tag;
+    }
+
+    public PhotoRating createRating(PhotoRatingDto dto, Principal principal) {
+        Photo photo = getPhotoFromDB(dto.getPhotoId());
+        User currentUser = userService.getCurrentUser(principal);
+        PhotoRating rating = new PhotoRating();
+        rating.setRating(dto.getRating());
+        rating.setRatingUser(currentUser);
+        rating.setPhoto(photo);
+        PhotoRating createdRating = photoRatingRepository.save(rating);
+        log.info("Пользователь {} поставил оценку фотографии {}",
+                currentUser,
+                createdRating);
+        return createdRating;
+    }
+
+    public PhotoRating updateRating(UpdatePhotoRatingDto dto, Principal principal) {
+        PhotoRating rating = getPhotoRatingFromDB(dto.getId());
+        User currentUser = userService.getCurrentUser(principal);
+        User ratingUser = rating.getRatingUser();
+        checkRights(currentUser, ratingUser);
+        rating.setRating(dto.getRating());
+        PhotoRating updatedRating = photoRatingRepository.save(rating);
+        log.info("Пользователь {} обновил оценку фотографии {}",
+                currentUser,
+                updatedRating);
+        return updatedRating;
+    }
+
+    public PhotoRating deleteRating(Long id, Principal principal) {
+        PhotoRating rating = photoRatingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Рейтинга не существует"));
+        User currentUser = userService.getCurrentUser(principal);
+        User ratingUser = rating.getRatingUser();
+        checkRights(currentUser, ratingUser);
+        photoRatingRepository.deleteById(id);
+        log.info("Пользователь {} удалил оценку фотографии {}",
+                currentUser,
+                rating);
+        return rating;
+    }
+
+    public PhotoComment createComment(PhotoCommentDto dto, Principal principal) {
+        Photo photo = getPhotoFromDB(dto.getPhotoId());
+        User currentUser = userService.getCurrentUser(principal);
+        PhotoComment comment = new PhotoComment();
+        comment.setComment(dto.getComment());
+        comment.setCommentingUser(currentUser);
+        comment.setPhoto(photo);
+        return photoCommentRepository.save(comment);
+    }
+
+    public PhotoComment deleteComment(Long id, Principal principal) {
+        PhotoComment comment = photoCommentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Комментарий не существует"));
+        User currentUser = userService.getCurrentUser(principal);
+        User commentingUser = comment.getCommentingUser();
+        checkRights(currentUser, commentingUser);
+        photoCommentRepository.deleteById(id);
+        log.info("Пользователь {} удалил комментарий {}",
+                currentUser,
+                comment);
+        return comment;
+    }
+
+    public List<Long> find(FindPhotosDto dto) {
+        if (dto.getKeyword().isEmpty()) {
+            throw new IncorrectKeywordException();
+        }
+        switch (dto.getSearchTerm()) {
+            case "creationTimeStamp":
+                LocalDateTime creationTimeStamp;
+                try {
+                    creationTimeStamp = LocalDateTime.parse(dto.getKeyword());
+                } catch (DateTimeParseException e) {
+                    throw new IncorrectSearchTermException();
+                }
+                return photoRepository.findAllIdByCreationTimeStamp(creationTimeStamp);
+            case "tag":
+                return photoRepository.findAllIdLikeTag(dto.getKeyword());
+            case "comment":
+                return photoRepository.findAllIdLikeComment(dto.getKeyword());
+            default:
+                throw new IncorrectSearchTermException();
+        }
+    }
+
+    private Photo getPhotoFromDB(Long id) {
+        return photoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Фотография не найдена"));
+    }
+
+    private void checkRights(User currentUser, User user) {
+        if (!currentUser.equals(user)) {
+            throw new AccessDeniedException("У Вас недостаточно прав на выполнение данной операции");
+        }
+    }
+
+    private PhotoRating getPhotoRatingFromDB(Long id) {
+        return photoRatingRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Рейтинга не существует"));
+    }
+
+    private Album getAlbumFromDB(Long id) {
+        return albumRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
+    }
+
     private Photo toPhotoEntity(MultipartFile file) {
         Photo photo = new Photo();
         photo.setOriginalFileName(file.getOriginalFilename());
@@ -74,17 +240,6 @@ public class PhotoService {
             throw new RuntimeException(); // todo написать свое исключение
         }
         return photo;
-    }
-
-    public Photo show(Long id) {
-        return photoRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("Фотография не найдена"));
-    }
-
-    public List<Long> showAll(Long albumId) {
-        albumRepository.findById(albumId)
-                .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
-        return photoRepository.findAllIdByAlbumId(albumId);
     }
 
 }

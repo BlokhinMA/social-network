@@ -4,7 +4,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import ru.sstu.socialnetwork.entities.Friendship;
 import ru.sstu.socialnetwork.entities.User;
-import ru.sstu.socialnetwork.exceptions.IncorrectRequestValuesException;
+import ru.sstu.socialnetwork.exceptions.IncorrectKeywordException;
 import ru.sstu.socialnetwork.exceptions.ResourceNotFoundException;
 import ru.sstu.socialnetwork.repositories.FriendshipRepository;
 
@@ -25,7 +25,7 @@ public class FriendshipService {
 
     public Friendship create(Long friendId, Principal principal) {
         User user = userService.getCurrentUser(principal);
-        User friend = userService.getUserById(friendId);
+        User friend = userService.getUser(friendId);
         Friendship friendship = new Friendship();
         friendship.setFirstUser(user);
         friendship.setSecondUser(friend);
@@ -37,11 +37,11 @@ public class FriendshipService {
         return createdFriendship;
     }
 
-    public List<User> find(String word, Principal principal) {
-        if (word.isEmpty())
-            throw new IncorrectRequestValuesException("Некорректное ключевое слово");
+    public List<User> find(String keyword, Principal principal) {
+        if (keyword.isEmpty())
+            throw new IncorrectKeywordException();
         User user = userService.getCurrentUser(principal);
-        return friendshipRepository.findAllLikeFirstNameOrLastName(word, user.getId());
+        return friendshipRepository.findAllLikeFirstNameOrLastName(keyword, user.getId());
     }
 
     public List<User> showIncomingRequests(Principal principal) {
@@ -56,7 +56,7 @@ public class FriendshipService {
 
     public Friendship accept(Long userId, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
-        User user = userService.getUserById(userId);
+        User user = userService.getUser(userId);
         Friendship friendship = friendshipRepository.findNotAcceptedByFirstUserIdAndSecondUserId(user.getId(), currentUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или вы уже друзья"));
         friendship.setAccepted(true);
@@ -73,13 +73,13 @@ public class FriendshipService {
     }
 
     public List<User> show(Long userId) {
-        User user = userService.getUserById(userId);
+        User user = userService.getUser(userId);
         return friendshipRepository.findAllAcceptedByUserId(user.getId());
     }
 
     public Friendship delete(Long friendId, Principal principal) {
         User user = userService.getCurrentUser(principal);
-        User friend = userService.getUserById(friendId);
+        User friend = userService.getUser(friendId);
         Friendship friendship = friendshipRepository.findAcceptedByFirstUserIdAndSecondUserId(user.getId(), friend.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или заявка в друзья не подтверждена"));
         friendshipRepository.deleteById(friendship.getId());
@@ -91,7 +91,7 @@ public class FriendshipService {
 
     public Friendship reject(Long userId, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
-        User user = userService.getUserById(userId);
+        User user = userService.getUser(userId);
         Friendship friendship = friendshipRepository.findNotAcceptedByFirstUserIdAndSecondUserId(user.getId(), currentUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или вы уже друзья"));
         friendshipRepository.deleteById(friendship.getId());
@@ -103,7 +103,7 @@ public class FriendshipService {
 
     public Friendship deleteOutgoingRequest(Long userId, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
-        User user = userService.getUserById(userId);
+        User user = userService.getUser(userId);
         Friendship friendship = friendshipRepository.findNotAcceptedByFirstUserIdAndSecondUserId(currentUser.getId(), user.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или вы уже друзья"));
         friendshipRepository.deleteById(friendship.getId());
@@ -115,7 +115,7 @@ public class FriendshipService {
 
     public boolean isFriend(Long userId, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
-        User user = userService.getUserById(userId);
+        User user = userService.getUser(userId);
         return friendshipRepository.findAcceptedByFirstUserIdAndSecondUserId(currentUser.getId(), user.getId()).isPresent();
     }
 

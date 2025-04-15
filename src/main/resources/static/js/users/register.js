@@ -15,7 +15,7 @@ form.addEventListener('submit', function (event) {
         body: JSON.stringify(data)
     })
         .then(async response => {
-            errorElements = document.querySelectorAll('.error');
+            const errorElements = document.querySelectorAll('.error');
             if (errorElements) {
                 errorElements.forEach(el => {
                     br = document.createElement('br');

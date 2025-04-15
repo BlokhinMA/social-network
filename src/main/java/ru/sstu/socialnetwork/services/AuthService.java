@@ -15,7 +15,6 @@ import ru.sstu.socialnetwork.exceptions.ResourceAlreadyExistsException;
 import ru.sstu.socialnetwork.repositories.UserRepository;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Service
 public class AuthService {
@@ -38,7 +37,7 @@ public class AuthService {
         if (userRepository.findByLogin(userDto.getLogin()).isPresent()
                 || userRepository.findByEmail(userDto.getEmail()).isPresent())
             throw new ResourceAlreadyExistsException("Пользователь с таким login или email уже существует");
-        if (!Objects.equals(userDto.getPassword(), userDto.getConfirmedPassword()))
+        if (!userDto.getPassword().equals(userDto.getConfirmedPassword()))
             throw new PasswordsNotMatchException();
         User user = new User(
                 userDto.getLogin(),

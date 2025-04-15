@@ -5,6 +5,7 @@ fetch('/api/communities/show_mine', {
         const data = await response.json();
         if (response.ok) {
             const communitiesDiv = document.getElementById('communities');
+            let htmlCode;
             if (Object.keys(data).length === 0) {
                 htmlCode = '<p id="noOne">Вы пока не создали ни одно сообщество</p>';
                 communitiesDiv.insertAdjacentHTML('beforeend', htmlCode);

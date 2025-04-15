@@ -8,11 +8,12 @@ communitiesDiv.addEventListener('click', function (event) {
             method: 'DELETE'
         })
             .then(async response => {
-                errorElement = document.getElementById('error');
+                let errorElement = document.getElementById('error');
                 if (errorElement) {
                     errorElement.remove();
                 }
                 const data = await response.json();
+                let htmlCode;
                 if (response.ok) {
                     const p = button.parentElement;
                     p.remove();

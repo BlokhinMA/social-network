@@ -3,16 +3,14 @@ package ru.sstu.socialnetwork.dtos;
 public class PhotoRatingDto {
 
     private Boolean rating;
-    private String ratingUserLogin;
-    private Long photo;
+    private Long photoId;
 
     public PhotoRatingDto() {
     }
 
-    public PhotoRatingDto(Boolean rating, String ratingUserLogin, Long photo) {
+    public PhotoRatingDto(Boolean rating, Long photoId) {
         this.rating = rating;
-        this.ratingUserLogin = ratingUserLogin;
-        this.photo = photo;
+        this.photoId = photoId;
     }
 
     public Boolean getRating() {
@@ -23,20 +21,12 @@ public class PhotoRatingDto {
         this.rating = rating;
     }
 
-    public String getRatingUserLogin() {
-        return ratingUserLogin;
+    public Long getPhotoId() {
+        return photoId;
     }
 
-    public void setRatingUserLogin(String ratingUserLogin) {
-        this.ratingUserLogin = ratingUserLogin;
-    }
-
-    public Long getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(Long photo) {
-        this.photo = photo;
+    public void setPhotoId(Long photoId) {
+        this.photoId = photoId;
     }
 
 }

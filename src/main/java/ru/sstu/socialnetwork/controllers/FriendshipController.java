@@ -16,9 +16,9 @@ public class FriendshipController {
         this.friendshipService = friendshipService;
     }
 
-    @GetMapping("/find/{word}")
-    public ResponseEntity<?> find(@PathVariable String word, Principal principal) {
-        return ResponseEntity.ok(friendshipService.find(word, principal));
+    @GetMapping("/find/{keyword}")
+    public ResponseEntity<?> find(@PathVariable String keyword, Principal principal) {
+        return ResponseEntity.ok(friendshipService.find(keyword, principal));
     }
 
     @PostMapping("/create/{friendId}")
