@@ -14,7 +14,7 @@ public interface CommunityMemberRepository extends JpaRepository<CommunityMember
 
     Optional<CommunityMember> findByMemberAndCommunity(User member, Community community);
 
-    List<CommunityMember> findAllByCommunity(Community community);
+    List<CommunityMember> findAllByCommunityOrderByIdDesc(Community community);
 
     void deleteAllByCommunity(Community community);
 

@@ -45,7 +45,6 @@ public class PhotoService {
     }
 
     public List<Photo> create(PhotoDto photoDto, Principal principal) {
-        log.info(photoDto.getFiles().size());
         if (photoDto.getFiles().getFirst().getSize() == 0)
             throw new EmptyFileException();
         User owner = userService.getCurrentUser(principal);
@@ -66,8 +65,41 @@ public class PhotoService {
         return createdPhotos;
     }
 
-    public Photo show(Long id) {
+    public Photo showEntity(Long id) {
         return getPhotoFromDB(id);
+    }
+
+    public PhotoResponseDto show(Long id, Principal principal) {
+        User currentUser = userService.getCurrentUser(principal);
+        Photo photo = getPhotoFromDB(id);
+        User owner = photo.getAlbum().getOwner();
+        List<PhotoTag> tags = photoTagRepository.findAllByPhoto(photo);
+
+        List<PhotoComment> commentsFromDb = photoCommentRepository.findAllByPhotoOrderByCommentingTimeStampDesc(photo);
+        List<PhotoCommentResponseDto> comments = new ArrayList<>();
+        PhotoCommentResponseDto commentDto;
+        for (PhotoComment comment : commentsFromDb) {
+            commentDto = new PhotoCommentResponseDto(
+                    comment,
+                    currentUser.equals(comment.getCommentingUser())
+            );
+            comments.add(commentDto);
+        }
+
+        Double rating = rating(id);
+        if (rating != null)
+            rating = (double) Math.round(rating);
+
+        Boolean userRating = photoRatingRepository.userRatingByRatingUserIdAndPhotoId(currentUser.getId(), id);
+        Boolean isOwner = currentUser.equals(owner);
+        return new PhotoResponseDto(
+                photo,
+                tags,
+                comments,
+                rating,
+                userRating,
+                isOwner
+        );
     }
 
     public List<Long> showAll(Long albumId) {
@@ -137,8 +169,8 @@ public class PhotoService {
         return createdRating;
     }
 
-    public PhotoRating updateRating(UpdatePhotoRatingDto dto, Principal principal) {
-        PhotoRating rating = getPhotoRatingFromDB(dto.getId());
+    public PhotoRating updateRating(PhotoRatingDto dto, Principal principal) {
+        PhotoRating rating = getPhotoRatingFromDB(dto.getPhotoId());
         User currentUser = userService.getCurrentUser(principal);
         User ratingUser = rating.getRatingUser();
         checkRights(currentUser, ratingUser);
@@ -161,6 +193,10 @@ public class PhotoService {
                 currentUser,
                 rating);
         return rating;
+    }
+
+    public Double rating(Long photoId) {
+        return photoRatingRepository.ratingByPhotoId(photoId);
     }
 
     public PhotoComment createComment(PhotoCommentDto dto, Principal principal) {
@@ -205,6 +241,13 @@ public class PhotoService {
                 return photoRepository.findAllIdLikeComment(dto.getKeyword());
             default:
                 throw new IncorrectSearchTermException();
+        }
+    }
+
+    public void deleteAllByAlbum(Album album, Principal principal) {
+        List<Photo> photos = photoRepository.findAllIdByAlbum(album);
+        for (Photo photo : photos) {
+            delete(photo.getId(), principal);
         }
     }
 

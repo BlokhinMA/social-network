@@ -8,41 +8,36 @@
 
 <body>
 
-    <th:block th:replace="~{index :: header}"></th:block>
-    <th:block th:replace="~{my_profile :: menu}"></th:block>
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
 
-    <h1>Мои альбомы</h1>
+<h1>Мои альбомы</h1>
 
-    <p><a th:href="@{/find_albums}">Найти альбомы</a></p>
-    <p><a th:href="@{/find_photos}">Найти фотографии</a></p>
+<p><a th:href="@{/find_albums}">Найти альбомы</a></p>
+<p><a th:href="@{/find_photos}">Найти фотографии</a></p>
 
-    <p>Создать альбом</p>
-    <!--<form th:action="@{/add_album}" method="post" enctype="multipart/form-data" th:object="${album}">-->
-    <!--    <label for="title">Название альбома</label>-->
-    <!--    <input type="text" id="title" th:field="*{title}" placeholder="Название альбома" required>-->
-    <!--    <p style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Name Error</p>-->
-    <!--    <br>-->
-    <!--    <span>Выбрать тип доступа к альбому</span>-->
-    <!--    <input type="radio" id="all" th:field="*{accessType}" value="all" required>-->
-    <!--    <label for="all">для всех</label>-->
-    <!--    <input type="radio" id="friends" th:field="*{accessType}" value="friends">-->
-    <!--    <label for="friends">для друзей</label>-->
-    <!--    <p style="color: red" th:if="${#fields.hasErrors('accessType')}" th:errors="*{accessType}">AccessType Error</p>-->
-    <!--    <br>-->
-    <!--    <label for="files">Фотографии</label>-->
-    <!--    <input type="file" id="files" name="files" accept="image/*" multiple>-->
-    <!--    <button>Создать альбом</button>-->
-    <!--</form>-->
+<p>Создать альбом</p>
+<form enctype="multipart/form-data" id="create-album">
+    <label for="title">Название альбома</label>
+    <input type="text" id="title" name="title" placeholder="Название альбома" required>
+    <div>Выбрать тип доступа к альбому</div>
+    <div id="radio-buttons">
+        <input type="radio" id="all" name="accessType" value="ALL" required>
+        <label for="all">для всех</label>
+        <input type="radio" id="friends" name="accessType" value="FRIENDS">
+        <label for="friends">для друзей</label>
+    </div>
+    <label for="files">Фотографии</label>
+    <input type="file" id="files" name="files" accept="image/*" multiple>
+    <br>
+    <button>Создать альбом</button>
+</form>
 
-    <!--<p>Мои альбомы</p>-->
+<div id="albums"></div>
 
-    <!--<div th:each="album : ${albums}">-->
-    <!--    <p><a th:href="@{/album/{id}(id=${album.id})}" th:text="${album.title}"></a></p>-->
-    <!--    <form th:action="@{/delete_album}" method="post" style="display: inline">-->
-    <!--        <input type="hidden" name="id" th:value="${album.id}">-->
-    <!--        <button>удалить альбом</button>-->
-    <!--    </form>-->
-    <!--</div>-->
+<script th:src="@{/js/albums/create.js}"></script>
+<script th:src="@{/js/albums/show_mine.js}"></script>
+<script th:src="@{/js/albums/delete.js}"></script>
 
 </body>
 

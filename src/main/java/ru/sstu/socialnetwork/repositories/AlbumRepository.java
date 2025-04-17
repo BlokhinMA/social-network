@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface AlbumRepository extends JpaRepository<Album, Long> {
 
-    List<Album> findAllByOwner(User owner);
+    List<Album> findAllByOwnerOrderByIdDesc(User owner);
 
     @Query(value = "SELECT * FROM albums WHERE title ILIKE %?1%", nativeQuery = true)
     List<Album> findAllLikeName(String keyword);

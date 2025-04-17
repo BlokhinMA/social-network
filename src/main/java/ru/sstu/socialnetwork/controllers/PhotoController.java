@@ -29,7 +29,7 @@ public class PhotoController {
 
     @GetMapping("/show_entity/{id}")
     public ResponseEntity<?> showEntity(@PathVariable Long id) {
-        Photo photo = photoService.show(id);
+        Photo photo = photoService.showEntity(id);
         return ResponseEntity.ok()
                 .header("fileName", photo.getOriginalFileName())
                 .contentType(MediaType.valueOf(photo.getContentType()))
@@ -38,14 +38,14 @@ public class PhotoController {
     }
 
     @GetMapping("/show/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id) {
-        return ResponseEntity.ok(photoService.show(id));
+    public ResponseEntity<?> show(@PathVariable Long id, Principal principal) {
+        return ResponseEntity.ok(photoService.show(id, principal));
     }
 
-    @GetMapping("/show_all/{albumId}")
-    public ResponseEntity<?> showAll(@PathVariable Long albumId) {
-        return ResponseEntity.ok(photoService.showAll(albumId));
-    }
+//    @GetMapping("/show_all/{albumId}")
+//    public ResponseEntity<?> showAll(@PathVariable Long albumId) {
+//        return ResponseEntity.ok(photoService.showAll(albumId));
+//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id, Principal principal) {
@@ -53,7 +53,7 @@ public class PhotoController {
     }
 
     @PostMapping("/create_tag")
-    public ResponseEntity<?> createTag(@RequestBody PhotoTagDto dto, Principal principal) {
+    public ResponseEntity<?> createTag(@RequestBody @Valid PhotoTagDto dto, Principal principal) {
         return ResponseEntity.ok(photoService.createTag(dto, principal));
     }
 
@@ -63,12 +63,12 @@ public class PhotoController {
     }
 
     @PostMapping("/create_rating")
-    public ResponseEntity<?> createRating(@RequestBody PhotoRatingDto dto, Principal principal) {
+    public ResponseEntity<?> createRating(@RequestBody @Valid PhotoRatingDto dto, Principal principal) {
         return ResponseEntity.ok(photoService.createRating(dto, principal));
     }
 
     @PatchMapping("/update_rating")
-    public ResponseEntity<?> updateRating(@RequestBody UpdatePhotoRatingDto dto, Principal principal) {
+    public ResponseEntity<?> updateRating(@RequestBody @Valid PhotoRatingDto dto, Principal principal) {
         return ResponseEntity.ok(photoService.updateRating(dto, principal));
     }
 
@@ -77,8 +77,13 @@ public class PhotoController {
         return ResponseEntity.ok(photoService.deleteRating(id, principal));
     }
 
+    @GetMapping("/rating/{photoId}")
+    public ResponseEntity<?> rating(@PathVariable Long photoId) {
+        return ResponseEntity.ok(photoService.rating(photoId));
+    }
+
     @PostMapping("/create_comment")
-    public ResponseEntity<?> createComment(@RequestBody PhotoCommentDto dto, Principal principal) {
+    public ResponseEntity<?> createComment(@RequestBody @Valid PhotoCommentDto dto, Principal principal) {
         return ResponseEntity.ok(photoService.createComment(dto, principal));
     }
 

@@ -3,7 +3,7 @@
 
 <head>
     <th:block th:replace="~{index :: meta}"></th:block>
-<!--    <title th:text="|${user.firstName} ${user.lastName}|"></title>-->
+    <title></title>
 </head>
 
 <body>
@@ -11,13 +11,7 @@
 <th:block th:replace="~{index :: header}"></th:block>
 <th:block th:replace="~{my_profile :: menu}"></th:block>
 
-<!--<h1 th:text="|${user.firstName} ${user.lastName}|"></h1>-->
-
-<!--<p><a th:href="@{/friends/{userId}(userId=${user.id})}" th:text="|Друзья пользователя|"></a></p>-->
-<!--<p><a th:href="@{/albums/{userId}(userId=${user.id})}" th:text="|Альбомы пользователя|"></a></p>-->
-<!--<p><a th:href="@{/communities/{memberId}(memberId=${user.id})}" th:text="|Сообщества пользователя|"></a></p>-->
-<!--<br>-->
-<!--<p><a th:href="@{/messages/{companionId}(companionId=${user.id})}">Написать сообщение</a></p>-->
+<script th:src="@{/js/users/get_user.js}"></script>
 
 </body>
 

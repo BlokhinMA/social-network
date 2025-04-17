@@ -20,7 +20,7 @@ public class AlbumController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@Valid @RequestBody AlbumDto albumDto, Principal principal) {
+    public ResponseEntity<?> create(@Valid @ModelAttribute AlbumDto albumDto, Principal principal) {
         return ResponseEntity.ok(albumService.create(albumDto, principal));
     }
 

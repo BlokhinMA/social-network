@@ -1,6 +1,4 @@
-const communityFooter = document.getElementById("community-footer");
-
-communityFooter.addEventListener("click", (e) => {
+communityHeader.addEventListener("click", (e) => {
     if (e.target && e.target.id === "subscribe-button") {
         const button = e.target;
 
@@ -45,7 +43,7 @@ communityFooter.addEventListener("click", (e) => {
                         membersDiv.insertAdjacentHTML('afterend', htmlCode);
                     }
                 } else {
-                    htmlCode += `<span id="error" style="color: red">${data.error}</span>`
+                    htmlCode += `<span id="error" style="color: red;">${data.error}</span>`
                     button.insertAdjacentHTML('afterend', htmlCode);
                 }
             });

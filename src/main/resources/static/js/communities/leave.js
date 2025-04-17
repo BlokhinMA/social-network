@@ -1,4 +1,4 @@
-communityFooter.addEventListener("click", (e) => {
+communityHeader.addEventListener("click", (e) => {
     if (e.target && e.target.id === "leave-button") {
         const button = e.target;
 
@@ -36,7 +36,7 @@ communityFooter.addEventListener("click", (e) => {
                     }
 
                 } else {
-                    htmlCode += `<span id="error" style="color: red">${data.error}</span>`
+                    htmlCode += `<span id="error" style="color: red;">${data.error}</span>`
                     button.insertAdjacentHTML('afterend', htmlCode);
                 }
 

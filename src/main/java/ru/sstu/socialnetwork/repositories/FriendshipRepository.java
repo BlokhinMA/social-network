@@ -24,7 +24,7 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
             "WHERE first_user_id = ?1 AND accepted = false", nativeQuery = true)
     List<User> findOutgoingRequestsByUserId(Long id);
 
-    @Query(value = "SELECT FROM friendships WHERE first_user_id = ?1 AND second_user_id = ?2 AND accepted = false",
+    @Query(value = "SELECT * FROM friendships WHERE first_user_id = ?1 AND second_user_id = ?2 AND accepted = false",
             nativeQuery = true)
     Optional<Friendship> findNotAcceptedByFirstUserIdAndSecondUserId(Long firstUserId, Long secondUserId);
 
@@ -33,7 +33,7 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
             "WHERE second_user_id = ?1 AND accepted = true", nativeQuery = true)
     List<User> findAllAcceptedByUserId(Long id);
 
-    @Query(value = "SELECT FROM friendships WHERE first_user_id IN (?1, ?2) AND second_user_id " +
+    @Query(value = "SELECT * FROM friendships WHERE first_user_id IN (?1, ?2) AND second_user_id " +
             "IN (?1, ?2) AND accepted = true", nativeQuery = true)
     Optional<Friendship> findAcceptedByFirstUserIdAndSecondUserId(Long firstUserId, Long SecondUserid);
 

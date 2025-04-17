@@ -23,7 +23,7 @@ postsDiv.addEventListener('click', function (event) {
                         postsDiv.insertAdjacentHTML('beforeend', htmlCode);
                     }
                 } else {
-                    htmlCode += `<span id="error" style="color: red">${data.error}</span>`
+                    htmlCode += `<span id="error" style="color: red;">${data.error}</span>`
                     button.insertAdjacentHTML('afterend', htmlCode);
                 }
             });

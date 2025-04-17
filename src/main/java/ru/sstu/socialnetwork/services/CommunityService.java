@@ -59,7 +59,7 @@ public class CommunityService {
     public CommunityResponseDto show(Long id, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
         Community community = getCommunityFromDB(id);
-        List<CommunityMember> members = communityMemberRepository.findAllByCommunity(community);
+        List<CommunityMember> members = communityMemberRepository.findAllByCommunityOrderByIdDesc(community);
         List<CommunityPost> postsFromDB = communityPostRepository.findAllByCommunityOrderByCreationTimeStampDesc(community);
         List<CommunityPostResponseDto> posts = getPostResponseDtos(postsFromDB, currentUser);
         Boolean isMember = communityMemberRepository.findByMemberAndCommunity(currentUser, community).isPresent();
@@ -105,12 +105,8 @@ public class CommunityService {
         User currentUser = userService.getCurrentUser(principal);
         Community community = getCommunityFromDB(id);
         checkRights(!currentUser.equals(community.getCreator()));
-        if (!communityMemberRepository.findAllByCommunity(community).isEmpty()) {
-            communityMemberRepository.deleteAllByCommunity(community);
-        }
-        if (!communityPostRepository.findAllByCommunity(community).isEmpty()) {
-            communityPostRepository.deleteAllByCommunity(community);
-        }
+        communityMemberRepository.deleteAllByCommunity(community);
+        communityPostRepository.deleteAllByCommunity(community);
         communityRepository.deleteById(id);
         log.info("Пользователь {} удалил сообщество {}",
                 currentUser,

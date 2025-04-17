@@ -8,121 +8,126 @@
 
 <body>
 
-    <th:block th:replace="~{index :: header}"></th:block>
-    <th:block th:replace="~{my_profile :: menu}"></th:block>
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
 
+<div id="photo"></div>
+<div id="tags"></div>
+<div id="rating"></div>
+<div id="comments"></div>
 
-    <h1>Фотография</h1>
-    <!--<th:block th:if="${isFriend} or ${thisUser.getName()} == ${photo.album.userLogin}">-->
-    <!--    <img th:src="@{/photo_entity/{id}(id=${photo.id})}">-->
+<script th:src="@{/js/photos/show.js}"></script>
 
-    <!--    <th:block th:if="${thisUser.getName()} == ${photo.album.userLogin}">-->
-    <!--        <form th:action="@{/delete_photo}" method="post">-->
-    <!--            <input type="hidden" name="id" th:value="${photo.id}">-->
-    <!--            <input type="hidden" name="albumId" th:value="${photo.albumId}">-->
-    <!--            <button>удалить фотографию</button>-->
-    <!--        </form>-->
-    <!--    </th:block>-->
+<!--<th:block th:if="${isFriend} or ${thisUser.getName()} == ${photo.album.userLogin}">-->
+<!--    <img th:src="@{/photo_entity/{id}(id=${photo.id})}">-->
 
-    <!--    <p th:text="|Фотография добавлена: ${photo.creationTimeStamp}|"></p>-->
+<!--    <th:block th:if="${thisUser.getName()} == ${photo.album.userLogin}">-->
+<!--        <form th:action="@{/delete_photo}" method="post">-->
+<!--            <input type="hidden" name="id" th:value="${photo.id}">-->
+<!--            <input type="hidden" name="albumId" th:value="${photo.albumId}">-->
+<!--            <button>удалить фотографию</button>-->
+<!--        </form>-->
+<!--    </th:block>-->
 
-    <!--    <span>Теги: </span>-->
-    <!--    <th:block th:if="${thisUser.getName()} == ${photo.album.userLogin}">-->
-    <!--        <form th:action="@{/delete_photo_tag}" method="post" th:each="tag : ${photo.tags}" style="display: inline">-->
-    <!--            <label th:text="${tag.tag}"></label>-->
-    <!--            <input type="hidden" name="id" th:value="${tag.id}">-->
-    <!--            <input type="hidden" name="photoId" th:value="${tag.photoId}">-->
-    <!--            <button>x</button>-->
-    <!--            <th:block th:if="${condition}">-->
-    <!--                <span style="color: red">Такой тег у данной фотографии уже есть</span>-->
-    <!--            </th:block>-->
-    <!--        </form>-->
-    <!--    </th:block>-->
-    <!--    <th:block th:if="${thisUser.getName()} != ${photo.album.userLogin}" th:each="tag, iterStat : ${photo.tags}">-->
-    <!--        <span th:text="${tag.tag}"></span><span th:if="${!iterStat.last}">, </span>-->
-    <!--    </th:block>-->
+<!--    <p th:text="|Фотография добавлена: ${photo.creationTimeStamp}|"></p>-->
 
-    <!--    <th:block th:if="${thisUser.getName()} == ${photo.album.userLogin}">-->
-    <!--        <form th:action="@{/add_photo_tag}" method="post" th:object="${photoTag}">-->
-    <!--            <label for="tag">Добавить тег</label>-->
-    <!--            <input type="text" id="tag" name="tag" th:field="*{tag}" required>-->
-    <!--            <p style="color: red" th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}">Tag Error</p>-->
-    <!--            <input type="hidden" name="photoId" th:value="${photo.id}">-->
-    <!--            <button>добавить</button>-->
-    <!--        </form>-->
-    <!--    </th:block>-->
+<!--    <span>Теги: </span>-->
+<!--    <th:block th:if="${thisUser.getName()} == ${photo.album.userLogin}">-->
+<!--        <form th:action="@{/delete_photo_tag}" method="post" th:each="tag : ${photo.tags}" style="display: inline">-->
+<!--            <label th:text="${tag.tag}"></label>-->
+<!--            <input type="hidden" name="id" th:value="${tag.id}">-->
+<!--            <input type="hidden" name="photoId" th:value="${tag.photoId}">-->
+<!--            <button>x</button>-->
+<!--            <th:block th:if="${condition}">-->
+<!--                <span style="color: red">Такой тег у данной фотографии уже есть</span>-->
+<!--            </th:block>-->
+<!--        </form>-->
+<!--    </th:block>-->
+<!--    <th:block th:if="${thisUser.getName()} != ${photo.album.userLogin}" th:each="tag, iterStat : ${photo.tags}">-->
+<!--        <span th:text="${tag.tag}"></span><span th:if="${!iterStat.last}">, </span>-->
+<!--    </th:block>-->
 
-    <!--    <th:block th:switch="${photo.rating}">-->
-    <!--        <p th:case="null">Фотография еще не оценивалась</p>-->
-    <!--        <p th:case="*" th:text="'Рейтинг фотографии: ' + ${photo.rating} + ' %'"></p>-->
-    <!--    </th:block>-->
+<!--    <th:block th:if="${thisUser.getName()} == ${photo.album.userLogin}">-->
+<!--        <form th:action="@{/add_photo_tag}" method="post" th:object="${photoTag}">-->
+<!--            <label for="tag">Добавить тег</label>-->
+<!--            <input type="text" id="tag" name="tag" th:field="*{tag}" required>-->
+<!--            <p style="color: red" th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}">Tag Error</p>-->
+<!--            <input type="hidden" name="photoId" th:value="${photo.id}">-->
+<!--            <button>добавить</button>-->
+<!--        </form>-->
+<!--    </th:block>-->
 
-    <!--    <th:block th:switch="${photo.userRating}">-->
-    <!--        <th:block th:case="null">-->
-    <!--            <form th:action="@{/add_photo_rating}" method="post">-->
-    <!--                <input type="hidden" name="photoId" th:value="${photo.id}">-->
-    <!--                <button name="rating" value="true">+</button>-->
-    <!--                <button name="rating" value="false">-</button>-->
-    <!--            </form>-->
-    <!--        </th:block>-->
-    <!--        <th:block th:case="*">-->
-    <!--            <th:block th:switch="${photo.userRating.rating}">-->
-    <!--                <th:block th:case="false">-->
-    <!--                    <form th:action="@{/update_photo_rating}" method="post" style="display: inline">-->
-    <!--                        <input type="hidden" name="rating" value="true">-->
-    <!--                        <input type="hidden" name="id" th:value="${photo.userRating.id}">-->
-    <!--                        <input type="hidden" name="photoId" th:value="${photo.userRating.photoId}">-->
-    <!--                        <button>+</button>-->
-    <!--                    </form>-->
-    <!--                    <form th:action="@{/delete_photo_rating}" method="post" style="display: inline">-->
-    <!--                        <input type="hidden" name="id" th:value="${photo.userRating.id}">-->
-    <!--                        <input type="hidden" name="photoId" th:value="${photo.userRating.photoId}">-->
-    <!--                        <button style="background: red">-</button>-->
-    <!--                    </form>-->
-    <!--                </th:block>-->
-    <!--                <th:block th:case="true">-->
-    <!--                    <form th:action="@{/delete_photo_rating}" method="post" style="display: inline">-->
-    <!--                        <input type="hidden" name="id" th:value="${photo.userRating.id}">-->
-    <!--                        <input type="hidden" name="photoId" th:value="${photo.userRating.photoId}">-->
-    <!--                        <button style="background: green">+</button>-->
-    <!--                    </form>-->
-    <!--                    <form th:action="@{/update_photo_rating}" method="post" style="display: inline">-->
-    <!--                        <input type="hidden" name="rating" value="false">-->
-    <!--                        <input type="hidden" name="id" th:value="${photo.userRating.id}">-->
-    <!--                        <input type="hidden" name="photoId" th:value="${photo.userRating.photoId}">-->
-    <!--                        <button>-</button>-->
-    <!--                    </form>-->
-    <!--                </th:block>-->
-    <!--            </th:block>-->
-    <!--        </th:block>-->
-    <!--    </th:block>-->
+<!--    <th:block th:switch="${photo.rating}">-->
+<!--        <p th:case="null">Фотография еще не оценивалась</p>-->
+<!--        <p th:case="*" th:text="'Рейтинг фотографии: ' + ${photo.rating} + ' %'"></p>-->
+<!--    </th:block>-->
 
-    <!--    <form th:action="@{/add_photo_comment}" method="post" th:object="${photoComment}">-->
-    <!--        <label for="comment">Добавить комментарий</label><br>-->
-    <!--        <textarea id="comment" name="comment" th:field="*{comment}" required></textarea>-->
-    <!--        <p style="color: red" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}">Comment Error</p>-->
-    <!--        <input type="hidden" name="photoId" th:value="${photo.id}">-->
-    <!--        <button>добавить</button>-->
-    <!--    </form>-->
+<!--    <th:block th:switch="${photo.userRating}">-->
+<!--        <th:block th:case="null">-->
+<!--            <form th:action="@{/add_photo_rating}" method="post">-->
+<!--                <input type="hidden" name="photoId" th:value="${photo.id}">-->
+<!--                <button name="rating" value="true">+</button>-->
+<!--                <button name="rating" value="false">-</button>-->
+<!--            </form>-->
+<!--        </th:block>-->
+<!--        <th:block th:case="*">-->
+<!--            <th:block th:switch="${photo.userRating.rating}">-->
+<!--                <th:block th:case="false">-->
+<!--                    <form th:action="@{/update_photo_rating}" method="post" style="display: inline">-->
+<!--                        <input type="hidden" name="rating" value="true">-->
+<!--                        <input type="hidden" name="id" th:value="${photo.userRating.id}">-->
+<!--                        <input type="hidden" name="photoId" th:value="${photo.userRating.photoId}">-->
+<!--                        <button>+</button>-->
+<!--                    </form>-->
+<!--                    <form th:action="@{/delete_photo_rating}" method="post" style="display: inline">-->
+<!--                        <input type="hidden" name="id" th:value="${photo.userRating.id}">-->
+<!--                        <input type="hidden" name="photoId" th:value="${photo.userRating.photoId}">-->
+<!--                        <button style="background: red">-</button>-->
+<!--                    </form>-->
+<!--                </th:block>-->
+<!--                <th:block th:case="true">-->
+<!--                    <form th:action="@{/delete_photo_rating}" method="post" style="display: inline">-->
+<!--                        <input type="hidden" name="id" th:value="${photo.userRating.id}">-->
+<!--                        <input type="hidden" name="photoId" th:value="${photo.userRating.photoId}">-->
+<!--                        <button style="background: green">+</button>-->
+<!--                    </form>-->
+<!--                    <form th:action="@{/update_photo_rating}" method="post" style="display: inline">-->
+<!--                        <input type="hidden" name="rating" value="false">-->
+<!--                        <input type="hidden" name="id" th:value="${photo.userRating.id}">-->
+<!--                        <input type="hidden" name="photoId" th:value="${photo.userRating.photoId}">-->
+<!--                        <button>-</button>-->
+<!--                    </form>-->
+<!--                </th:block>-->
+<!--            </th:block>-->
+<!--        </th:block>-->
+<!--    </th:block>-->
 
-    <!--    <div th:each="comment : ${photo.comments}">-->
-    <!--        <p th:text="${comment.comment}"></p>-->
-    <!--        <p th:text="${comment.commentingUserLogin}"></p>-->
-    <!--        <p th:text="${comment.commentingTimeStamp}"></p>-->
-    <!--        <th:block-->
-    <!--                th:if="${thisUser.getName()} == ${photo.album.userLogin} or ${thisUser.getName()} == ${comment.commentingUserLogin}">-->
-    <!--            <form th:action="@{/delete_photo_comment}" method="post">-->
-    <!--                <input type="hidden" name="id" th:value="${comment.id}">-->
-    <!--                <input type="hidden" name="photoId" th:value="${comment.photoId}">-->
-    <!--                <button>удалить</button>-->
-    <!--            </form>-->
-    <!--        </th:block>-->
-    <!--    </div>-->
-    <!--</th:block>-->
+<!--    <form th:action="@{/add_photo_comment}" method="post" th:object="${photoComment}">-->
+<!--        <label for="comment">Добавить комментарий</label><br>-->
+<!--        <textarea id="comment" name="comment" th:field="*{comment}" required></textarea>-->
+<!--        <p style="color: red" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}">Comment Error</p>-->
+<!--        <input type="hidden" name="photoId" th:value="${photo.id}">-->
+<!--        <button>добавить</button>-->
+<!--    </form>-->
 
-    <!--<th:block th:if="!(${isFriend} or ${thisUser.getName()} == ${photo.album.userLogin})">-->
-    <!--    <h1 th:text="|Данная фотография доступна только друзьям пользователя ${photo.album.userLogin}|"></h1>-->
-    <!--</th:block>-->
+<!--    <div th:each="comment : ${photo.comments}">-->
+<!--        <p th:text="${comment.comment}"></p>-->
+<!--        <p th:text="${comment.commentingUserLogin}"></p>-->
+<!--        <p th:text="${comment.commentingTimeStamp}"></p>-->
+<!--        <th:block-->
+<!--                th:if="${thisUser.getName()} == ${photo.album.userLogin} or ${thisUser.getName()} == ${comment.commentingUserLogin}">-->
+<!--            <form th:action="@{/delete_photo_comment}" method="post">-->
+<!--                <input type="hidden" name="id" th:value="${comment.id}">-->
+<!--                <input type="hidden" name="photoId" th:value="${comment.photoId}">-->
+<!--                <button>удалить</button>-->
+<!--            </form>-->
+<!--        </th:block>-->
+<!--    </div>-->
+<!--</th:block>-->
+
+<!--<th:block th:if="!(${isFriend} or ${thisUser.getName()} == ${photo.album.userLogin})">-->
+<!--    <h1 th:text="|Данная фотография доступна только друзьям пользователя ${photo.album.userLogin}|"></h1>-->
+<!--</th:block>-->
 
 </body>
 

@@ -3,6 +3,7 @@ package ru.sstu.socialnetwork.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import ru.sstu.socialnetwork.entities.Album;
 import ru.sstu.socialnetwork.entities.Photo;
 
 import java.time.LocalDateTime;
@@ -22,5 +23,7 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
 
     @Query(value = "SELECT p.id FROM photos p JOIN photo_comments ON p.id = photo_id WHERE comment ILIKE %?1%", nativeQuery = true)
     List<Long> findAllIdLikeComment(String keyword);
+
+    List<Photo> findAllIdByAlbum(Album album);
 
 }

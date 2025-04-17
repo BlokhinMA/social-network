@@ -1,4 +1,5 @@
 const communityId = window.location.pathname.split('/').pop();
+const communityHeader = document.getElementById("community-header");
 
 let isCreator;
 let isMember;
@@ -10,8 +11,7 @@ fetch(`/api/communities/show/${communityId}`, {
         const data = await response.json();
         if (response.ok) {
 
-            const communityFooter = document.getElementById('community-footer');
-            let htmlCode = `<h1 id="community-name" class="community-header">${data.community.name}</h1>`;
+            let htmlCode = `<h1 class="header">${data.community.name}</h1>`;
             isCreator = data.creator;
             isMember = data.member;
             if (isCreator) {
@@ -22,7 +22,7 @@ fetch(`/api/communities/show/${communityId}`, {
             } else {
                 htmlCode += '<button id="subscribe-button">подписаться</button>';
             }
-            communityFooter.insertAdjacentHTML('beforeend', htmlCode);
+            communityHeader.insertAdjacentHTML('beforeend', htmlCode);
 
             const membersDiv = document.getElementById('members');
             if (Object.keys(data.members).length === 0) {
@@ -50,11 +50,12 @@ fetch(`/api/communities/show/${communityId}`, {
                 postsDiv.insertAdjacentHTML('beforebegin', htmlCode);
             }
             htmlCode = '';
-            if (Object.keys(data.posts).length === 0) {
+            const posts = data.posts;
+            if (posts.length === 0) {
                 htmlCode += '<p id="noOnePost">Нет постов</p>';
             } else {
                 htmlCode += '<p>Посты</p>';
-                data.posts.forEach(post => {
+                posts.forEach(post => {
                     htmlCode += `<div id="${post.id}">
                                      <p><a href="/profile/${post.author.id}">${post.author.firstName} ${post.author.lastName}</a></p>
                                      <p>${post.postText}</p>
@@ -66,5 +67,7 @@ fetch(`/api/communities/show/${communityId}`, {
                 });
             }
             postsDiv.insertAdjacentHTML('afterbegin', htmlCode);
+        } else {
+            console.log(data.error);
         }
     });

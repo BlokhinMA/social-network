@@ -86,9 +86,18 @@ a:hover {
     text-align: right;
 }
 
-.community-header {
+/* заголовки после шапки */
+
+.header {
     display: inline;
     margin-right: 5px;
+}
+
+/* изначальный стиль ссылки */
+
+a.reset {
+    all: unset;
+    cursor: pointer;
 }
 
 /*  */
