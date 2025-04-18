@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.sstu.socialnetwork.dtos.*;
 import ru.sstu.socialnetwork.entities.*;
-import ru.sstu.socialnetwork.exceptions.EmptyFileException;
-import ru.sstu.socialnetwork.exceptions.IncorrectKeywordException;
-import ru.sstu.socialnetwork.exceptions.IncorrectSearchTermException;
-import ru.sstu.socialnetwork.exceptions.ResourceNotFoundException;
+import ru.sstu.socialnetwork.exceptions.*;
 import ru.sstu.socialnetwork.repositories.*;
 
 import java.io.IOException;
@@ -87,8 +84,6 @@ public class PhotoService {
         }
 
         Double rating = rating(id);
-        if (rating != null)
-            rating = (double) Math.round(rating);
 
         Boolean userRating = photoRatingRepository.userRatingByRatingUserIdAndPhotoId(currentUser.getId(), id);
         Boolean isOwner = currentUser.equals(owner);
@@ -155,48 +150,75 @@ public class PhotoService {
         return tag;
     }
 
-    public PhotoRating createRating(PhotoRatingDto dto, Principal principal) {
-        Photo photo = getPhotoFromDB(dto.getPhotoId());
+    public PhotoRatingResponseDto createRating(PhotoRatingDto dto, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
+        Photo photo = getPhotoFromDB(dto.getPhotoId());
+        if (photoRatingRepository.findByRatingUserAndPhoto(currentUser, photo).isPresent()) {
+            throw new ResourceAlreadyExistsException("Рейтинг уже существует");
+        }
         PhotoRating rating = new PhotoRating();
         rating.setRating(dto.getRating());
         rating.setRatingUser(currentUser);
         rating.setPhoto(photo);
         PhotoRating createdRating = photoRatingRepository.save(rating);
+        PhotoRatingResponseDto responseDto = new PhotoRatingResponseDto(
+                createdRating,
+                rating(dto.getPhotoId())
+        );
         log.info("Пользователь {} поставил оценку фотографии {}",
                 currentUser,
                 createdRating);
-        return createdRating;
+        return responseDto;
     }
 
-    public PhotoRating updateRating(PhotoRatingDto dto, Principal principal) {
-        PhotoRating rating = getPhotoRatingFromDB(dto.getPhotoId());
+    public PhotoRatingResponseDto updateRating(PhotoRatingDto dto, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
+        Photo photo = getPhotoFromDB(dto.getPhotoId());
+        PhotoRating rating = getPhotoRatingFromDB(currentUser, photo);
         User ratingUser = rating.getRatingUser();
         checkRights(currentUser, ratingUser);
         rating.setRating(dto.getRating());
         PhotoRating updatedRating = photoRatingRepository.save(rating);
+        PhotoRatingResponseDto responseDto = new PhotoRatingResponseDto(
+                updatedRating,
+                rating(photo.getId())
+        );
         log.info("Пользователь {} обновил оценку фотографии {}",
                 currentUser,
                 updatedRating);
-        return updatedRating;
+        return responseDto;
     }
 
-    public PhotoRating deleteRating(Long id, Principal principal) {
-        PhotoRating rating = photoRatingRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Рейтинга не существует"));
+    public PhotoRatingResponseDto deleteRating(Long photoId, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
+        Photo photo = getPhotoFromDB(photoId);
+        PhotoRating rating = getPhotoRatingFromDB(currentUser, photo);
         User ratingUser = rating.getRatingUser();
         checkRights(currentUser, ratingUser);
-        photoRatingRepository.deleteById(id);
+        photoRatingRepository.deleteById(rating.getId());
+        PhotoRatingResponseDto responseDto = new PhotoRatingResponseDto(
+                rating,
+                rating(rating.getPhoto().getId())
+        );
         log.info("Пользователь {} удалил оценку фотографии {}",
                 currentUser,
                 rating);
-        return rating;
+        return responseDto;
     }
 
     public Double rating(Long photoId) {
-        return photoRatingRepository.ratingByPhotoId(photoId);
+        Double rating = photoRatingRepository.ratingByPhotoId(photoId);
+        if (rating != null)
+            return (double) Math.round(rating);
+        else return null;
+    }
+
+    public UserRatingResponseDto userRating(Long photoId, Principal principal) {
+        User currentUser = userService.getCurrentUser(principal);
+        Photo photo = getPhotoFromDB(photoId);
+        return new UserRatingResponseDto(
+                photoRatingRepository.userRatingByRatingUserIdAndPhotoId(currentUser.getId(), photo.getId())
+        );
     }
 
     public PhotoComment createComment(PhotoCommentDto dto, Principal principal) {
@@ -262,8 +284,8 @@ public class PhotoService {
         }
     }
 
-    private PhotoRating getPhotoRatingFromDB(Long id) {
-        return photoRatingRepository.findById(id)
+    private PhotoRating getPhotoRatingFromDB(User ratingUser, Photo photo) {
+        return photoRatingRepository.findByRatingUserAndPhoto(ratingUser, photo)
                 .orElseThrow(() -> new ResourceNotFoundException("Рейтинга не существует"));
     }
 

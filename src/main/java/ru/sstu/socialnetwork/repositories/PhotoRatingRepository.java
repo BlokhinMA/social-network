@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.sstu.socialnetwork.entities.Photo;
 import ru.sstu.socialnetwork.entities.PhotoRating;
+import ru.sstu.socialnetwork.entities.User;
+
+import java.util.Optional;
 
 @Repository
 public interface PhotoRatingRepository extends JpaRepository<PhotoRating, Long> {
@@ -16,5 +19,7 @@ public interface PhotoRatingRepository extends JpaRepository<PhotoRating, Long> 
 
     @Query(value = "SELECT rating FROM photo_ratings WHERE rating_user_id = ?1 AND photo_id = ?2", nativeQuery = true)
     Boolean userRatingByRatingUserIdAndPhotoId(Long userId, Long photoId);
+
+    Optional<PhotoRating> findByRatingUserAndPhoto(User ratingUser, Photo photo);
 
 }

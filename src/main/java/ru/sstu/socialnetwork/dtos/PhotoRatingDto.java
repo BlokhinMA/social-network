@@ -1,11 +1,10 @@
 package ru.sstu.socialnetwork.dtos;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 
 public class PhotoRatingDto {
 
-    @Pattern(regexp = "true|false", message = "Значение рейтинга должно быть true или false")
+    @NotNull(message = "Поле \"rating\" не должно быть null")
     private Boolean rating;
     @NotNull(message = "Поле \"photoId\" не должно быть null")
     private Long photoId;

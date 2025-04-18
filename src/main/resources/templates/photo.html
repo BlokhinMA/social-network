@@ -13,10 +13,13 @@
 
 <div id="photo"></div>
 <div id="tags"></div>
-<div id="rating"></div>
+<div id="ratings"></div>
 <div id="comments"></div>
 
 <script th:src="@{/js/photos/show.js}"></script>
+<script th:src="@{/js/photos/rating.js}"></script>
+<script th:src="@{/js/photos/create_tag.js}"></script>
+<script th:src="@{/js/photos/delete_tag.js}"></script>
 
 <!--<th:block th:if="${isFriend} or ${thisUser.getName()} == ${photo.album.userLogin}">-->
 <!--    <img th:src="@{/photo_entity/{id}(id=${photo.id})}">-->

@@ -42,7 +42,7 @@ body.addEventListener('submit', function (event) {
                     firstChildPostsDiv.insertAdjacentHTML("afterend", htmlCode);
                     form.reset();
                 } else {
-                    htmlCode += '<div id="error">'
+                    htmlCode += '<div id="error">';
                     for (const [key, value] of Object.entries(data)) {
                         htmlCode += `<p style="color: red;">${value}</p>`;
                     }

@@ -1,9 +1,12 @@
 const photoId = window.location.pathname.split('/').pop();
+
+const photoDiv = document.getElementById('photo');
 const tagsDiv = document.getElementById('tags');
-const ratingDiv = document.getElementById('rating');
+const ratingsDiv = document.getElementById('ratings');
 const commentsDiv = document.getElementById('comments');
 
 let isOwner;
+// let userRating;
 
 fetch(`/api/photos/show/${photoId}`, {
     method: 'GET'
@@ -12,8 +15,6 @@ fetch(`/api/photos/show/${photoId}`, {
         const data = await response.json();
 
         let htmlCode = ``;
-
-        const photoDiv = document.getElementById('photo');
 
         if (response.ok) {
             isOwner = data.owner;
@@ -24,53 +25,64 @@ fetch(`/api/photos/show/${photoId}`, {
             }
             htmlCode += `<p>${data.photo.creationTimeStamp}</p>`;
 
-            const rating = data.rating;
-            if (rating !== null) {
-                htmlCode += `<p id="rating">Рейтинг: ${data.rating}%</p>`;
-            } else {
-                htmlCode += `<p id="no-rating">Фотография еще не оценивалась</p>`;
-            }
-            htmlCode += `<p>Оценить фотографию `;
-
-            switch (data.userRating) {
-                case true:
-                    htmlCode += `<button style="background-color: green;">+</button>
-                                 <button>-</button>`;
-                    break;
-                case false:
-                    htmlCode += `<button>+</button>
-                                 <button style="background-color: red;">-</button>`;
-                    break;
-                case null:
-                    htmlCode += `<button>+</button>
-                                 <button>-</button>`;
-            }
-
-            htmlCode += `</p>`;
             photoDiv.insertAdjacentHTML('afterbegin', htmlCode);
 
             htmlCode = ``;
 
             if (isOwner) {
                 htmlCode += `<p>Добавить тег</p>
-                            <form>
+                            <form id="create-tag">
                                 <label for="tag">Введите название тега</label>
-                                <input type="text" id="tag" name="tag">
+                                <input type="text" id="tag" name="tag" required>
                                 <input type="hidden" name="photoId" value="${photoId}">
                                 <button>добавить</button>
                             </form>`;
             }
-            htmlCode += `<p>Теги: `;
-            data.tags.forEach(tag => {
-                htmlCode += `<span>${tag.tag}`;
-                if (isOwner) {
-                    htmlCode += ` <button id="${tag.id}" class="delete-tag-button">x</button>`;
-                }
-                htmlCode += `,</span> `; // todo исправить последнюю запятую
-            });
+            htmlCode += `<p id="tags-enum">Теги: `;
+            if (data.tags.size === 0) {
+                htmlCode += `<span id="no-tags">тегов еще не добавлено</span>`;
+            } else {
+                data.tags.forEach(tag => {
+                    htmlCode += `<span>${tag.tag}`;
+                    if (isOwner) {
+                        htmlCode += ` <button id="${tag.id}" class="delete-tag-button">x</button>`;
+                    }
+                    htmlCode += `,</span> `; // todo: исправить последнюю запятую
+                });
+            }
+
             htmlCode += `</p>`;
 
             tagsDiv.insertAdjacentHTML('afterbegin', htmlCode);
+
+            htmlCode = ``;
+
+            const rating = data.rating;
+            if (rating !== null) {
+                htmlCode += `<p class="rating" id="rating">Рейтинг: ${data.rating}%</p>`;
+            } else {
+                htmlCode += `<p class="rating" id="no-rating">Фотография еще не оценивалась</p>`;
+            }
+            htmlCode += `<p>Оценить фотографию `;
+
+            let userRating = data.userRating;
+
+            switch (userRating) {
+                case true:
+                    htmlCode += `<button class="rating-buttons" id="true" style="background-color: green;">+</button>
+                                 <button class="rating-buttons" id="false">-</button>`;
+                    break;
+                case false:
+                    htmlCode += `<button class="rating-buttons" id="true">+</button>
+                                 <button class="rating-buttons" id="false" style="background-color: red;">-</button>`;
+                    break;
+                case null:
+                    htmlCode += `<button class="rating-buttons" id="true">+</button>
+                                 <button class="rating-buttons" id="false">-</button>`;
+            }
+
+            htmlCode += `</p>`;
+            ratingsDiv.insertAdjacentHTML('afterbegin', htmlCode);
 
             htmlCode = ``;
 

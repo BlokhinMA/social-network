@@ -36,7 +36,7 @@ communityHeader.addEventListener("click", (e) => {
                     }
 
                 } else {
-                    htmlCode += `<span id="error" style="color: red;">${data.error}</span>`
+                    htmlCode += `<span id="error" style="color: red;">${data.error}</span>`;
                     button.insertAdjacentHTML('afterend', htmlCode);
                 }
 

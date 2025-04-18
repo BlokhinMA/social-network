@@ -1,4 +1,5 @@
 const communityId = window.location.pathname.split('/').pop();
+
 const communityHeader = document.getElementById("community-header");
 
 let isCreator;
@@ -30,7 +31,9 @@ fetch(`/api/communities/show/${communityId}`, {
             } else {
                 htmlCode = '<p>Подписчики</p>';
                 data.members.forEach(member => {
-                    htmlCode += `<p id="${member.id}"><a href="/profile/${member.member.id}">${member.member.firstName} ${member.member.lastName}</a>`;
+                    htmlCode += `<p><a href="/profile/${member.member.id}">
+                                                          ${member.member.firstName} ${member.member.lastName}
+                                                      </a>`;
                     if (isCreator && data.community.creator.id !== member.member.id) {
                         htmlCode += `<button id="${member.id}" class="kick-button">выгнать</button>`;
                     }
@@ -56,8 +59,10 @@ fetch(`/api/communities/show/${communityId}`, {
             } else {
                 htmlCode += '<p>Посты</p>';
                 posts.forEach(post => {
-                    htmlCode += `<div id="${post.id}">
-                                     <p><a href="/profile/${post.author.id}">${post.author.firstName} ${post.author.lastName}</a></p>
+                    htmlCode += `<div>
+                                     <p><a href="/profile/${post.author.id}">
+                                             ${post.author.firstName} ${post.author.lastName}
+                                         </a></p>
                                      <p>${post.postText}</p>
                                      <p>${post.creationTimeStamp}</p>`;
                     if (post.isAuthor) {

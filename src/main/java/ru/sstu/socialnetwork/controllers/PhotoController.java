@@ -72,15 +72,20 @@ public class PhotoController {
         return ResponseEntity.ok(photoService.updateRating(dto, principal));
     }
 
-    @DeleteMapping("/delete_rating/{id}")
-    public ResponseEntity<?> deleteRating(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(photoService.deleteRating(id, principal));
+    @DeleteMapping("/delete_rating/{photoId}")
+    public ResponseEntity<?> deleteRating(@PathVariable Long photoId, Principal principal) {
+        return ResponseEntity.ok(photoService.deleteRating(photoId, principal));
     }
 
-    @GetMapping("/rating/{photoId}")
-    public ResponseEntity<?> rating(@PathVariable Long photoId) {
-        return ResponseEntity.ok(photoService.rating(photoId));
+    @GetMapping("/user_rating/{photoId}")
+    public ResponseEntity<?> userRating(@PathVariable Long photoId, Principal principal) {
+        return ResponseEntity.ok(photoService.userRating(photoId, principal));
     }
+
+//    @GetMapping("/rating/{photoId}")
+//    public ResponseEntity<?> rating(@PathVariable Long photoId) {
+//        return ResponseEntity.ok(photoService.rating(photoId));
+//    }
 
     @PostMapping("/create_comment")
     public ResponseEntity<?> createComment(@RequestBody @Valid PhotoCommentDto dto, Principal principal) {
