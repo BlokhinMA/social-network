@@ -19,8 +19,7 @@ public class Community {
     public Community() {
     }
 
-    public Community(Long id, String name, User creator) {
-        this.id = id;
+    public Community(String name, User creator) {
         this.name = name;
         this.creator = creator;
     }

@@ -28,8 +28,7 @@ public class Message {
     public Message() {
     }
 
-    public Message(Long id, User fromUser, User toUser, String message, LocalDateTime writingTimeStamp) {
-        this.id = id;
+    public Message(User fromUser, User toUser, String message, LocalDateTime writingTimeStamp) {
         this.fromUser = fromUser;
         this.toUser = toUser;
         this.message = message;

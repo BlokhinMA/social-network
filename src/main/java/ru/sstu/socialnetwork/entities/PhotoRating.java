@@ -22,8 +22,7 @@ public class PhotoRating {
     public PhotoRating() {
     }
 
-    public PhotoRating(Long id, Boolean rating, User ratingUser, Photo photo) {
-        this.id = id;
+    public PhotoRating(Boolean rating, User ratingUser, Photo photo) {
         this.rating = rating;
         this.ratingUser = ratingUser;
         this.photo = photo;

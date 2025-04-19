@@ -19,8 +19,7 @@ public class PhotoTag {
     public PhotoTag() {
     }
 
-    public PhotoTag(Long id, String tag, Photo photo) {
-        this.id = id;
+    public PhotoTag(String tag, Photo photo) {
         this.tag = tag;
         this.photo = photo;
     }

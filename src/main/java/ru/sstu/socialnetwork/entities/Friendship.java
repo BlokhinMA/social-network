@@ -22,8 +22,7 @@ public class Friendship {
     public Friendship() {
     }
 
-    public Friendship(Long id, User firstUser, User secondUser, Boolean accepted) {
-        this.id = id;
+    public Friendship(User firstUser, User secondUser, Boolean accepted) {
         this.firstUser = firstUser;
         this.secondUser = secondUser;
         this.accepted = accepted;

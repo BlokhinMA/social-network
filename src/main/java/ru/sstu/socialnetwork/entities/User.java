@@ -79,18 +79,8 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String login, String email, String firstName, String lastName, LocalDate birthDate, String password, Role role) {
-        this.id = id;
-        this.login = login;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.password = password;
-        this.role = role;
-    }
-
-    public User(String login, String email, String firstName, String lastName, LocalDate birthDate, String password, Role role) {
+    public User(String login, String email, String firstName, String lastName, LocalDate birthDate, String password,
+                Role role) {
         this.login = login;
         this.email = email;
         this.firstName = firstName;

@@ -15,10 +15,8 @@ tagsDiv.addEventListener('submit', function (e) {
             body: JSON.stringify(data)
         })
             .then(async response => {
-                let errorElement = document.getElementById("error");
-                if (errorElement) {
-                    errorElement.remove();
-                }
+
+                removeErrorElements();
 
                 const data = await response.json();
                 let htmlCode = '';

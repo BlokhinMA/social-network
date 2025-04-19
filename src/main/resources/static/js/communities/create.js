@@ -22,7 +22,7 @@ form.addEventListener("submit", function (event) {
             let htmlCode;
             let error;
             if (response.ok) {
-                const noOneP = document.getElementById("noOne");
+                const noOneP = document.getElementById("noOne"); // todo: исправить названия id
                 if (noOneP) {
                     noOneP.remove();
                 }

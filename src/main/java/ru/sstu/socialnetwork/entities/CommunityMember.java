@@ -20,8 +20,7 @@ public class CommunityMember {
     public CommunityMember() {
     }
 
-    public CommunityMember(Long id, User member, Community community) {
-        this.id = id;
+    public CommunityMember(User member, Community community) {
         this.member = member;
         this.community = community;
     }

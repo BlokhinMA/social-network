@@ -23,8 +23,7 @@ public class Album {
     public Album() {
     }
 
-    public Album(Long id, String title, AccessType accessType, User owner) {
-        this.id = id;
+    public Album(String title, AccessType accessType, User owner) {
         this.title = title;
         this.accessType = accessType;
         this.owner = owner;

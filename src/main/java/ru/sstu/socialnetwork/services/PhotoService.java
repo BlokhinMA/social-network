@@ -1,5 +1,6 @@
 package ru.sstu.socialnetwork.services;
 
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,6 @@ public class PhotoService {
             photos.add(toPhotoEntity(photoDto.getFiles().get(i)));
             photos.get(i).setAlbum(album);
             Photo createdPhoto = photoRepository.save(photos.get(i));
-            createdPhoto.setBytes(null);
             createdPhotos.add(createdPhoto);
         }
         log.info("Пользователь {} добавил фотографии {}",
@@ -103,6 +103,7 @@ public class PhotoService {
         return photoRepository.findAllIdByAlbumId(albumId);
     }
 
+    @Transactional
     public Photo delete(Long id, Principal principal) {
         Photo photo = getPhotoFromDB(id);
         Album album = getAlbumFromDB(photo.getAlbum().getId());
@@ -121,13 +122,16 @@ public class PhotoService {
 
     public PhotoTag createTag(PhotoTagDto dto, Principal principal) {
         Photo photo = getPhotoFromDB(dto.getPhotoId());
+        photoTagRepository.findByTagAndPhoto(dto.getTag(), photo)
+                .orElseThrow(() -> new ResourceAlreadyExistsException("Такой тег уже существует"));
         Album album = photo.getAlbum();
         User currentUser = userService.getCurrentUser(principal);
         User owner = album.getOwner();
         checkRights(currentUser, owner);
-        PhotoTag tag = new PhotoTag();
-        tag.setTag(dto.getTag());
-        tag.setPhoto(photo);
+        PhotoTag tag = new PhotoTag(
+                dto.getTag(),
+                photo
+        );
         PhotoTag createdTag = photoTagRepository.save(tag);
         log.info("Пользователь {} добавил тег {}",
                 currentUser,
@@ -156,10 +160,11 @@ public class PhotoService {
         if (photoRatingRepository.findByRatingUserAndPhoto(currentUser, photo).isPresent()) {
             throw new ResourceAlreadyExistsException("Рейтинг уже существует");
         }
-        PhotoRating rating = new PhotoRating();
-        rating.setRating(dto.getRating());
-        rating.setRatingUser(currentUser);
-        rating.setPhoto(photo);
+        PhotoRating rating = new PhotoRating(
+                dto.getRating(),
+                currentUser,
+                photo
+        );
         PhotoRating createdRating = photoRatingRepository.save(rating);
         PhotoRatingResponseDto responseDto = new PhotoRatingResponseDto(
                 createdRating,
@@ -224,11 +229,16 @@ public class PhotoService {
     public PhotoComment createComment(PhotoCommentDto dto, Principal principal) {
         Photo photo = getPhotoFromDB(dto.getPhotoId());
         User currentUser = userService.getCurrentUser(principal);
-        PhotoComment comment = new PhotoComment();
-        comment.setComment(dto.getComment());
-        comment.setCommentingUser(currentUser);
-        comment.setPhoto(photo);
-        return photoCommentRepository.save(comment);
+        PhotoComment comment = new PhotoComment(
+                dto.getComment(),
+                currentUser,
+                photo
+        );
+        PhotoComment createdComment = photoCommentRepository.save(comment);
+        log.info("Пользователь {} добавил комментарий {}",
+                currentUser,
+                createdComment);
+        return createdComment;
     }
 
     public PhotoComment deleteComment(Long id, Principal principal) {

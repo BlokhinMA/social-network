@@ -55,7 +55,7 @@ fetch(`/api/communities/show/${communityId}`, {
             htmlCode = '';
             const posts = data.posts;
             if (posts.length === 0) {
-                htmlCode += '<p id="noOnePost">Нет постов</p>';
+                htmlCode += '<p id="noOnePost">Нет постов</p>';  // todo: исправить названия id
             } else {
                 htmlCode += '<p>Посты</p>';
                 posts.forEach(post => {

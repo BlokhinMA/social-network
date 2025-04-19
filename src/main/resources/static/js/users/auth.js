@@ -1,8 +1,8 @@
 const form = document.querySelector('form');
 
-form.addEventListener('submit', function (event) {
+form.addEventListener('submit', (e) => {
 
-    event.preventDefault();
+    e.preventDefault();
 
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());

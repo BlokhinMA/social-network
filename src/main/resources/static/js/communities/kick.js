@@ -23,7 +23,7 @@ membersDiv.addEventListener('click', e => {
                     const membersDivChildren = membersDiv.childNodes;
                     if (membersDivChildren.length === 1) {
                         membersDivChildren.item(0).remove();
-                        htmlCode = `<p id="noOneMember">Нет подписчиков</p>`;
+                        htmlCode = `<p id="noOneMember">Нет подписчиков</p>`;  // todo: исправить названия id
                         membersDiv.insertAdjacentHTML('beforeend', htmlCode);
                     }
 

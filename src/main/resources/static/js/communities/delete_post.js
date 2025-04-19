@@ -12,7 +12,6 @@ postsDiv.addEventListener('click', function (event) {
                 if (errorElement) {
                     errorElement.remove();
                 }
-                const data = await response.json();
                 let htmlCode = '';
                 if (response.ok) {
                     const div = button.parentElement;
@@ -23,6 +22,7 @@ postsDiv.addEventListener('click', function (event) {
                         postsDiv.insertAdjacentHTML('beforeend', htmlCode);
                     }
                 } else {
+                    const data = await response.json();
                     htmlCode += `<span id="error" style="color: red;">${data.error}</span>`
                     button.insertAdjacentHTML('afterend', htmlCode);
                 }

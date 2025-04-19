@@ -28,10 +28,8 @@ public class CommunityPost {
     public CommunityPost() {
     }
 
-    public CommunityPost(Long id, String postText, LocalDateTime creationTimeStamp, User author, Community community) {
-        this.id = id;
+    public CommunityPost(String postText, User author, Community community) {
         this.postText = postText;
-        this.creationTimeStamp = creationTimeStamp;
         this.author = author;
         this.community = community;
     }

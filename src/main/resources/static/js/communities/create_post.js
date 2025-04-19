@@ -1,7 +1,7 @@
 const body = document.querySelector('body');
 
 body.addEventListener('submit', function (event) {
-    if (event.target && event.target.id === 'createPost') {
+    if (event.target && event.target.id === 'createPost') {  // todo: исправить названия id
 
         const form = event.target;
 
@@ -25,7 +25,7 @@ body.addEventListener('submit', function (event) {
                 const data = await response.json();
                 let htmlCode = '';
                 if (response.ok) {
-                    const noOneP = document.getElementById("noOnePost");
+                    const noOneP = document.getElementById("noOnePost");  // todo: исправить названия id
                     const postsDiv = document.getElementById("posts");
                     htmlCode = '<p>Посты</p>'
                     if (noOneP) {

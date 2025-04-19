@@ -28,10 +28,8 @@ public class PhotoComment {
     public PhotoComment() {
     }
 
-    public PhotoComment(Long id, String comment, LocalDateTime commentingTimeStamp, User commentingUser, Photo photo) {
-        this.id = id;
+    public PhotoComment(String comment, User commentingUser, Photo photo) {
         this.comment = comment;
-        this.commentingTimeStamp = commentingTimeStamp;
         this.commentingUser = commentingUser;
         this.photo = photo;
     }

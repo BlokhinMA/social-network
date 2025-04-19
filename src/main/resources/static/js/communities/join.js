@@ -19,7 +19,7 @@ communityHeader.addEventListener("click", (e) => {
                     button.textContent = "выйти из сообщества";
                     button.id = "leave-button";
 
-                    const noOneP = document.getElementById('noOneMember');
+                    const noOneP = document.getElementById('noOneMember');  // todo: исправить названия id
                     const membersDiv = document.getElementById('members');
 
                     if (noOneP) {
@@ -32,7 +32,7 @@ communityHeader.addEventListener("click", (e) => {
                     const firstChildMembersDiv = membersDiv.childNodes.item(0);
                     firstChildMembersDiv.insertAdjacentHTML('afterend', htmlCode);
 
-                    const createPostForm = document.getElementById('createPost');
+                    const createPostForm = document.getElementById('createPost');  // todo: исправить названия id
                     if (!createPostForm) {
                         htmlCode = `<form id="createPost">
                                     <label for="post-text">Добавить пост</label><br>

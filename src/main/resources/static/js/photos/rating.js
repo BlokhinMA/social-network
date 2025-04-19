@@ -34,10 +34,9 @@ ratingsDiv.addEventListener('click', async (e) => {
 });
 
 function createRating(rating, button, data) {
-    let errorElement = document.getElementById("error");
-    if (errorElement) {
-        errorElement.remove();
-    }
+
+    removeErrorElements();
+
     fetch('/api/photos/create_rating', {
         method: 'POST',
         headers: {
@@ -74,10 +73,9 @@ function createRating(rating, button, data) {
 }
 
 function updateRating(rating, button, data, flag) {
-    let errorElement = document.getElementById("error");
-    if (errorElement) {
-        errorElement.remove();
-    }
+
+    removeErrorElements();
+
     fetch('/api/photos/update_rating', {
         method: 'PATCH',
         headers: {
@@ -107,10 +105,9 @@ function updateRating(rating, button, data, flag) {
 }
 
 function deleteRating(rating, button) {
-    let errorElement = document.getElementById("error");
-    if (errorElement) {
-        errorElement.remove();
-    }
+
+    removeErrorElements();
+
     fetch(`/api/photos/delete_rating/${photoId}`, {
         method: 'DELETE'
     })

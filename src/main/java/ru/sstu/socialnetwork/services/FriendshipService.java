@@ -26,10 +26,11 @@ public class FriendshipService {
     public Friendship create(Long friendId, Principal principal) {
         User user = userService.getCurrentUser(principal);
         User friend = userService.getUser(friendId);
-        Friendship friendship = new Friendship();
-        friendship.setFirstUser(user);
-        friendship.setSecondUser(friend);
-        friendship.setAccepted(false);
+        Friendship friendship = new Friendship(
+                user,
+                friend,
+                false
+        );
         Friendship createdFriendship = friendshipRepository.save(friendship);
         log.info("Пользователь {} отправил запрос на дружбу пользователю {}",
                 user,

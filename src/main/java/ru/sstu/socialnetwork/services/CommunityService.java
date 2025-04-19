@@ -1,5 +1,6 @@
 package ru.sstu.socialnetwork.services;
 
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -91,9 +92,10 @@ public class CommunityService {
 
     public Community create(CommunityDto dto, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
-        Community community = new Community();
-        community.setName(dto.getName());
-        community.setCreator(currentUser);
+        Community community = new Community(
+                dto.getName(),
+                currentUser
+        );
         Community createdCommunity = communityRepository.save(community);
         log.info("Пользователь {} добавил сообщество {}",
                 currentUser,
@@ -101,6 +103,7 @@ public class CommunityService {
         return createdCommunity;
     }
 
+    @Transactional
     public Community delete(Long id, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
         Community community = getCommunityFromDB(id);
@@ -119,9 +122,10 @@ public class CommunityService {
         Community community = getCommunityFromDB(communityId);
         if (communityMemberRepository.findByMemberAndCommunity(currentUser, community).isPresent())
             throw new ResourceAlreadyExistsException("Вы уже являетесь участником сообщества");
-        CommunityMember member = new CommunityMember();
-        member.setMember(currentUser);
-        member.setCommunity(community);
+        CommunityMember member = new CommunityMember(
+                currentUser,
+                community
+        );
         CommunityMember joinedMember = communityMemberRepository.save(member);
         log.info("Пользователь {} стал участником сообщества {}",
                 currentUser,
@@ -159,10 +163,11 @@ public class CommunityService {
         Community community = getCommunityFromDB(dto.getCommunityId());
         checkRights(communityMemberRepository.findByMemberAndCommunity(currentUser, community).isEmpty() &&
                 !currentUser.equals(community.getCreator()));
-        CommunityPost post = new CommunityPost();
-        post.setPostText(dto.getPostText());
-        post.setAuthor(currentUser);
-        post.setCommunity(community);
+        CommunityPost post = new CommunityPost(
+                dto.getPostText(),
+                currentUser,
+                community
+        );
         CommunityPost createdPost = communityPostRepository.save(post);
         log.info("Пользователь {} добавил пост {}",
                 currentUser,
@@ -189,7 +194,6 @@ public class CommunityService {
     }
 
 
-
     public List<Community> showAll() {
         return communityRepository.findAll();
     }
@@ -201,7 +205,6 @@ public class CommunityService {
     public List<CommunityPost> showAllPosts() {
         return communityPostRepository.findAll();
     }
-
 
 
     private Community getCommunityFromDB(Long id) {

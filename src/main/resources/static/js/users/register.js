@@ -1,8 +1,8 @@
 const form = document.getElementById('register');
 
-form.addEventListener('submit', function (event) {
+form.addEventListener('submit', (e) => {
 
-    event.preventDefault();
+    e.preventDefault();
 
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
@@ -18,17 +18,17 @@ form.addEventListener('submit', function (event) {
             const errorElements = document.querySelectorAll('.error');
             if (errorElements) {
                 errorElements.forEach(el => {
-                    br = document.createElement('br');
+                    let br = document.createElement('br');
                     el.replaceWith(br);
                 });
             }
             const data = await response.json();
             if (response.ok) {
-                htmlCode = '<div style="color: green;">Вы успешно зарегистрировались!</div>';
+                let htmlCode = '<div style="color: green;">Вы успешно зарегистрировались!</div>';
                 document.getElementById('sign-in').insertAdjacentHTML('afterend', htmlCode);
             } else {
                 for (const [key, value] of Object.entries(data)) {
-                    div = document.createElement('div');
+                    let div = document.createElement('div');
                     div.classList.add('error');
                     div.style.color = 'red';
                     div.textContent = value;

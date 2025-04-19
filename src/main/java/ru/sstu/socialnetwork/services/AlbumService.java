@@ -1,5 +1,6 @@
 package ru.sstu.socialnetwork.services;
 
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -38,10 +39,11 @@ public class AlbumService {
 
     public Album create(AlbumDto albumDto, Principal principal) {
         User owner = userService.getCurrentUser(principal);
-        Album album = new Album();
-        album.setTitle(albumDto.getTitle());
-        album.setAccessType(AccessType.valueOf(albumDto.getAccessType()));
-        album.setOwner(owner);
+        Album album = new Album(
+                albumDto.getTitle(),
+                AccessType.valueOf(albumDto.getAccessType()),
+                owner
+        );
         Album createdAlbum = albumRepository.save(album);
         log.info("Пользователь {} добавил альбом {}",
                 owner,
@@ -79,6 +81,7 @@ public class AlbumService {
         );
     }
 
+    @Transactional
     public Album delete(Long id, Principal principal) {
         Album album = getAlbumFromDB(id);
         User currentUser = userService.getCurrentUser(principal);

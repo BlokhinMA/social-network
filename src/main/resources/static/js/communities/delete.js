@@ -1,7 +1,7 @@
 const communitiesDiv = document.getElementById('communities');
 
 communitiesDiv.addEventListener('click', function (event) {
-    if (event.target && event.target.classList.contains('deleteButton')) {
+    if (event.target && event.target.classList.contains('deleteButton')) {  // todo: исправить названия id
         const button = event.target;
         const id = button.getAttribute('id');
         fetch(`/api/communities/delete/${id}`, {
