@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: socialnetworkfrontend
+
+server:
+  port: 8082

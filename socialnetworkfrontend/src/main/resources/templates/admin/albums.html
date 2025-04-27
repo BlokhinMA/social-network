@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Альбомы</title>
+</head>
+
+<body>
+
+    <th:block th:replace="~{index :: header}"></th:block>
+    <th:block th:replace="~{my_profile :: menu}"></th:block>
+
+    <h1>Альбомы</h1>
+
+    <table>
+        <tr>
+            <td>id</td>
+            <td>title</td>
+            <td>access_type</td>
+            <td>user_login</td>
+        </tr>
+        <tr th:each="album : ${albums}">
+            <td th:text="${album.id}"></td>
+            <td th:text="${album.title}"></td>
+            <td th:text="${album.accessType}"></td>
+            <td th:text="${album.userLogin}"></td>
+        </tr>
+    </table>
+
+</body>
+
+<script>
+
+    fetch('/rest/albums')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Ошибка: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(albums => console.log('Список пользователей:', albums))
+        .catch(error => console.error('Ошибка запроса:', error));
+
+</script>
+
+</html>
