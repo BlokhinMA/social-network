@@ -5,9 +5,9 @@ import jakarta.validation.constraints.Pattern;
 
 public class ChangeAlbumAccessTypeDto {
 
-    @NotNull(message = "Поле \"Айди\" не должно быть null")
+    @NotNull(message = "Поле \"Айди\" должно быть заполнено")
     private Long id;
-    @NotNull(message = "Поле \"Тип доступа\" не должно быть null")
+    @NotNull(message = "Поле \"Тип доступа\" должно быть заполнено")
     @Pattern(regexp = "ALL|FRIENDS", message = "Значение должно быть равным \"ALL\" или \"FRIENDS\"")
     private String accessType;
 

@@ -7,9 +7,9 @@ import java.util.List;
 
 public class PhotoDto {
 
-    @NotNull(message = "Поле \"files\" не должно быть null")
+    @NotNull(message = "Поле \"files\" должно быть заполнено")
     private List<MultipartFile> files;
-    @NotNull(message = "Поле \"albumId\" не должно быть null")
+    @NotNull(message = "Поле \"albumId\" должно быть заполнено")
     private Long albumId;
 
     public PhotoDto() {

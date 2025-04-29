@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 
 public class FindPhotosDto {
 
-    @NotNull(message = "Поле \"Условие поиска\" не должно быть null")
+    @NotNull(message = "Поле \"Условие поиска\" должно быть заполнено")
     @Pattern(regexp = "creationTimeStamp|tag|comment", message = "Значение должно быть равным \"creationTimeStamp\", \"tag\" или \"comment\"")
     private String searchTerm;
     @Min(value = 1, message = "Поле \"Ключевое слово\" должно содержать минимум 1 символ")

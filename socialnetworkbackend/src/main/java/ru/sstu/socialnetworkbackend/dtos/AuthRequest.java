@@ -4,9 +4,9 @@ import jakarta.validation.constraints.NotNull;
 
 public class AuthRequest {
 
-    @NotNull(message = "Поле \"Логин\" не должно быть null")
+    @NotNull(message = "Поле \"Логин\" должно быть заполнено")
     private String username;
-    @NotNull(message = "Поле \"Пароль\" не должно быть null")
+    @NotNull(message = "Поле \"Пароль\" должно быть заполнено")
     private String password;
 
     public AuthRequest() {

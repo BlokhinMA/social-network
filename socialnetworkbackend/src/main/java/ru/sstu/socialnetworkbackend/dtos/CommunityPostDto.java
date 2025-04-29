@@ -9,7 +9,7 @@ public class CommunityPostDto {
     @NotBlank(message = "Поле \"Текст поста\" не должно состоять только из пробелов")
     @Size(min = 1, message = "Поле \"Текст поста\" должно содержать минимум 1 символ")
     private String postText;
-    @NotNull(message = "Поле \"communityId\" не должно быть null")
+    @NotNull(message = "Поле \"communityId\" должно быть заполнено")
     private Long communityId;
 
     public CommunityPostDto() {

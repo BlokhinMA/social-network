@@ -13,7 +13,7 @@ public class AlbumDto {
     @Size(min = 1, max = 255, message = "Поле \"Название\" должно содержать минимум 1 и максимум 255 символов")
     @NotBlank(message = "Поле \"Название\" не должно состоять только из пробелов")
     private String title;
-    @NotNull(message = "Поле \"Тип доступа\" не должно быть null")
+    @NotNull(message = "Поле \"Тип доступа\" должно быть заполнено")
     @Pattern(regexp = "ALL|FRIENDS", message = "Значение должно быть равным \"ALL\" или \"FRIENDS\"")
     private String accessType;
     private List<MultipartFile> files;

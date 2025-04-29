@@ -4,9 +4,9 @@ import jakarta.validation.constraints.NotNull;
 
 public class PhotoRatingDto {
 
-    @NotNull(message = "Поле \"rating\" не должно быть null")
+    @NotNull(message = "Поле \"rating\" должно быть заполнено")
     private Boolean rating;
-    @NotNull(message = "Поле \"photoId\" не должно быть null")
+    @NotNull(message = "Поле \"photoId\" должно быть заполнено")
     private Long photoId;
 
     public PhotoRatingDto() {

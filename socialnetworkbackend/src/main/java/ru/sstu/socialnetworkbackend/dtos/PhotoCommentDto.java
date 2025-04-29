@@ -9,7 +9,7 @@ public class PhotoCommentDto {
     @NotBlank(message = "Поле \"Комментарий\" не должно состоять только из пробелов")
     @Size(min = 1, message = "Поле \"Комментарий\" должно содержать минимум 1 символ")
     private String comment;
-    @NotNull(message = "Поле \"photoId\" не должно быть null")
+    @NotNull(message = "Поле \"photoId\" должно быть заполнено")
     private Long photoId;
 
     public PhotoCommentDto() {
