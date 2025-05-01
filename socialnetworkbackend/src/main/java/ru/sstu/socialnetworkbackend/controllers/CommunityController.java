@@ -10,7 +10,7 @@ import ru.sstu.socialnetworkbackend.services.CommunityService;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api/communities")
+@RequestMapping("/api/v1/communities")
 public class CommunityController {
 
     private final CommunityService service;

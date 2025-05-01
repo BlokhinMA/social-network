@@ -1,7 +1,8 @@
 const outgoingRequestsDiv = document.getElementById('outgoing-requests');
 
-fetch('/api/friendships/show_outgoing_requests', {
-    method: 'GET'
+fetch('http://localhost:8081/api/v1/friendships/show_outgoing_requests', {
+    method: 'GET',
+    credentials: 'include'
 })
     .then(async response => {
 

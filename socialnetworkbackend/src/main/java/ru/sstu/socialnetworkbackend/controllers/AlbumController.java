@@ -10,7 +10,7 @@ import ru.sstu.socialnetworkbackend.services.AlbumService;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api/albums")
+@RequestMapping("/api/v1/albums")
 public class AlbumController {
 
     private final AlbumService service;

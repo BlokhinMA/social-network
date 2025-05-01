@@ -2,8 +2,9 @@ albumHeader.addEventListener('click', (e) => {
     if (e.target && e.target.id === 'delete-album-button') {
         const button = e.target;
 
-        fetch(`/api/albums/delete/${albumId}`, {
-            method: 'DELETE'
+        fetch(`http://localhost:8081/api/v1/albums/delete/${albumId}`, {
+            method: 'DELETE',
+            credentials: 'include'
         })
             .then(async response => {
 

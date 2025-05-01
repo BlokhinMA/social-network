@@ -4,8 +4,9 @@ document.querySelector('body').addEventListener('click', (e) => {
 
     if (button && button.classList.contains('make-friend')) {
 
-        fetch(`/api/friendships/create/${button.id}`, {
-            method: 'GET'
+        fetch(`http://localhost:8081/api/v1/friendships/create/${button.id}`, {
+            method: 'GET',
+            credentials: 'include'
         })
             .then(async response => {
 

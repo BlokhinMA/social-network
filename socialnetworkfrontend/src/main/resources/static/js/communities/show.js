@@ -1,3 +1,7 @@
+if (localStorage.getItem('userId') === null) {
+    window.location = '/sign_in';
+}
+
 const communityId = window.location.pathname.split('/').pop();
 
 const communityHeader = document.getElementById("community-header");
@@ -5,8 +9,9 @@ const communityHeader = document.getElementById("community-header");
 let isCreator;
 let isMember;
 
-fetch(`/api/communities/show/${communityId}`, {
-    method: 'GET'
+fetch(`http://localhost:8081/api/v1/communities/show/${communityId}`, {
+    method: 'GET',
+    credentials: 'include'
 })
     .then(async response => {
         const data = await response.json();
@@ -24,18 +29,18 @@ fetch(`/api/communities/show/${communityId}`, {
             } else {
                 htmlCode += '<button id="subscribe-button">подписаться</button>';
             }
+            htmlCode += '<p>Подписчики</p>';
             communityHeader.insertAdjacentHTML('beforeend', htmlCode);
 
             if (Object.keys(data.members).length === 0) {
-                htmlCode = '<p id="noOneMember">Нет подписчиков</p>';
+                htmlCode = '<p id="no-members">Нет подписчиков</p>';
             } else {
-                htmlCode = '<p>Подписчики</p>';
                 data.members.forEach(member => {
                     htmlCode += `<p><a href="/profile/${member.member.id}">
                                                           ${member.member.firstName} ${member.member.lastName}
                                                       </a>`;
                     if (isCreator && data.community.creator.id !== member.member.id) {
-                        htmlCode += `<button id="${member.id}" class="kick-button">выгнать</button>`;
+                        htmlCode += `<button id="${member.id}" class="kick-buttons">выгнать</button>`;
                     }
                     htmlCode += '</p>';
                 });
@@ -44,7 +49,7 @@ fetch(`/api/communities/show/${communityId}`, {
 
             const postsDiv = document.getElementById('posts');
             if (isCreator || isMember) {
-                htmlCode = `<form id="createPost">
+                htmlCode = `<form id="create-post">
                                 <label for="post-text">Добавить пост</label><br>
                                 <textarea id="post-text" name="postText" required></textarea>
                                 <input type="hidden" name="communityId" value="${communityId}">
@@ -55,7 +60,7 @@ fetch(`/api/communities/show/${communityId}`, {
             htmlCode = '';
             const posts = data.posts;
             if (posts.length === 0) {
-                htmlCode += '<p id="noOnePost">Нет постов</p>';  // todo: исправить названия id
+                htmlCode += '<p id="no-posts">Нет постов</p>';
             } else {
                 htmlCode += '<p>Посты</p>';
                 posts.forEach(post => {

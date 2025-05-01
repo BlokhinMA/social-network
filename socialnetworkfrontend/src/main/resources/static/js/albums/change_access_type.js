@@ -11,12 +11,13 @@ body.addEventListener('submit', (e) => {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        fetch('/api/albums/change_access_type', {
+        fetch('http://localhost:8081/api/v1/albums/change_access_type', {
             method: 'PATCH',
+            credentials: 'include',
             headers: {
                 'Content-type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(data)
         })
             .then(async response => {
 

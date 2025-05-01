@@ -4,8 +4,9 @@ postsDiv.addEventListener('click', function (event) {
     if (event.target && event.target.classList.contains('delete-post-button')) {
         const button = event.target;
         const id = button.getAttribute('id');
-        fetch(`/api/communities/delete_post/${id}`, {
-            method: 'DELETE'
+        fetch(`http://localhost:8081/api/v1/communities/delete_post/${id}`, {
+            method: 'DELETE',
+            credentials: 'include'
         })
             .then(async response => {
                 let errorElement = document.getElementById('error');

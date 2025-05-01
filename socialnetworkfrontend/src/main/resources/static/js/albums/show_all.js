@@ -1,7 +1,16 @@
+if (localStorage.getItem('userId') === null) {
+    window.location = '/sign_in';
+}
+
 const ownerId = window.location.pathname.split('/').pop();
 
-fetch(`/api/albums/show_all/${ownerId}`, {
-    method: 'GET'
+if (ownerId === localStorage.getItem("userId")) {
+    window.location = '/my_albums';
+}
+
+fetch(`http://localhost:8081/api/v1/albums/show_all/${ownerId}`, {
+    method: 'GET',
+    credentials: 'include'
 })
     .then(async response => {
 

@@ -1,17 +1,26 @@
-fetch(`/api/albums/show_mine`, {
-    method: 'GET'
+if (localStorage.getItem('userId') === null) {
+    window.location = '/sign_in';
+}
+
+fetch(`http://localhost:8081/api/v1/albums/show_mine`, {
+    method: 'GET',
+    credentials: 'include'
 })
     .then(async response => {
         const data = await response.json();
 
         let htmlCode = ``;
         if (response.ok) {
-            data.forEach((album) => {
-                htmlCode += `<p>
-                                 <a href="/album/${album.id}">${album.title}</a>
-                                 <button class="delete-button" id="${album.id}">удалить альбом</button>
-                             </p>`;
-            })
+            if (data.length === 0) {
+                htmlCode += `<p id="no-albums">Альбомы пока не добавлены</p>`;
+            } else {
+                data.forEach((album) => {
+                    htmlCode += `<p>
+                                     <a href="/album/${album.id}">${album.title}</a>
+                                     <button class="delete-album" id="${album.id}">удалить альбом</button>
+                                 </p>`;
+                });
+            }
         } else {
             htmlCode += `<p>${data.error}</p>`;
         }

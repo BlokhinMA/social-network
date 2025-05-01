@@ -1,11 +1,16 @@
+if (localStorage.getItem('userId') === null) {
+    window.location = '/sign_in';
+}
+
 const button = document.getElementById('find-friends');
 
 button.addEventListener('click', () => {
 
     const keyword = document.getElementById('keyword');
 
-    fetch(`/api/friendships/find/${keyword.value}`, {
-        method: 'GET'
+    fetch(`http://localhost:8081/api/v1/friendships/find/${keyword.value}`, {
+        method: 'GET',
+        credentials: 'include'
     })
         .then(async response => {
 

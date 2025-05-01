@@ -1,12 +1,13 @@
 const membersDiv = document.getElementById('members');
 
 membersDiv.addEventListener('click', e => {
-    if (e.target && e.target.classList.contains('kick-button')) {
+    if (e.target && e.target.classList.contains('kick-buttons')) {
         const button = e.target;
         const id = button.id;
 
-        fetch(`/api/communities/kick/${id}`, {
-            method: 'DELETE'
+        fetch(`http://localhost:8081/api/v1/communities/kick/${id}`, {
+            method: 'DELETE',
+            credentials: 'include'
         })
             .then(async response => {
                 const data = await response.json();
@@ -21,14 +22,13 @@ membersDiv.addEventListener('click', e => {
                     button.parentNode.remove();
 
                     const membersDivChildren = membersDiv.childNodes;
-                    if (membersDivChildren.length === 1) {
-                        membersDivChildren.item(0).remove();
-                        htmlCode = `<p id="noOneMember">Нет подписчиков</p>`;  // todo: исправить названия id
+                    if (membersDivChildren.length === 0) {
+                        htmlCode = `<p id="no-members">Нет подписчиков</p>`;
                         membersDiv.insertAdjacentHTML('beforeend', htmlCode);
                     }
 
                 } else {
-                    htmlCode = `<span id="error" style="color: red;">${data.error}</span>`
+                    htmlCode = `<span id="error" style="color: red;">${data.error}</span>`;
                     button.insertAdjacentHTML('afterend', htmlCode);
                 }
 

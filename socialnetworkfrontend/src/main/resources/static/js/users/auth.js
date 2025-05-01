@@ -1,3 +1,7 @@
+if (localStorage.getItem('userId') !== null) {
+    window.location = '/my_profile';
+}
+
 const form = document.querySelector('form');
 
 form.addEventListener('submit', (e) => {
@@ -7,18 +11,20 @@ form.addEventListener('submit', (e) => {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    fetch('/api/auth', {
+    fetch('http://localhost:8081/api/v1/auth', {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
     })
         .then(async response => {
+            const data = await response.json();
             if (response.ok) {
+                localStorage.setItem('userId', data.user.id);
                 window.location = '/my_profile';
             } else {
-                const data = await response.json();
                 for (const [key, value] of Object.entries(data)) {
                     let div = document.createElement('div');
                     div.classList.add('error');

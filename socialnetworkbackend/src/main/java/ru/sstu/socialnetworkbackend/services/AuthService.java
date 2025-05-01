@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 import ru.sstu.socialnetworkbackend.dtos.AuthRequest;
+import ru.sstu.socialnetworkbackend.dtos.AuthResponse;
 import ru.sstu.socialnetworkbackend.entities.User;
 
 @Service
@@ -23,7 +24,7 @@ public class AuthService {
         this.authenticationManager = authenticationManager;
     }
 
-    public String auth(AuthRequest authRequest) {
+    public AuthResponse auth(AuthRequest authRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authRequest.getUsername(),
@@ -35,17 +36,17 @@ public class AuthService {
 
         log.info("Пользователь {} успешно авторизовался", user);
 
-        String jwtToken = jwtUtil.generateToken(user);
+        String token = jwtUtil.generateToken(user);
 
-        ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwtToken)
-                .httpOnly(true)
-                .secure(true)
-                .sameSite("None")
-                .path("/")
-                .maxAge(24 * 60 * 60)
-                .build();
+//        ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwtToken)
+//                .httpOnly(true)
+//                .secure(true)
+//                .sameSite("None")
+//                .path("/")
+//                .maxAge(24 * 60 * 60)
+//                .build();
 
-        return jwtCookie.toString();
+        return new AuthResponse(user, token)/*jwtCookie.toString()*/;
     }
 
 }

@@ -7,8 +7,9 @@ body.addEventListener('submit', e => {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        fetch(`/api/photos/create_comment`, {
+        fetch(`http://localhost:8081/api/v1/photos/create_comment`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },

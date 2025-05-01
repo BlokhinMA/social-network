@@ -1,7 +1,12 @@
+if (localStorage.getItem('userId') === null) {
+    window.location = '/sign_in';
+}
+
 const userId = window.location.pathname.split('/').pop();
 
-fetch(`/api/users/get_user/${userId}`, {
-    method: 'GET'
+fetch(`http://localhost:8081/api/v1/users/get_user/${userId}`, {
+    method: 'GET',
+    credentials: 'include'
 })
     .then(async response => {
         const data = await response.json();

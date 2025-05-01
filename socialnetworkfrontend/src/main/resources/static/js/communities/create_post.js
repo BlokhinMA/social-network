@@ -4,15 +4,16 @@ body.addEventListener('submit', (e) => {
 
     const form = e.target;
 
-    if (form && form.id === 'createPost') {  // todo: исправить названия id
+    if (form && form.id === 'create-post') {
 
         e.preventDefault();
 
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        fetch("/api/communities/create_post", {
+        fetch("http://localhost:8081/api/v1/communities/create_post", {
             method: "POST",
+            credentials: 'include',
             headers: {
                 "Content-type": "application/json",
             },
@@ -26,11 +27,11 @@ body.addEventListener('submit', (e) => {
                 const data = await response.json();
                 let htmlCode = '';
                 if (response.ok) {
-                    const noOneP = document.getElementById("noOnePost");  // todo: исправить названия id
+                    const noPostsP = document.getElementById("no-posts");
                     const postsDiv = document.getElementById("posts");
                     htmlCode = '<p>Посты</p>';
-                    if (noOneP) {
-                        noOneP.remove();
+                    if (noPostsP) {
+                        noPostsP.remove();
                         postsDiv.insertAdjacentHTML('afterbegin', htmlCode);
                     }
                     const firstChildPostsDiv = postsDiv.childNodes.item(0);

@@ -19,6 +19,12 @@
 <p class="center"><a th:href="@{/sign_up}">Зарегистрироваться</a></p>
 <p class="center"><a th:href="@{/sign_in}">Войти</a></p>
 
+<script>
+    if (localStorage.getItem('userId') !== null) {
+        window.location = '/my_profile';
+    }
+</script>
+
 </body>
 
 </html>

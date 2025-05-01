@@ -1,5 +1,6 @@
 package ru.sstu.socialnetworkbackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ public class ConfirmationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @JsonIgnore
     private String token;
     private LocalDateTime createdAt;
     private LocalDateTime expiresAt;
@@ -81,7 +83,6 @@ public class ConfirmationToken {
     public String toString() {
         return "ConfirmationToken{" +
                 "id=" + id +
-                ", token='" + token + '\'' +
                 ", createdAt=" + createdAt +
                 ", expiresAt=" + expiresAt +
                 ", confirmedAt=" + confirmedAt +

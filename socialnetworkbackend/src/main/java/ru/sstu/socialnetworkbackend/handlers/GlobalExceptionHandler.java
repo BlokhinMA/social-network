@@ -29,7 +29,9 @@ public class GlobalExceptionHandler {
             ResourceAlreadyExistsException.class,
             EmptyFileException.class,
             IncorrectKeywordException.class,
-            IncorrectSearchTermException.class
+            IncorrectSearchTermException.class,
+            ExpiredTokenException.class,
+            TokenAlreadyConfirmed.class
     })
     public ResponseEntity<?> handleBadRequest(Exception e) {
         Map<String, String> response = new HashMap<>();

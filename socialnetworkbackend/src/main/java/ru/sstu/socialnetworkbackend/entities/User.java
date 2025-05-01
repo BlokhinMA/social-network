@@ -39,7 +39,6 @@ public class User implements UserDetails {
     @JsonIgnore
     private Role role;
     @Column(nullable = false)
-    @JsonIgnore
     private Boolean enabled;
 
     public User() {
@@ -174,8 +173,6 @@ public class User implements UserDetails {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthDate=" + birthDate +

@@ -1,7 +1,16 @@
+if (localStorage.getItem('userId') === null) {
+    window.location = '/sign_in';
+}
+
 const memberId = window.location.pathname.split('/').pop();
 
-fetch(`/api/communities/show_subscriptions/${memberId}`, {
-    method: 'GET'
+if (ownerId === localStorage.getItem("userId")) {
+    window.location = '/my_communities';
+}
+
+fetch(`http://localhost:8081/api/v1/communities/show_subscriptions/${memberId}`, {
+    method: 'GET',
+    credentials: 'include'
 })
     .then(async response => {
 

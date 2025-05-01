@@ -6,8 +6,9 @@ form.addEventListener('submit', (e) => {
 
     const formData = new FormData(form);
 
-    fetch(`/api/albums/create`, {
+    fetch(`http://localhost:8081/api/v1/albums/create`, {
         method: 'POST',
+        credentials: 'include',
         body: formData
     })
         .then(async response => {
@@ -20,13 +21,13 @@ form.addEventListener('submit', (e) => {
             const data = await response.json();
             let htmlCode;
             if (response.ok) {
-                const noOneP = document.getElementById("noOne");
-                if (noOneP) {
-                    noOneP.remove();
+                const noAlbumsP = document.getElementById("no-albums");
+                if (noAlbumsP) {
+                    noAlbumsP.remove();
                 }
                 htmlCode = `<p>
                                 <a href="/album/${data.id}">${data.title}</a>
-                                <button class="delete-button" id="${data.id}">удалить</button>
+                                <button class="delete-album" id="${data.id}">удалить</button>
                             </p>`;
                 albumsDiv.insertAdjacentHTML("beforeend", htmlCode);
                 form.reset();

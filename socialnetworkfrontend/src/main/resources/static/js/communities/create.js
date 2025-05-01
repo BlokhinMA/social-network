@@ -6,12 +6,13 @@ form.addEventListener("submit", (e) => {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    fetch("/api/communities/create", {
-        method: "POST",
+    fetch("http://localhost:8081/api/v1/communities/create", {
+        method: 'POST',
+        credentials: 'include',
         headers: {
             "Content-type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
     })
         .then(async (response) => {
             let errorElement = document.getElementById("error");
@@ -21,9 +22,9 @@ form.addEventListener("submit", (e) => {
             const data = await response.json();
             let htmlCode = ``;
             if (response.ok) {
-                const noOneP = document.getElementById("noOne"); // todo: исправить названия id
-                if (noOneP) {
-                    noOneP.remove();
+                const noCommunitiesP = document.getElementById("no-communities");
+                if (noCommunitiesP) {
+                    noCommunitiesP.remove();
                 }
                 const communitiesDiv = document.getElementById("communities");
                 htmlCode += `<p>

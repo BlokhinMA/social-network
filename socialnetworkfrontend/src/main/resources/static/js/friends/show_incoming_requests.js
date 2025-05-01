@@ -1,7 +1,12 @@
+if (localStorage.getItem('userId') === null) {
+    window.location = '/sign_in';
+}
+
 const incomingRequestsDiv = document.getElementById('incoming-requests');
 
-fetch('/api/friendships/show_incoming_requests', {
-    method: 'GET'
+fetch('http://localhost:8081/api/v1/friendships/show_incoming_requests', {
+    method: 'GET',
+    credentials: 'include'
 })
     .then(async response => {
 
@@ -20,8 +25,8 @@ fetch('/api/friendships/show_incoming_requests', {
                     id = request.id;
                     htmlCode += `<p>
                                      <a href="/profile/${id}">${request.firstName} ${request.lastName}</a>
-                                     <button class="accept-friend" id="${id}">принять заявку</button>
-                                     <button class="reject-friend" id="${id}">отклонить заявку</button>
+                                     <button class="accept-friend-buttons" id="${id}">принять заявку</button>
+                                     <button class="reject-friend-buttons" id="${id}">отклонить заявку</button>
                                  </p>`;
                 });
             }

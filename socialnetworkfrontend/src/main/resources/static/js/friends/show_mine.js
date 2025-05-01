@@ -1,7 +1,12 @@
+if (localStorage.getItem('userId') === null) {
+    window.location = '/sign_in';
+}
+
 const myFriendsDiv = document.getElementById('my-friends');
 
-fetch('/api/friendships/show_mine', {
-    method: 'GET'
+fetch('http://localhost:8081/api/v1/friendships/show_mine', {
+    method: 'GET',
+    credentials: 'include'
 })
     .then(async response => {
 

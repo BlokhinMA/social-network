@@ -13,7 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api/photos")
+@RequestMapping("/api/v1/photos")
 public class PhotoController {
 
     private final PhotoService service;

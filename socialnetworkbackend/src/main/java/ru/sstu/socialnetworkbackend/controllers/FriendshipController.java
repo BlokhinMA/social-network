@@ -7,7 +7,7 @@ import ru.sstu.socialnetworkbackend.services.FriendshipService;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api/friendships")
+@RequestMapping("/api/v1/friendships")
 public class FriendshipController {
 
     private final FriendshipService service;

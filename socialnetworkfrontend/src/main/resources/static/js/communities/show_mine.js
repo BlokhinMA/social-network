@@ -1,17 +1,22 @@
-fetch('/api/communities/show_mine', {
-    method: 'GET'
+if (localStorage.getItem('userId') === null) {
+    window.location = '/sign_in';
+}
+
+fetch('http://localhost:8081/api/v1/communities/show_mine', {
+    method: 'GET',
+    credentials: 'include'
 })
     .then(async response => {
         const data = await response.json();
         let htmlCode = ``;
         if (response.ok) {
             if (Object.keys(data).length === 0) {
-                htmlCode += '<p id="noOne">Вы пока не создали ни одно сообщество</p>';
+                htmlCode += '<p id="no-communities">Вы пока не создали ни одно сообщество</p>';
             } else {
                 data.forEach(element => {
                     htmlCode += `<p>
                                     <a href="/community/${element.id}">${element.name}</a>
-                                    <button class="deleteButton" id="${element.id}">удалить сообщество</button>
+                                    <button class="delete-community-buttons" id="${element.id}">удалить сообщество</button>
                                 </p>`;
                 });
             }

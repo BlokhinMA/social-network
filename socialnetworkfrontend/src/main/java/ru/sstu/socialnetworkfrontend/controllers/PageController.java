@@ -16,6 +16,11 @@ public class PageController {
         return "sign_up";
     }
 
+    @GetMapping("/confirm_registration/*")
+    public String confirmRegistration() {
+        return "confirm_registration";
+    }
+
     @GetMapping("/sign_in")
     public String signIn() {
         return "sign_in";

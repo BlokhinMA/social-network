@@ -1,6 +1,5 @@
 package ru.sstu.socialnetworkbackend.services;
 
-import org.apache.logging.log4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sstu.socialnetworkbackend.dtos.UserDto;
@@ -20,7 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
-    private final Logger log = org.apache.logging.log4j.LogManager.getLogger(UserService.class);
+    private final String notFoundMessage = "Пользователь не найден";
 
     public UserService(UserRepository userRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
@@ -29,19 +28,18 @@ public class UserService {
 
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Пользователя не существует"));
+                .orElseThrow(() -> new ResourceNotFoundException(notFoundMessage));
     }
 
     public User getCurrentUser(Principal principal) {
         if (principal == null)
             throw new RuntimeException(""); // TODO: написать свое исключение
-        return userRepository.findByUsername(principal.getName())
-                .orElseThrow(() -> new ResourceNotFoundException("Пользователь не найден"));
+        return getUserByUsername(principal.getName());
     }
 
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Пользователь не найден"));
+                .orElseThrow(() -> new ResourceNotFoundException(notFoundMessage));
     }
 
     public User create(UserDto userDto) {
@@ -50,20 +48,26 @@ public class UserService {
             throw new ResourceAlreadyExistsException("Пользователь с таким login или email уже существует");
         if (!userDto.getPassword().equals(userDto.getConfirmedPassword()))
             throw new PasswordsNotMatchException();
-        User user = new User(
-                userDto.getUsername(),
-                userDto.getEmail(),
-                userDto.getFirstName(),
-                userDto.getLastName(),
-                LocalDate.parse(userDto.getBirthDate()),
-                encoder.encode(userDto.getPassword()),
-                Role.ROLE_USER,
-                false
+        return userRepository.save(new User(
+                        userDto.getUsername(),
+                        userDto.getEmail(),
+                        userDto.getFirstName(),
+                        userDto.getLastName(),
+                        LocalDate.parse(userDto.getBirthDate()),
+                        encoder.encode(userDto.getPassword()),
+                        Role.ROLE_USER,
+                        false
+                )
         );
-        user = userRepository.save(user);
-        log.info("Пользователь {} зарегистрировался",
-                user);
-        return user;
+    }
+
+    public User update(User user) {
+        user.setEnabled(true);
+        return userRepository.save(user);
+    }
+
+    public void delete(Long id) {
+        userRepository.deleteById(id);
     }
 
 }

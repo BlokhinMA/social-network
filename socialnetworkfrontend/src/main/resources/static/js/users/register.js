@@ -1,3 +1,7 @@
+if (localStorage.getItem('userId') !== null) {
+    window.location = '/my_profile';
+}
+
 const form = document.getElementById('register');
 
 form.addEventListener('submit', (e) => {
@@ -7,7 +11,7 @@ form.addEventListener('submit', (e) => {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    fetch('/api/registration/register', {
+    fetch('http://localhost:8081/api/v1/registration/register', {
         method: 'POST',
         headers: {
             'Content-type': 'application/json'
@@ -22,11 +26,12 @@ form.addEventListener('submit', (e) => {
                     el.replaceWith(br);
                 });
             }
-            const data = await response.json();
             if (response.ok) {
-                let htmlCode = '<div style="color: green;">Вы успешно зарегистрировались!</div>';
+                let htmlCode = '<div style="color: green;">Вы успешно зарегистрировались! ' +
+                    'Для подтверждения аккаунта перейдите по ссылке, отправленной на указанную почту</div>';
                 document.getElementById('sign-in').insertAdjacentHTML('afterend', htmlCode);
             } else {
+                const data = await response.json();
                 for (const [key, value] of Object.entries(data)) {
                     let div = document.createElement('div');
                     div.classList.add('error');

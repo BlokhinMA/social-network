@@ -37,8 +37,9 @@ function createRating(rating, button, data) {
 
     removeErrorElements();
 
-    fetch('/api/photos/create_rating', {
+    fetch('http://localhost:8081/api/v1/photos/create_rating', {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -76,8 +77,9 @@ function updateRating(rating, button, data, flag) {
 
     removeErrorElements();
 
-    fetch('/api/photos/update_rating', {
+    fetch('http://localhost:8081/api/v1/photos/update_rating', {
         method: 'PATCH',
+        credentials: 'include',
         headers: {
             'Content-type': 'application/json'
         },
@@ -108,8 +110,9 @@ function deleteRating(rating, button) {
 
     removeErrorElements();
 
-    fetch(`/api/photos/delete_rating/${photoId}`, {
-        method: 'DELETE'
+    fetch(`http://localhost:8081/api/v1/photos/delete_rating/${photoId}`, {
+        method: 'DELETE',
+        credentials: 'include'
     })
         .then(async response => {
             const data = await response.json();
@@ -134,8 +137,9 @@ function deleteRating(rating, button) {
 }
 
 async function getRating(photoId) {
-    const response = await fetch(`/api/photos/user_rating/${photoId}`, {
-        method: 'GET'
+    const response = await fetch(`http://localhost:8081/api/v1/photos/user_rating/${photoId}`, {
+        method: 'GET',
+        credentials: 'include'
     });
     const data = await response.json();
     if (response.ok) {

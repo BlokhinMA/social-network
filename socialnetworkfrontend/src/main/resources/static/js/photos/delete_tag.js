@@ -1,10 +1,11 @@
 body.addEventListener('click', (e) => {
     const button = e.target;
 
-    if (button && button.classList.contains('delete-tag-button')) {
+    if (button && button.classList.contains('delete-tag')) {
 
-        fetch(`/api/photos/delete_tag/${button.id}`, {
-            method: 'DELETE'
+        fetch(`http://localhost:8081/api/v1/photos/delete_tag/${button.id}`, {
+            method: 'DELETE',
+            credentials: 'include'
         })
             .then(response => {
 

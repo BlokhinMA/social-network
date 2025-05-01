@@ -1,3 +1,7 @@
+if (localStorage.getItem('userId') === null) {
+    window.location = '/sign_in';
+}
+
 const photoId = window.location.pathname.split('/').pop();
 
 const photoDiv = document.getElementById('photo');
@@ -9,8 +13,9 @@ let isOwner;
 
 const body = document.querySelector('body');
 
-fetch(`/api/photos/show/${photoId}`, {
-    method: 'GET'
+fetch(`http://localhost:8081/api/v1/photos/show/${photoId}`, {
+    method: 'GET',
+    credentials: 'include'
 })
     .then(async response => {
         const data = await response.json();
@@ -32,7 +37,7 @@ fetch(`/api/photos/show/${photoId}`, {
     });
 
 function renderPhoto(data, isOwner) {
-    let htmlCode = `<img alt="" src="/api/photos/show_entity/${data.photo.id}" class="picture" />
+    let htmlCode = `<img alt="" src="http://localhost:8081/api/v1/photos/show_entity/${data.photo.id}" class="picture" />
                            <a href="/album/${data.photo.album.id}">назад к альбому</a>`;
     if (isOwner) {
         htmlCode += `<button id="delete-button">удалить</button>`;

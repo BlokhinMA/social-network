@@ -2,8 +2,9 @@ communityHeader.addEventListener("click", (e) => {
     if (e.target && e.target.id === "leave-button") {
         const button = e.target;
 
-        fetch(`/api/communities/leave/${communityId}`, {
-            method: "DELETE"
+        fetch(`http://localhost:8081/api/v1/communities/leave/${communityId}`, {
+            method: 'DELETE',
+            credentials: 'include'
         })
             .then(async response => {
                 const data = await response.json();

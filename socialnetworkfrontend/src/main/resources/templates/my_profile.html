@@ -47,6 +47,12 @@
 
 <h1>Главная</h1>
 
+<script>
+    if (localStorage.getItem('userId') === null) {
+        window.location = '/sign_in';
+    }
+</script>
+
 </body>
 
 </html>

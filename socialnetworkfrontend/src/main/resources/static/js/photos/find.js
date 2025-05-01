@@ -1,3 +1,7 @@
+if (localStorage.getItem('userId') === null) {
+    window.location = '/sign_in';
+}
+
 const body = document.querySelector('body');
 
 body.addEventListener('submit', (e) => {
@@ -11,8 +15,9 @@ body.addEventListener('submit', (e) => {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        fetch('/api/photos/find', {
+        fetch('http://localhost:8081/api/v1/photos/find', {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -36,7 +41,7 @@ body.addEventListener('submit', (e) => {
                     } else {
                         data.forEach((photoId) => {
                             htmlCode += `<a href="/photo/${photoId}" class="reset">
-                                             <img alt="" src="/api/photos/show_entity/${photoId}" class="pictures" />
+                                             <img alt="" src="http://localhost:8081/api/v1/photos/show_entity/${photoId}" class="pictures" />
                                          </a>`;
                         });
                     }

@@ -3,8 +3,9 @@ body.addEventListener('click', (e) => {
 
     if (button && button.classList.contains('delete-comment-button')) {
 
-        fetch(`/api/photos/delete_comment/${button.id}`, {
-            method: 'DELETE'
+        fetch(`http://localhost:8081/api/v1/photos/delete_comment/${button.id}`, {
+            method: 'DELETE',
+            credentials: 'include'
         })
             .then(async response => {
 

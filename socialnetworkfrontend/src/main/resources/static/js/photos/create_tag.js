@@ -7,8 +7,9 @@ body.addEventListener('submit', (e) => {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
 
-        fetch('/api/photos/create_tag', {
+        fetch('http://localhost:8081/api/v1/photos/create_tag', {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -32,7 +33,7 @@ body.addEventListener('submit', (e) => {
 
                     htmlCode += `<span>${data.tag}`; // todo: разобраться с запятыми
                     if (isOwner) {
-                        htmlCode += ` <button id="${data.id}" class="delete-tag-button">x</button>`;
+                        htmlCode += ` <button id="${data.id}" class="delete-tag">x</button>`;
                     }
                     htmlCode += `</span>`;
 

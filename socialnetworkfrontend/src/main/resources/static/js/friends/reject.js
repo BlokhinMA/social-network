@@ -2,10 +2,11 @@ document.querySelector('body').addEventListener('click', (e) => {
 
     const button = e.target;
 
-    if (button && button.classList.contains('reject-friend')) {
+    if (button && button.classList.contains('reject-friend-buttons')) {
 
-        fetch(`/api/friendships/reject/${button.id}`, {
-            method: 'DELETE'
+        fetch(`http://localhost:8081/api/v1/friendships/reject/${button.id}`, {
+            method: 'DELETE',
+            credentials: 'include'
         })
             .then(async response => {
 

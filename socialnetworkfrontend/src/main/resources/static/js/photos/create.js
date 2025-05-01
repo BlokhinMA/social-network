@@ -8,8 +8,9 @@ document.querySelector('body').addEventListener('submit', (e) => {
 
         const formData = new FormData(form);
 
-        fetch('/api/photos/create', {
+        fetch('http://localhost:8081/api/v1/photos/create', {
             method: 'POST',
+            credentials: 'include',
             body: formData
         })
             .then(async response => {
@@ -30,7 +31,7 @@ document.querySelector('body').addEventListener('submit', (e) => {
 
                     data.forEach((photo) => {
                         htmlCode += `<a href="/photo/${photo.id}" class="reset">
-                                         <img alt="" src="/api/photos/show_entity/${photo.id}" class="pictures" />
+                                         <img alt="" src="http://localhost:8081/api/v1/photos/show_entity/${photo.id}" class="pictures" />
                                      </a>`;
                     });
 

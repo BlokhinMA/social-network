@@ -1,11 +1,16 @@
+if (localStorage.getItem('userId') === null) {
+    window.location = '/sign_in';
+}
+
 const albumId = window.location.pathname.split('/').pop();
 const albumHeader = document.getElementById("album-header");
 const photosDiv = document.getElementById('photos');
 
 let isOwner;
 
-fetch(`/api/albums/show/${albumId}`, {
-    method: 'GET'
+fetch(`http://localhost:8081/api/v1/albums/show/${albumId}`, {
+    method: 'GET',
+    credentials: 'include'
 })
     .then(async (response) => {
         const data = await response.json();
@@ -58,7 +63,7 @@ fetch(`/api/albums/show/${albumId}`, {
             } else {
                 data.photos.forEach((photo) => {
                     htmlCode += `<a href="/photo/${photo}" class="reset">
-                                 <img alt="" src="/api/photos/show_entity/${photo}" class="pictures" />
+                                 <img alt="" src="http://localhost:8081/api/v1/photos/show_entity/${photo}" class="pictures" />
                              </a>`;
                 });
             }

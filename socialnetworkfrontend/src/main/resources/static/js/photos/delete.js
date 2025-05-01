@@ -3,8 +3,9 @@ body.addEventListener('click', (e) => {
 
     if (button && button.id === 'delete-button') {
 
-        fetch(`/api/photos/delete/${photoId}`, {
-            method: 'DELETE'
+        fetch(`http://localhost:8081/api/v1/photos/delete/${photoId}`, {
+            method: 'DELETE',
+            credentials: 'include'
         })
             .then(async response => {
 

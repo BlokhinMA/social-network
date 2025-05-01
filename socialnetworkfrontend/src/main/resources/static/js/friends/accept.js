@@ -2,10 +2,11 @@ document.querySelector('body').addEventListener('click', (e) => {
 
     const button = e.target;
 
-    if (button && button.classList.contains('accept-friend')) {
+    if (button && button.classList.contains('accept-friend-buttons')) {
 
-        fetch(`/api/friendships/accept/${button.id}`, {
-            method: 'PATCH'
+        fetch(`http://localhost:8081/api/v1/friendships/accept/${button.id}`, {
+            method: 'PATCH',
+            credentials: 'include'
         })
             .then(async response => {
 

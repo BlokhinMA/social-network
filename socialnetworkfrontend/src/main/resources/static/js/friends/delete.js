@@ -6,8 +6,9 @@ body.addEventListener('click', (e) => {
 
     if (button && button.classList.contains('delete-friend')) {
 
-        fetch(`/api/friendships/delete/${button.id}`, {
-            method: 'DELETE'
+        fetch(`http://localhost:8081/api/v1/friendships/delete/${button.id}`, {
+            method: 'DELETE',
+            credentials: 'include'
         })
             .then(async response => {
 

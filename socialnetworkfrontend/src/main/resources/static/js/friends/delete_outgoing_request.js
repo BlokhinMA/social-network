@@ -4,8 +4,9 @@ document.querySelector('body').addEventListener('click', (e) => {
 
     if (button && button.classList.contains('delete-outgoing-request')) {
 
-        fetch(`/api/friendships/delete_outgoing_request/${button.id}`, {
-            method: 'DELETE'
+        fetch(`http://localhost:8081/api/v1/friendships/delete_outgoing_request/${button.id}`, {
+            method: 'DELETE',
+            credentials: 'include'
         })
             .then(async response => {
 

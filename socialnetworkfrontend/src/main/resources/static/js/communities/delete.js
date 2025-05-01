@@ -1,11 +1,12 @@
 const communitiesDiv = document.getElementById('communities');
 
 communitiesDiv.addEventListener('click', function (event) {
-    if (event.target && event.target.classList.contains('deleteButton')) {  // todo: исправить названия id
+    if (event.target && event.target.classList.contains('delete-community-buttons')) {
         const button = event.target;
         const id = button.getAttribute('id');
-        fetch(`/api/communities/delete/${id}`, {
-            method: 'DELETE'
+        fetch(`http://localhost:8081/api/v1/communities/delete/${id}`, {
+            method: 'DELETE',
+            credentials: 'include'
         })
             .then(async response => {
                 let errorElement = document.getElementById('error');
@@ -17,7 +18,7 @@ communitiesDiv.addEventListener('click', function (event) {
                     const p = button.parentElement;
                     p.remove();
                     if (communitiesDiv.children.length === 0) {
-                        htmlCode = `<p id="noOne">Вы пока не создали ни одно сообщество</p>`;
+                        htmlCode = `<p id="no-communities">Вы пока не создали ни одно сообщество</p>`;
                         communitiesDiv.insertAdjacentHTML('beforeend', htmlCode);
                     }
                 } else {

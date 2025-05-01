@@ -1,14 +1,26 @@
 package ru.sstu.socialnetworkbackend.dtos;
 
+import ru.sstu.socialnetworkbackend.entities.User;
+
 public class AuthResponse {
 
+    private User user;
     private String token;
 
     public AuthResponse() {
     }
 
-    public AuthResponse(String token) {
+    public AuthResponse(User user, String token) {
+        this.user = user;
         this.token = token;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getToken() {
