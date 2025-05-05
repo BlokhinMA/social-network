@@ -1,7 +1,3 @@
-if (localStorage.getItem('userId') !== null) {
-    window.location = '/my_profile';
-}
-
 const form = document.querySelector('form');
 
 form.addEventListener('submit', (e) => {

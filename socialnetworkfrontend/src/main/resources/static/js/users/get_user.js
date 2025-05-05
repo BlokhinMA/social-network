@@ -1,7 +1,3 @@
-if (localStorage.getItem('userId') === null) {
-    window.location = '/sign_in';
-}
-
 const userId = window.location.pathname.split('/').pop();
 
 fetch(`http://localhost:8081/api/v1/users/get_user/${userId}`, {

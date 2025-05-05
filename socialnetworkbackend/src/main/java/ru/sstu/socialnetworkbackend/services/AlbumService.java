@@ -1,7 +1,7 @@
 package ru.sstu.socialnetworkbackend.services;
 
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,11 +19,12 @@ import java.util.List;
 @Service
 public class AlbumService {
 
-    private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(AlbumService.class);
     private final AlbumRepository albumRepository;
     private final PhotoService photoService;
     private final FriendshipService friendshipService;
     private final UserService userService;
+
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(AlbumService.class);
 
     public AlbumService(AlbumRepository albumRepository,
                         PhotoService photoService,
@@ -115,10 +116,6 @@ public class AlbumService {
                 currentUser,
                 updatedAlbum);
         return updatedAlbum;
-    }
-
-    public List<Album> showAll() {
-        return albumRepository.findAll();
     }
 
     private Album getAlbumFromDB(Long id) {

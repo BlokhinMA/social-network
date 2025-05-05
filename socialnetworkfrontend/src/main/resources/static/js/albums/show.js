@@ -1,7 +1,3 @@
-if (localStorage.getItem('userId') === null) {
-    window.location = '/sign_in';
-}
-
 const albumId = window.location.pathname.split('/').pop();
 const albumHeader = document.getElementById("album-header");
 const photosDiv = document.getElementById('photos');

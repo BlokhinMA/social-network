@@ -19,7 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
-    private final String notFoundMessage = "Пользователь не найден";
+    private static final String NOT_FOUND_MESSAGE = "Пользователь не найден";
 
     public UserService(UserRepository userRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
@@ -28,7 +28,7 @@ public class UserService {
 
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException(notFoundMessage));
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MESSAGE));
     }
 
     public User getCurrentUser(Principal principal) {
@@ -39,7 +39,7 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(notFoundMessage));
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MESSAGE));
     }
 
     public User create(UserDto userDto) {
@@ -61,9 +61,9 @@ public class UserService {
         );
     }
 
-    public User update(User user) {
+    public void update(User user) {
         user.setEnabled(true);
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public void delete(Long id) {

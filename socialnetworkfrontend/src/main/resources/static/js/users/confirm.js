@@ -1,7 +1,3 @@
-if (localStorage.getItem('userId') !== null) {
-    window.location = '/my_profile';
-}
-
 async function confirmRegistration() {
     const token = window.location.pathname.split("/").pop();
     const response = await fetch(`http://localhost:8081/api/v1/registration/confirm/${token}`, {

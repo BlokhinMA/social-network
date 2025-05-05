@@ -1,7 +1,3 @@
-if (localStorage.getItem('userId') === null) {
-    window.location = '/sign_in';
-}
-
 const memberId = window.location.pathname.split('/').pop();
 
 if (ownerId === localStorage.getItem("userId")) {

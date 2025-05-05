@@ -1,7 +1,7 @@
 package ru.sstu.socialnetworkbackend.services;
 
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,13 +18,14 @@ import java.util.List;
 @Service
 public class PhotoService {
 
-    private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(PhotoService.class);
     private final PhotoRepository photoRepository;
     private final PhotoTagRepository photoTagRepository;
     private final PhotoRatingRepository photoRatingRepository;
     private final PhotoCommentRepository photoCommentRepository;
     private final AlbumRepository albumRepository;
     private final UserService userService;
+
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(PhotoService.class);
 
     public PhotoService(PhotoRepository photoRepository,
                         PhotoTagRepository photoTagRepository,
@@ -132,8 +133,9 @@ public class PhotoService {
 
     public PhotoTag createTag(PhotoTagDto dto, Principal principal) {
         Photo photo = getPhotoFromDB(dto.getPhotoId());
-        photoTagRepository.findByTagAndPhoto(dto.getTag(), photo)
-                .orElseThrow(() -> new ResourceAlreadyExistsException("Такой тег уже существует"));
+        if (photoTagRepository.findByTagAndPhoto(dto.getTag(), photo).isPresent()) {
+            throw new ResourceAlreadyExistsException("Такой тег уже существует");
+        }
         Album album = photo.getAlbum();
         User currentUser = userService.getCurrentUser(principal);
         User owner = album.getOwner();

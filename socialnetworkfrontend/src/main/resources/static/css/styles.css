@@ -3,13 +3,22 @@ body {
     color: white;
 }
 
-td {
-    border: 1px solid black;
-}
-
 img {
     width: 100%;
     height: auto;
+}
+
+input {
+    border: 1px solid gray;
+    border-radius: 5px;
+    font-size: 20px;
+    width: 330px;
+    color: white;
+    background-color: #222222;
+}
+
+input:hover {
+    border: 1px solid white;
 }
 
 /* полоса сверху */
@@ -52,17 +61,6 @@ a:hover {
 
 .sign-text {
     font-size: larger;
-}
-
-.sign-form input {
-    border: 1px solid gray;
-    border-radius: 5px;
-    font-size: 20px;
-    width: 330px;
-}
-
-.sign-form input:hover {
-    border: 1px solid black;
 }
 
 .sign-form label {

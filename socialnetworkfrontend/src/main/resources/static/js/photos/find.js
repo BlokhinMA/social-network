@@ -1,7 +1,3 @@
-if (localStorage.getItem('userId') === null) {
-    window.location = '/sign_in';
-}
-
 const body = document.querySelector('body');
 
 body.addEventListener('submit', (e) => {

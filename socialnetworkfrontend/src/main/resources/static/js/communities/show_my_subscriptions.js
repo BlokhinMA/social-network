@@ -1,7 +1,3 @@
-if (localStorage.getItem('userId') === null) {
-    window.location = '/sign_in';
-}
-
 fetch('http://localhost:8081/api/v1/communities/show_my_subscriptions', {
     method: 'GET',
     credentials: 'include'

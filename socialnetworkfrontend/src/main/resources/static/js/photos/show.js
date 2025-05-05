@@ -1,7 +1,3 @@
-if (localStorage.getItem('userId') === null) {
-    window.location = '/sign_in';
-}
-
 const photoId = window.location.pathname.split('/').pop();
 
 const photoDiv = document.getElementById('photo');
@@ -38,9 +34,9 @@ fetch(`http://localhost:8081/api/v1/photos/show/${photoId}`, {
 
 function renderPhoto(data, isOwner) {
     let htmlCode = `<img alt="" src="http://localhost:8081/api/v1/photos/show_entity/${data.photo.id}" class="picture" />
-                           <a href="/album/${data.photo.album.id}">назад к альбому</a>`;
+                           <p><a href="/album/${data.photo.album.id}">назад к альбому</a></p>`;
     if (isOwner) {
-        htmlCode += `<button id="delete-button">удалить</button>`;
+        htmlCode += `<button id="delete-button">удалить фотографию</button>`;
     }
     htmlCode += `<p>Фотография добавлена ${data.photo.creationTimeStamp}</p>`;
 

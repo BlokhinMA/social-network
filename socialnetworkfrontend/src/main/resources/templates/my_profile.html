@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 
+<script th:src="@{/js/users/redirect_to_sign_in.js}"></script>
+
 <head>
     <th:block th:replace="~{index :: meta}"></th:block>
     <title>Главная</title>
@@ -15,43 +17,23 @@
     <header class="header">
 
         <div class="right">
-            <button id="logout-button">выйти</button>
+            <button id="logout">выйти</button>
         </div>
 
         <p><a th:href="@{/my_profile}">Мой профиль</a></p>
         <p><a th:href="@{/my_friends}">Мои друзья</a></p>
         <p><a th:href="@{/my_albums}">Мои альбомы</a></p>
         <p><a th:href="@{/my_communities}">Мои сообщества</a></p>
-<!--        <p><a th:href="@{/my_messages}">Мои сообщения</a></p>-->
 
         <hr>
 
-        <!--<th:block th:if="${thisUser.role.getAuthority} == 'ADMIN'">
-    <p><a th:href="@{/admin/users}">Пользователи</a></p>
-    <p><a th:href="@{/admin/albums}">Альбомы</a></p>
-    <p><a th:href="@{/admin/photos}">Фото</a></p>
-    <p><a th:href="@{/admin/photo_tags}">Теги фото</a></p>
-    <p><a th:href="@{/admin/photo_ratings}">Оценки фото</a></p>
-    <p><a th:href="@{/admin/photo_comments}">Комментарии фото</a></p>
-    <p><a th:href="@{/admin/communities}">Сообщества</a></p>
-    <p><a th:href="@{/admin/community_members}">Участники сообществ</a></p>
-    <p><a th:href="@{/admin/community_posts}">Посты сообществ</a></p>
-
-    <hr>
-
-</th:block>-->
-
     </header>
+
+    <script th:src="@{/js/users/logout.js}"></script>
 
 </th:block>
 
 <h1>Главная</h1>
-
-<script>
-    if (localStorage.getItem('userId') === null) {
-        window.location = '/sign_in';
-    }
-</script>
 
 </body>
 

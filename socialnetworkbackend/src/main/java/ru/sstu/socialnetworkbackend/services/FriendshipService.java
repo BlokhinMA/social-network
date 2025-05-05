@@ -1,6 +1,6 @@
 package ru.sstu.socialnetworkbackend.services;
 
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.sstu.socialnetworkbackend.dtos.FriendsResponseDto;
 import ru.sstu.socialnetworkbackend.entities.Friendship;
@@ -15,9 +15,10 @@ import java.util.List;
 @Service
 public class FriendshipService {
 
-    private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(FriendshipService.class);
     private final FriendshipRepository friendshipRepository;
     private final UserService userService;
+
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(FriendshipService.class);
 
     public FriendshipService(FriendshipRepository friendshipRepository, UserService userService) {
         this.friendshipRepository = friendshipRepository;
@@ -123,10 +124,6 @@ public class FriendshipService {
         User currentUser = userService.getCurrentUser(principal);
         User user = userService.getUserById(userId);
         return friendshipRepository.findAcceptedByFirstUserIdAndSecondUserId(currentUser.getId(), user.getId()).isPresent();
-    }
-
-    public List<Friendship> showAll() {
-        return friendshipRepository.findAll();
     }
 
 }

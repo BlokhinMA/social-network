@@ -1,8 +1,8 @@
 package ru.sstu.socialnetworkbackend.controllers;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,21 +23,21 @@ public class AuthController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<?> auth(@RequestBody @Valid AuthRequest authRequest, HttpServletResponse response) {
+    public ResponseEntity<?> auth(@RequestBody @Valid AuthRequest authRequest) {
 
         AuthResponse authResponse = service.auth(authRequest);
 
-        String token = authResponse.getToken();
+        ResponseCookie cookie = ResponseCookie.from("jwt", authResponse.getToken())
+                .httpOnly(true)
+                .secure(true)
+                .sameSite("strict")
+                .path("/")
+                .maxAge(24 * 60 * 60)
+                .build();
 
-        Cookie cookie = new Cookie("jwt", token);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(3600);
-
-        response.addCookie(cookie);
-
-        return ResponseEntity.ok(authResponse)/*header(HttpHeaders.SET_COOKIE, service.auth(authRequest)).build()*/;
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(authResponse);
     }
 
 }

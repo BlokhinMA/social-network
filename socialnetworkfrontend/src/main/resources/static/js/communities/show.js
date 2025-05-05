@@ -1,7 +1,3 @@
-if (localStorage.getItem('userId') === null) {
-    window.location = '/sign_in';
-}
-
 const communityId = window.location.pathname.split('/').pop();
 
 const communityHeader = document.getElementById("community-header");

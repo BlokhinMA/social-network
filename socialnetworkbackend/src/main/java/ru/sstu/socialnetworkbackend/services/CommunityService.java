@@ -1,7 +1,7 @@
 package ru.sstu.socialnetworkbackend.services;
 
 import jakarta.transaction.Transactional;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import ru.sstu.socialnetworkbackend.dtos.*;
@@ -23,11 +23,12 @@ import java.util.List;
 @Service
 public class CommunityService {
 
-    private static final Logger log = org.apache.logging.log4j.LogManager.getLogger(CommunityService.class);
     private final CommunityRepository communityRepository;
     private final CommunityMemberRepository communityMemberRepository;
     private final CommunityPostRepository communityPostRepository;
     private final UserService userService;
+
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(CommunityService.class);
 
     public CommunityService(CommunityRepository communityRepository,
                             CommunityMemberRepository communityMemberRepository,
@@ -192,20 +193,6 @@ public class CommunityService {
             throw new IncorrectKeywordException();
         return communityRepository.findAllILikeName(keyword);
     }
-
-
-    public List<Community> showAll() {
-        return communityRepository.findAll();
-    }
-
-    public List<CommunityMember> showAllMembers() {
-        return communityMemberRepository.findAll();
-    }
-
-    public List<CommunityPost> showAllPosts() {
-        return communityPostRepository.findAll();
-    }
-
 
     private Community getCommunityFromDB(Long id) {
         return communityRepository.findById(id)

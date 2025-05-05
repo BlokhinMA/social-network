@@ -1,7 +1,3 @@
-if (localStorage.getItem('userId') === null) {
-    window.location = '/sign_in';
-}
-
 fetch(`http://localhost:8081/api/v1/albums/show_mine`, {
     method: 'GET',
     credentials: 'include'

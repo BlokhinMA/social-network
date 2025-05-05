@@ -1,7 +1,3 @@
-if (localStorage.getItem('userId') === null) {
-    window.location = '/sign_in';
-}
-
 const button = document.getElementById('find-friends');
 
 button.addEventListener('click', () => {

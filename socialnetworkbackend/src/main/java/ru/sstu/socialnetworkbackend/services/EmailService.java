@@ -25,7 +25,6 @@ public class EmailService implements EmailSender {
             helper.setTo(to);
             helper.setSubject("Подтвердите ваш email");
             helper.setText(message, true);
-//            helper.setFrom("socialnetwork.com");
             sender.send(mimeMessage);
         } catch (MessagingException e) {
             throw new IllegalStateException("Не удалось отправить письмо", e);

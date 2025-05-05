@@ -1,7 +1,6 @@
 package ru.sstu.socialnetworkbackend.services;
 
-import org.apache.logging.log4j.Logger;
-import org.springframework.http.ResponseCookie;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
 
-    private final Logger log = org.apache.logging.log4j.LogManager.getLogger(AuthService.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(AuthService.class);
 
     public AuthService(UserService userService, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
         this.userService = userService;
@@ -38,15 +37,7 @@ public class AuthService {
 
         String token = jwtUtil.generateToken(user);
 
-//        ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwtToken)
-//                .httpOnly(true)
-//                .secure(true)
-//                .sameSite("None")
-//                .path("/")
-//                .maxAge(24 * 60 * 60)
-//                .build();
-
-        return new AuthResponse(user, token)/*jwtCookie.toString()*/;
+        return new AuthResponse(user, token);
     }
 
 }
