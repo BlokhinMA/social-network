@@ -26,12 +26,12 @@ public class AuthService {
     public AuthResponse auth(AuthRequest authRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authRequest.getUsername(),
-                        authRequest.getPassword()
+                        authRequest.username(),
+                        authRequest.password()
                 )
         );
 
-        User user = userService.getUserByUsername(authRequest.getUsername());
+        User user = userService.getUserByUsername(authRequest.username());
 
         log.info("Пользователь {} успешно авторизовался", user);
 

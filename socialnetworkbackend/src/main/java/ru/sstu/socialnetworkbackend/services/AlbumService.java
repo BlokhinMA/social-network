@@ -39,17 +39,17 @@ public class AlbumService {
     public Album create(AlbumDto albumDto, Principal principal) {
         User owner = userService.getCurrentUser(principal);
         Album album = new Album(
-                albumDto.getTitle(),
-                AccessType.valueOf(albumDto.getAccessType()),
+                albumDto.title(),
+                AccessType.valueOf(albumDto.accessType()),
                 owner
         );
         Album createdAlbum = albumRepository.save(album);
         log.info("Пользователь {} добавил альбом {}",
                 owner,
                 createdAlbum);
-        List<MultipartFile> files = albumDto.getFiles();
+        List<MultipartFile> files = albumDto.files();
         if (files != null && files.getFirst().getSize() != 0) {
-            PhotoDto photoDto = new PhotoDto(albumDto.getFiles(), createdAlbum.getId());
+            PhotoDto photoDto = new PhotoDto(albumDto.files(), createdAlbum.getId());
             photoService.create(photoDto, principal);
         }
         return createdAlbum;
@@ -106,11 +106,11 @@ public class AlbumService {
     }
 
     public Album changeAccessType(ChangeAlbumAccessTypeDto dto, Principal principal) {
-        Album album = getAlbumFromDB(dto.getId());
+        Album album = getAlbumFromDB(dto.id());
         User currentUser = userService.getCurrentUser(principal);
         User owner = album.getOwner();
         checkRights(!currentUser.equals(owner));
-        album.setAccessType(AccessType.valueOf(dto.getAccessType()));
+        album.setAccessType(AccessType.valueOf(dto.accessType()));
         Album updatedAlbum = albumRepository.save(album);
         log.info("Пользователь {} обновил альбом {}",
                 currentUser,

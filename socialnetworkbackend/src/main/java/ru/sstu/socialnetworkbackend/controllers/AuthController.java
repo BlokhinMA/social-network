@@ -27,7 +27,7 @@ public class AuthController {
 
         AuthResponse authResponse = service.auth(authRequest);
 
-        ResponseCookie cookie = ResponseCookie.from("jwt", authResponse.getToken())
+        ResponseCookie cookie = ResponseCookie.from("jwt", authResponse.token())
                 .httpOnly(true)
                 .secure(true)
                 .sameSite("strict")

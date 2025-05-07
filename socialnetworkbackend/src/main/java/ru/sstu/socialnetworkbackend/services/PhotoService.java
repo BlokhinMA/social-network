@@ -42,16 +42,16 @@ public class PhotoService {
     }
 
     public List<Photo> create(PhotoDto photoDto, Principal principal) { // todo: оптимизировать
-        if (photoDto.getFiles().getFirst().getSize() == 0)
+        if (photoDto.files().getFirst().getSize() == 0)
             throw new EmptyFileException();
         User currentUser = userService.getCurrentUser(principal);
-        Album album = albumRepository.findById(photoDto.getAlbumId())
+        Album album = albumRepository.findById(photoDto.albumId())
                 .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
         checkRights(currentUser, album.getOwner());
         List<Photo> photos = new ArrayList<>();
         List<Photo> createdPhotos = new ArrayList<>();
-        for (int i = 0; i < photoDto.getFiles().size(); i++) {
-            photos.add(toPhotoEntity(photoDto.getFiles().get(i)));
+        for (int i = 0; i < photoDto.files().size(); i++) {
+            photos.add(toPhotoEntity(photoDto.files().get(i)));
             photos.get(i).setAlbum(album);
             Photo createdPhoto = photoRepository.save(photos.get(i));
             createdPhotos.add(createdPhoto);
@@ -132,8 +132,8 @@ public class PhotoService {
     }
 
     public PhotoTag createTag(PhotoTagDto dto, Principal principal) {
-        Photo photo = getPhotoFromDB(dto.getPhotoId());
-        if (photoTagRepository.findByTagAndPhoto(dto.getTag(), photo).isPresent()) {
+        Photo photo = getPhotoFromDB(dto.photoId());
+        if (photoTagRepository.findByTagAndPhoto(dto.tag(), photo).isPresent()) {
             throw new ResourceAlreadyExistsException("Такой тег уже существует");
         }
         Album album = photo.getAlbum();
@@ -141,7 +141,7 @@ public class PhotoService {
         User owner = album.getOwner();
         checkRights(currentUser, owner);
         PhotoTag tag = new PhotoTag(
-                dto.getTag(),
+                dto.tag(),
                 photo
         );
         PhotoTag createdTag = photoTagRepository.save(tag);
@@ -168,19 +168,19 @@ public class PhotoService {
 
     public PhotoRatingResponseDto createRating(PhotoRatingDto dto, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
-        Photo photo = getPhotoFromDB(dto.getPhotoId());
+        Photo photo = getPhotoFromDB(dto.photoId());
         if (photoRatingRepository.findByRatingUserAndPhoto(currentUser, photo).isPresent()) {
             throw new ResourceAlreadyExistsException("Рейтинг уже существует");
         }
         PhotoRating rating = new PhotoRating(
-                dto.getRating(),
+                dto.rating(),
                 currentUser,
                 photo
         );
         PhotoRating createdRating = photoRatingRepository.save(rating);
         PhotoRatingResponseDto responseDto = new PhotoRatingResponseDto(
                 createdRating,
-                rating(dto.getPhotoId())
+                rating(dto.photoId())
         );
         log.info("Пользователь {} поставил оценку фотографии {}",
                 currentUser,
@@ -190,11 +190,11 @@ public class PhotoService {
 
     public PhotoRatingResponseDto updateRating(PhotoRatingDto dto, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
-        Photo photo = getPhotoFromDB(dto.getPhotoId());
+        Photo photo = getPhotoFromDB(dto.photoId());
         PhotoRating rating = getPhotoRatingFromDB(currentUser, photo);
         User ratingUser = rating.getRatingUser();
         checkRights(currentUser, ratingUser);
-        rating.setRating(dto.getRating());
+        rating.setRating(dto.rating());
         PhotoRating updatedRating = photoRatingRepository.save(rating);
         PhotoRatingResponseDto responseDto = new PhotoRatingResponseDto(
                 updatedRating,
@@ -239,10 +239,10 @@ public class PhotoService {
     }
 
     public PhotoComment createComment(PhotoCommentDto dto, Principal principal) {
-        Photo photo = getPhotoFromDB(dto.getPhotoId());
+        Photo photo = getPhotoFromDB(dto.photoId());
         User currentUser = userService.getCurrentUser(principal);
         PhotoComment comment = new PhotoComment(
-                dto.getComment(),
+                dto.comment(),
                 currentUser,
                 photo
         );
@@ -267,8 +267,8 @@ public class PhotoService {
     }
 
     public List<Long> find(FindPhotosDto dto) {
-        String keyword = dto.getKeyword();
-        return switch (dto.getSearchTerm()) {
+        String keyword = dto.keyword();
+        return switch (dto.searchTerm()) {
             case "creationTimeStamp" -> {
                 if (!keyword.matches("(\\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\\d|3[0-1])"))
                     throw new IncorrectKeywordException("Указанная дата должна быть корректной и в формате гггг-мм-дд");

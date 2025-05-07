@@ -1,5 +1,6 @@
 package ru.sstu.socialnetworkbackend.services;
 
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sstu.socialnetworkbackend.dtos.UserDto;
@@ -33,7 +34,7 @@ public class UserService {
 
     public User getCurrentUser(Principal principal) {
         if (principal == null)
-            throw new RuntimeException(""); // TODO: написать свое исключение
+            throw new AuthenticationCredentialsNotFoundException("Пользователь не авторизован");
         return getUserByUsername(principal.getName());
     }
 
@@ -43,18 +44,18 @@ public class UserService {
     }
 
     public User create(UserDto userDto) {
-        if (userRepository.findByUsername(userDto.getUsername()).isPresent()
-                || userRepository.findByEmail(userDto.getEmail()).isPresent())
+        if (userRepository.findByUsername(userDto.username()).isPresent()
+                || userRepository.findByEmail(userDto.email()).isPresent())
             throw new ResourceAlreadyExistsException("Пользователь с таким login или email уже существует");
-        if (!userDto.getPassword().equals(userDto.getConfirmedPassword()))
+        if (!userDto.password().equals(userDto.confirmedPassword()))
             throw new PasswordsNotMatchException();
         return userRepository.save(new User(
-                        userDto.getUsername(),
-                        userDto.getEmail(),
-                        userDto.getFirstName(),
-                        userDto.getLastName(),
-                        LocalDate.parse(userDto.getBirthDate()),
-                        encoder.encode(userDto.getPassword()),
+                        userDto.username(),
+                        userDto.email(),
+                        userDto.firstName(),
+                        userDto.lastName(),
+                        LocalDate.parse(userDto.birthDate()),
+                        encoder.encode(userDto.password()),
                         Role.ROLE_USER,
                         false
                 )

@@ -94,7 +94,7 @@ public class CommunityService {
     public Community create(CommunityDto dto, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
         Community community = new Community(
-                dto.getName(),
+                dto.name(),
                 currentUser
         );
         Community createdCommunity = communityRepository.save(community);
@@ -161,11 +161,11 @@ public class CommunityService {
 
     public CommunityPost createPost(CommunityPostDto dto, Principal principal) {
         User currentUser = userService.getCurrentUser(principal);
-        Community community = getCommunityFromDB(dto.getCommunityId());
+        Community community = getCommunityFromDB(dto.communityId());
         checkRights(communityMemberRepository.findByMemberAndCommunity(currentUser, community).isEmpty() &&
                 !currentUser.equals(community.getCreator()));
         CommunityPost post = new CommunityPost(
-                dto.getPostText(),
+                dto.postText(),
                 currentUser,
                 community
         );

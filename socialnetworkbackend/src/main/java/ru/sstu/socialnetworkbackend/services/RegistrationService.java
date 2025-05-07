@@ -43,7 +43,7 @@ public class RegistrationService {
         return confirmationToken;
     }
 
-    private String buildEmail(String name, String link) { // TODO: перевести на русский
+    private String buildEmail(String name, String link) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +
                 "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
@@ -112,13 +112,13 @@ public class RegistrationService {
                 "      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;" +
                 "max-width:560px\">\n" +
                 "        \n" +
-                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi "
+                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Здравствуйте, "
                 + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> " +
-                "Thank you for registering. Please click on the below link to activate your account: " +
+                "Спасибо за регистрацию. Пожалуйста, перейдите по ссылке ниже для активации вашего аккаунта: " +
                 "</p><blockquote style=\"Margin:0 0 20px 0;border-left:10px solid #b1b4b6;padding:15px 0 0.1px 15px;" +
                 "font-size:19px;line-height:25px\"><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;" +
-                "color:#0b0c0c\"> <a href=\"" + link + "\">Activate Now</a> </p></blockquote>\n " +
-                "Link will expire in 15 minutes. <p>See you soon</p>" +
+                "color:#0b0c0c\"> <a href=\"" + link + "\">Активировать аккаунт</a> </p></blockquote>\n " +
+                "Действие ссылки истекает через 15 минут. <p>До скорой встречи!</p>" +
                 "        \n" +
                 "      </td>\n" +
                 "      <td width=\"10\" valign=\"middle\"><br></td>\n" +

@@ -3,6 +3,7 @@ package ru.sstu.socialnetworkbackend.handlers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -43,6 +44,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleBadCredentialsException() {
         Map<String, String> response = new HashMap<>();
         response.put("error", "Неправильный логин или пароль");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+        public ResponseEntity<?> handleUnauthorized(Exception e) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
