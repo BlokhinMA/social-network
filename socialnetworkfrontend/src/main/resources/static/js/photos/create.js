@@ -1,4 +1,4 @@
-document.querySelector('body').addEventListener('submit', (e) => {
+document.querySelector('body').addEventListener('submit', async (e) => {
 
     const form = e.target;
 
@@ -8,42 +8,38 @@ document.querySelector('body').addEventListener('submit', (e) => {
 
         const formData = new FormData(form);
 
-        fetch('http://localhost:8081/api/v1/photos/create', {
+        const response = await fetch('http://localhost:8081/api/v1/photos/create', {
             method: 'POST',
             credentials: 'include',
             body: formData
-        })
-            .then(async response => {
+        });
 
-                const data = await response.json();
+        const data = await response.json();
 
-                removeErrorElements();
+        removeErrorElements();
 
-                if (response.ok) {
+        if (response.ok) {
 
-                    const noPhotosP = document.getElementById("no-photos");
+            const noPhotosP = document.getElementById("no-photos");
 
-                    if (noPhotosP) {
-                        noPhotosP.remove();
-                    }
+            if (noPhotosP) {
+                noPhotosP.remove();
+            }
 
-                    let htmlCode = '';
+            let htmlCode = '';
 
-                    data.forEach((photo) => {
-                        htmlCode += `<a href="/photo/${photo.id}" class="reset">
-                                         <img alt="" src="http://localhost:8081/api/v1/photos/show_entity/${photo.id}" class="pictures" />
-                                     </a>`;
-                    });
-
-                    document.querySelector('body').querySelector('#photos')
-                        .insertAdjacentHTML('beforeend', htmlCode);
-
-
-                } else {
-                    renderErrors(data, form);
-                }
-
+            data.forEach((photo) => {
+                htmlCode += `<a href="/photo/${photo.id}" class="reset">
+                                 <img alt="" src="http://localhost:8081/api/v1/photos/show_entity/${photo.id}" class="pictures" />
+                             </a>`;
             });
+
+            document.querySelector('body').querySelector('#photos')
+                .insertAdjacentHTML('beforeend', htmlCode);
+
+        } else {
+            renderErrors(data, form);
+        }
 
     }
 

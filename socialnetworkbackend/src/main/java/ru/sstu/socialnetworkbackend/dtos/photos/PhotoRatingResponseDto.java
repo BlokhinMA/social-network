@@ -1,10 +1,10 @@
-package ru.sstu.socialnetworkbackend.dtos;
+package ru.sstu.socialnetworkbackend.dtos.photos;
 
 import ru.sstu.socialnetworkbackend.entities.PhotoRating;
 
 public record PhotoRatingResponseDto(
-        PhotoRating photoRating,
-        Double rating
+    PhotoRating photoRating,
+    Double rating
 ) {
 
 }

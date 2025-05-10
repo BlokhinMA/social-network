@@ -1,25 +1,22 @@
-albumsDiv.addEventListener('click', (e) => {
-    if (e.target && e.target.classList.contains('delete-album')) {
-        const button = e.target;
-        const id = button.id;
+albumsDiv.addEventListener('click', async (e) => {
+    const button = e.target;
+    if (button && button.classList.contains('delete-album')) {
 
-        fetch(`http://localhost:8081/api/v1/albums/delete/${id}`, {
+        const response = await fetch(`http://localhost:8081/api/v1/albums/delete/${button.id}`, {
             method: 'DELETE',
             credentials: 'include'
-        })
-            .then(async response => {
+        });
 
-                if (response.ok) {
-                    button.parentElement.remove();
-                    if (albumsDiv.childNodes.length === 0) {
-                        albumsDiv.innerHTML = '<p id="no-albums"></p>';
-                    }
-                } else {
-                    const data = await response.json();
-                    let htmlCode = `<span style="color: red;">${data.error}</span>`;
-                    button.insertAdjacentHTML('afterend', htmlCode);
-                }
+        if (response.ok) {
+            button.parentElement.remove();
+            if (albumsDiv.childNodes.length === 0) {
+                albumsDiv.innerHTML = '<p id="no-albums"></p>';
+            }
+        } else {
+            const data = await response.json();
+            let htmlCode = `<span style="color: red;">${data.error}</span>`;
+            button.insertAdjacentHTML('afterend', htmlCode);
+        }
 
-            })
     }
 });

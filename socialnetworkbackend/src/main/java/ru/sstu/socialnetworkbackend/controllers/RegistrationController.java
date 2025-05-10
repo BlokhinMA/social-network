@@ -3,7 +3,7 @@ package ru.sstu.socialnetworkbackend.controllers;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sstu.socialnetworkbackend.dtos.UserDto;
+import ru.sstu.socialnetworkbackend.dtos.users.UserDto;
 import ru.sstu.socialnetworkbackend.services.RegistrationService;
 
 @RestController

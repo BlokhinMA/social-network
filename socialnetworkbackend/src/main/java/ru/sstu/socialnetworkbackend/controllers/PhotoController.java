@@ -5,7 +5,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sstu.socialnetworkbackend.dtos.*;
+import ru.sstu.socialnetworkbackend.dtos.photos.*;
 import ru.sstu.socialnetworkbackend.entities.Photo;
 import ru.sstu.socialnetworkbackend.services.PhotoService;
 

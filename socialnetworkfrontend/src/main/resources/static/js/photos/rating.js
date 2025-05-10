@@ -1,4 +1,5 @@
 ratingsDiv.addEventListener('click', async (e) => {
+
     const rating = ratingsDiv.querySelector('.rating');
     if (e.target && e.target.classList.contains('rating-buttons')) {
         const button = e.target;
@@ -28,112 +29,103 @@ ratingsDiv.addEventListener('click', async (e) => {
                 }
                 break;
             case null:
-                createRating(rating, button, data);
+                await createRating(rating, button, data);
         }
     }
 });
 
-function createRating(rating, button, data) {
+async function createRating(rating, button, requestData) {
 
     removeErrorElements();
 
-    fetch('http://localhost:8081/api/v1/photos/create_rating', {
+    const response = await fetch('http://localhost:8081/api/v1/photos/create_rating', {
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
-    })
-        .then(async response => {
-            const data = await response.json();
+        body: JSON.stringify(requestData)
+    });
 
-            let htmlCode;
+    const data = await response.json();
 
-            if (response.ok) {
+    let htmlCode;
 
-                if (data.photoRating.rating === true) {
-                    button.style.backgroundColor = 'green';
-                }
+    if (response.ok) {
 
-                if (data.photoRating.rating === false) {
-                    button.style.backgroundColor = 'red';
-                }
+        button.style.backgroundColor = data.photoRating.rating === true
+            ? 'green'
+            : 'red';
 
-                if (rating.id === 'no-rating') {
-                    rating.id = 'rating';
-                }
+        if (rating.id === 'no-rating') {
+            rating.id = 'rating';
+        }
 
-                rating.textContent = `Рейтинг: ${data.rating}%`;
+        rating.textContent = `Рейтинг: ${data.rating}%`;
 
-            } else {
-                htmlCode = `<p>${data.error}</p>`;
-                button.insertAdjacentHTML('afterbegin', htmlCode);
-            }
-        });
+    } else {
+        htmlCode = `<p>${data.error}</p>`;
+        button.insertAdjacentHTML('afterbegin', htmlCode);
+    }
+
 }
 
-function updateRating(rating, button, data, flag) {
+async function updateRating(rating, button, requestData, flag) {
 
     removeErrorElements();
 
-    fetch('http://localhost:8081/api/v1/photos/update_rating', {
+    const response = await fetch('http://localhost:8081/api/v1/photos/update_rating', {
         method: 'PATCH',
         credentials: 'include',
         headers: {
             'Content-type': 'application/json'
         },
-        body: JSON.stringify(data)
-    })
-        .then(async response => {
-            const data = await response.json();
+        body: JSON.stringify(requestData)
+    });
 
-            if (response.ok) {
-                button.style.backgroundColor = flag;
-                let id;
-                if (flag === 'red') {
-                    id = '#true';
-                }
-                if (flag === 'green') {
-                    id = '#false';
-                }
-                ratingsDiv.querySelector(id).style.backgroundColor = '';
-                rating.textContent = `Рейтинг: ${data.rating}%`;
-            } else {
-                let htmlCode = `<span id="error" style="color: red;">${data.error}</span>`;
-                button.insertAdjacentHTML('afterend', htmlCode);
-            }
-        });
+    const data = await response.json();
+
+    if (response.ok) {
+        button.style.backgroundColor = flag;
+        let id = flag === 'red'
+            ? '#true'
+            : '#false';
+        ratingsDiv.querySelector(id).style.backgroundColor = '';
+        rating.textContent = `Рейтинг: ${data.rating}%`;
+    } else {
+        let htmlCode = `<span id="error" style="color: red;">${data.error}</span>`;
+        button.insertAdjacentHTML('afterend', htmlCode);
+    }
+
 }
 
-function deleteRating(rating, button) {
+async function deleteRating(rating, button) {
 
     removeErrorElements();
 
-    fetch(`http://localhost:8081/api/v1/photos/delete_rating/${photoId}`, {
+    const response = await fetch(`http://localhost:8081/api/v1/photos/delete_rating/${photoId}`, {
         method: 'DELETE',
         credentials: 'include'
-    })
-        .then(async response => {
-            const data = await response.json();
+    });
 
-            if (response.ok) {
+    const data = await response.json();
 
-                button.style.backgroundColor = '';
+    if (response.ok) {
 
-                const ratingFromServer = data.rating;
-                if (ratingFromServer != null) {
-                    rating.textContent = `Рейтинг: ${ratingFromServer}%`;
-                } else {
-                    rating.textContent = 'Фотография еще не оценивалась';
-                    rating.id = 'no-rating';
-                }
-            } else {
-                let htmlCode = `<span id="error" style="color: red;">${data.error}</span>`;
-                button.insertAdjacentHTML('afterend', htmlCode);
-            }
+        button.style.backgroundColor = '';
 
-        });
+        const ratingFromServer = data.rating;
+        if (ratingFromServer != null) {
+            rating.textContent = `Рейтинг: ${ratingFromServer}%`;
+        } else {
+            rating.textContent = 'Фотография еще не оценивалась';
+            rating.id = 'no-rating';
+        }
+    } else {
+        let htmlCode = `<span id="error" style="color: red;">${data.error}</span>`;
+        button.insertAdjacentHTML('afterend', htmlCode);
+    }
+
 }
 
 async function getRating(photoId) {

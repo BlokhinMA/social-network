@@ -1,51 +1,53 @@
-communityHeader.addEventListener("click", (e) => {
-    if (e.target && e.target.id === "subscribe-button") {
-        const button = e.target;
+communityHeader.addEventListener("click", async (e) => {
 
-        fetch(`http://localhost:8081/api/v1/communities/join/${communityId}`, {
+    const button = e.target;
+
+    if (button && button.id === "subscribe-button") {
+
+        const response = await fetch(`http://localhost:8081/api/v1/communities/join/${communityId}`, {
             method: 'GET',
             credentials: 'include'
-        })
-            .then(async response => {
-                const data = await response.json();
+        });
 
-                let errorElement = document.getElementById('error');
-                if (errorElement) {
-                    errorElement.remove();
-                }
+        const data = await response.json();
 
-                let htmlCode = '';
-                if (response.ok) {
+        let errorElement = document.getElementById('error');
+        if (errorElement) {
+            errorElement.remove();
+        }
 
-                    button.textContent = "выйти из сообщества";
-                    button.id = "leave-button";
+        let htmlCode = '';
+        if (response.ok) {
 
-                    const noMembersP = document.getElementById('no-members');
-                    const membersDiv = document.getElementById('members');
+            button.textContent = "выйти из сообщества";
+            button.id = "leave-button";
 
-                    if (noMembersP) {
-                        noMembersP.remove();
-                    }
+            const noMembersP = document.getElementById('no-members');
+            const membersDiv = document.getElementById('members');
 
-                    htmlCode = `<p id="${data.id}"><a href="/profile/${data.member.id}">${data.member.firstName} ${data.member.lastName}</a>`;
-                    const firstChildMembersDiv = membersDiv.childNodes.item(0);
-                    firstChildMembersDiv.insertAdjacentHTML('afterend', htmlCode);
+            if (noMembersP) {
+                noMembersP.remove();
+            }
 
-                    const createPostForm = document.getElementById('create-post');
-                    if (!createPostForm) {
-                        htmlCode = `<form id="create-post">
-                                    <label for="post-text">Добавить пост</label><br>
-                                    <textarea id="post-text" name="postText" required></textarea>
-                                    <input type="hidden" name="communityId" value="${communityId}">
-                                    <button>добавить пост</button>
-                                </form>`;
-                        membersDiv.insertAdjacentHTML('afterend', htmlCode);
-                    }
-                } else {
-                    htmlCode += `<span id="error" style="color: red;">${data.error}</span>`
-                    button.insertAdjacentHTML('afterend', htmlCode);
-                }
-            });
+            htmlCode = `<p id="${data.id}"><a href="/profile/${data.member.id}">${data.member.firstName} ${data.member.lastName}</a>`;
+            const firstChildMembersDiv = membersDiv.childNodes.item(0);
+            firstChildMembersDiv.insertAdjacentHTML('afterend', htmlCode);
+
+            const createPostForm = document.getElementById('create-post');
+            if (!createPostForm) {
+                htmlCode = `<form id="create-post">
+                                <label for="post-text">Добавить пост</label>
+                                <br>
+                                <textarea id="post-text" name="postText" required></textarea>
+                                <input type="hidden" name="communityId" value="${communityId}">
+                                <button>добавить пост</button>
+                            </form>`;
+                membersDiv.insertAdjacentHTML('afterend', htmlCode);
+            }
+        } else {
+            htmlCode += `<span id="error" style="color: red;">${data.error}</span>`
+            button.insertAdjacentHTML('afterend', htmlCode);
+        }
 
     }
 });

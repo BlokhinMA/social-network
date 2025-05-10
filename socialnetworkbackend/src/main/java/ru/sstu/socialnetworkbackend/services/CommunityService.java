@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import ru.sstu.socialnetworkbackend.dtos.*;
+import ru.sstu.socialnetworkbackend.dtos.communities.*;
 import ru.sstu.socialnetworkbackend.entities.Community;
 import ru.sstu.socialnetworkbackend.entities.CommunityMember;
 import ru.sstu.socialnetworkbackend.entities.CommunityPost;

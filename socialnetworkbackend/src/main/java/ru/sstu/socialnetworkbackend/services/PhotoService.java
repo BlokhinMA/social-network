@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.sstu.socialnetworkbackend.dtos.*;
+import ru.sstu.socialnetworkbackend.dtos.photos.*;
 import ru.sstu.socialnetworkbackend.entities.*;
 import ru.sstu.socialnetworkbackend.exceptions.*;
 import ru.sstu.socialnetworkbackend.repositories.*;

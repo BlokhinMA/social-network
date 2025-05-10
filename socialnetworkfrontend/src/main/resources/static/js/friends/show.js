@@ -6,43 +6,45 @@ if (ownerId === localStorage.getItem("userId")) {
 
 const friendsDiv = document.getElementById('friends');
 
-fetch(`http://localhost:8081/api/v1/friendships/show/${userId}`, {
-    method: 'GET',
-    credentials: 'include'
-})
-    .then(async response => {
+async function show() {
+    const response = await fetch(`http://localhost:8081/api/v1/friendships/show/${userId}`, {
+        method: 'GET',
+        credentials: 'include'
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        let htmlCode;
+    let htmlCode;
 
-        if (response.ok) {
+    if (response.ok) {
 
-            const user = data.user;
+        const user = data.user;
 
-            let textContent = `Друзья пользователя ${user.firstName} ${user.lastName}`;
+        let textContent = `Друзья пользователя ${user.firstName} ${user.lastName}`;
 
-            document.querySelector('title').textContent = textContent;
+        document.querySelector('title').textContent = textContent;
 
-            document.getElementById('header').textContent = textContent;
+        document.getElementById('header').textContent = textContent;
 
-            const friends = data.friends;
+        const friends = data.friends;
 
-            if (friends.length === 0) {
-                htmlCode = `<p>Пользователь еще не добавил друзей</p>`;
-            } else {
-                htmlCode = ``;
-                friends.forEach(friend => {
-                    htmlCode += `<p>
-                                     <a href="/profile/${friend.id}">${friend.firstName} ${friend.lastName}</a>
-                                 </p>`;
-                });
-            }
-
+        if (friends.length === 0) {
+            htmlCode = `<p>Пользователь еще не добавил друзей</p>`;
         } else {
-            htmlCode = `<p>${data.error}</p>`;
+            htmlCode = ``;
+            friends.forEach(friend => {
+                htmlCode += `<p>
+                                 <a href="/profile/${friend.id}">${friend.firstName} ${friend.lastName}</a>
+                             </p>`;
+            });
         }
 
-        friendsDiv.insertAdjacentHTML('afterbegin', htmlCode);
+    } else {
+        htmlCode = `<p>${data.error}</p>`;
+    }
 
-    });
+    friendsDiv.insertAdjacentHTML('afterbegin', htmlCode);
+
+}
+
+show();

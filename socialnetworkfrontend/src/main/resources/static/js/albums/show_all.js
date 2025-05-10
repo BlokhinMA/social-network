@@ -4,44 +4,46 @@ if (ownerId === localStorage.getItem("userId")) {
     window.location = '/my_albums';
 }
 
-fetch(`http://localhost:8081/api/v1/albums/show_all/${ownerId}`, {
-    method: 'GET',
-    credentials: 'include'
-})
-    .then(async response => {
+async function showAll() {
+    const response = await fetch(`http://localhost:8081/api/v1/albums/show_all/${ownerId}`, {
+        method: 'GET',
+        credentials: 'include'
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        const title = document.querySelector('title');
-        const header = document.getElementById('header');
-        const albumsDiv = document.getElementById('albums');
+    const title = document.querySelector('title');
+    const header = document.getElementById('header');
+    const albumsDiv = document.getElementById('albums');
 
-        if (response.ok) {
+    if (response.ok) {
 
-            let owner = data.owner;
+        let owner = data.owner;
 
-            let textContent = `Альбомы пользователя ${owner.firstName} ${owner.lastName}`;
-            title.textContent = textContent;
-            header.textContent = textContent;
+        let textContent = `Альбомы пользователя ${owner.firstName} ${owner.lastName}`;
+        title.textContent = textContent;
+        header.textContent = textContent;
 
-            let htmlCode = ``;
+        let htmlCode = ``;
 
-            let albums = data.albums;
+        let albums = data.albums;
 
-            if (albums.length === 0) {
-                htmlCode += '<p>Пользователь еще не добавил альбомы</p>';
-            } else {
-                albums.forEach((album) => {
-                    htmlCode += `<p><a href="/album/${album.id}">${album.title}</a></p>`;
-                });
-            }
-
-            albumsDiv.innerHTML = htmlCode;
-
+        if (albums.length === 0) {
+            htmlCode += '<p>Пользователь еще не добавил альбомы</p>';
         } else {
-            let error = data.error;
-            title.textContent = error;
-            albumsDiv.textContent = error;
+            albums.forEach((album) => {
+                htmlCode += `<p><a href="/album/${album.id}">${album.title}</a></p>`;
+            });
         }
 
-    });
+        albumsDiv.innerHTML = htmlCode;
+
+    } else {
+        let error = data.error;
+        title.textContent = error;
+        albumsDiv.textContent = error;
+    }
+
+}
+
+showAll();

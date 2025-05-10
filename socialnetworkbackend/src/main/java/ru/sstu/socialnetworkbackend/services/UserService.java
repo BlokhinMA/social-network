@@ -3,7 +3,7 @@ package ru.sstu.socialnetworkbackend.services;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.sstu.socialnetworkbackend.dtos.UserDto;
+import ru.sstu.socialnetworkbackend.dtos.users.UserDto;
 import ru.sstu.socialnetworkbackend.entities.User;
 import ru.sstu.socialnetworkbackend.entities.enums.Role;
 import ru.sstu.socialnetworkbackend.exceptions.PasswordsNotMatchException;

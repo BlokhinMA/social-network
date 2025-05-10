@@ -1,25 +1,23 @@
-body.addEventListener('click', (e) => {
+body.addEventListener('click', async (e) => {
     const button = e.target;
 
     if (button && button.classList.contains('delete-tag')) {
 
-        fetch(`http://localhost:8081/api/v1/photos/delete_tag/${button.id}`, {
+        const response = await fetch(`http://localhost:8081/api/v1/photos/delete_tag/${button.id}`, {
             method: 'DELETE',
             credentials: 'include'
-        })
-            .then(response => {
+        });
 
-                removeErrorElements();
+        removeErrorElements();
 
-                if (response.ok) {
+        if (response.ok) {
 
-                    button.parentElement.remove();
+            button.parentElement.remove();
 
-                } else {
-                    const data = response.json();
-                    renderError(data, button);
-                }
-            });
+        } else {
+            const data = response.json();
+            renderError(data, button);
+        }
 
     }
 

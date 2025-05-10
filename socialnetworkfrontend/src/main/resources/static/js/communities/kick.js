@@ -1,37 +1,37 @@
 const membersDiv = document.getElementById('members');
 
-membersDiv.addEventListener('click', e => {
-    if (e.target && e.target.classList.contains('kick-buttons')) {
-        const button = e.target;
-        const id = button.id;
+membersDiv.addEventListener('click', async (e) => {
 
-        fetch(`http://localhost:8081/api/v1/communities/kick/${id}`, {
+    const button = e.target;
+
+    if (button && button.classList.contains('kick-buttons')) {
+
+        const response = await fetch(`http://localhost:8081/api/v1/communities/kick/${button.id}`, {
             method: 'DELETE',
             credentials: 'include'
-        })
-            .then(async response => {
-                const data = await response.json();
+        });
 
-                let errorElement = document.getElementById('error');
-                if (errorElement) {
-                    errorElement.remove();
-                }
+        const data = await response.json();
 
-                let htmlCode;
-                if (response.ok) {
-                    button.parentNode.remove();
+        let errorElement = document.getElementById('error');
+        if (errorElement) {
+            errorElement.remove();
+        }
 
-                    const membersDivChildren = membersDiv.childNodes;
-                    if (membersDivChildren.length === 0) {
-                        htmlCode = `<p id="no-members">Нет подписчиков</p>`;
-                        membersDiv.insertAdjacentHTML('beforeend', htmlCode);
-                    }
+        let htmlCode;
+        if (response.ok) {
+            button.parentNode.remove();
 
-                } else {
-                    htmlCode = `<span id="error" style="color: red;">${data.error}</span>`;
-                    button.insertAdjacentHTML('afterend', htmlCode);
-                }
+            const membersDivChildren = membersDiv.childNodes;
+            if (membersDivChildren.length === 0) {
+                htmlCode = `<p id="no-members">Нет подписчиков</p>`;
+                membersDiv.insertAdjacentHTML('beforeend', htmlCode);
+            }
 
-            })
+        } else {
+            htmlCode = `<span id="error" style="color: red;">${data.error}</span>`;
+            button.insertAdjacentHTML('afterend', htmlCode);
+        }
+
     }
 });

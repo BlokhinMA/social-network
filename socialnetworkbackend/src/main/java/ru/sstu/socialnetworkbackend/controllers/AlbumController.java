@@ -3,8 +3,8 @@ package ru.sstu.socialnetworkbackend.controllers;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.sstu.socialnetworkbackend.dtos.AlbumDto;
-import ru.sstu.socialnetworkbackend.dtos.ChangeAlbumAccessTypeDto;
+import ru.sstu.socialnetworkbackend.dtos.albums.AlbumDto;
+import ru.sstu.socialnetworkbackend.dtos.albums.ChangeAlbumAccessTypeDto;
 import ru.sstu.socialnetworkbackend.services.AlbumService;
 
 import java.security.Principal;

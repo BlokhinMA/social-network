@@ -2,7 +2,7 @@ package ru.sstu.socialnetworkbackend.services;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.sstu.socialnetworkbackend.dtos.FriendsResponseDto;
+import ru.sstu.socialnetworkbackend.dtos.friends.FriendsResponseDto;
 import ru.sstu.socialnetworkbackend.entities.Friendship;
 import ru.sstu.socialnetworkbackend.entities.User;
 import ru.sstu.socialnetworkbackend.exceptions.IncorrectKeywordException;

@@ -1,46 +1,47 @@
-communityHeader.addEventListener("click", (e) => {
-    if (e.target && e.target.id === "leave-button") {
-        const button = e.target;
+communityHeader.addEventListener("click", async (e) => {
 
-        fetch(`http://localhost:8081/api/v1/communities/leave/${communityId}`, {
+    const button = e.target;
+
+    if (button && button.id === "leave-button") {
+
+        const response = await fetch(`http://localhost:8081/api/v1/communities/leave/${communityId}`, {
             method: 'DELETE',
             credentials: 'include'
-        })
-            .then(async response => {
-                const data = await response.json();
+        });
 
-                let errorElement = document.getElementById('error');
-                if (errorElement) {
-                    errorElement.remove();
-                }
+        const data = await response.json();
 
-                let htmlCode = '';
-                if (response.ok) {
+        let errorElement = document.getElementById('error');
+        if (errorElement) {
+            errorElement.remove();
+        }
 
-                    button.textContent = "подписаться";
-                    button.id = "subscribe-button";
+        let htmlCode = '';
+        if (response.ok) {
 
-                    const membersDiv = document.getElementById('members');
-                    const memberP = membersDiv.querySelector(`[id="${data.id}"]`);
-                    memberP.remove();
+            button.textContent = "подписаться";
+            button.id = "subscribe-button";
 
-                    if (membersDiv.children.length === 1) {
-                        membersDiv.children.item(0).remove();
-                        htmlCode += `<p id="noOneMember">Нет подписчиков</p>`;
-                        membersDiv.insertAdjacentHTML('beforeend', htmlCode);
-                    }
+            const membersDiv = document.getElementById('members');
+            const memberP = membersDiv.querySelector(`[id="${data.id}"]`);
+            memberP.remove();
 
-                    if (!isCreator) {
-                        const body = document.querySelector('body');
-                        const createPostForm = body.querySelector('#createPost');
-                        createPostForm.remove();
-                    }
+            if (membersDiv.children.length === 1) {
+                membersDiv.children.item(0).remove();
+                htmlCode += `<p id="no-members">Нет подписчиков</p>`;
+                membersDiv.insertAdjacentHTML('beforeend', htmlCode);
+            }
 
-                } else {
-                    htmlCode += `<span id="error" style="color: red;">${data.error}</span>`;
-                    button.insertAdjacentHTML('afterend', htmlCode);
-                }
+            if (!isCreator) {
+                const body = document.querySelector('body');
+                const createPostForm = body.querySelector('#create-post');
+                createPostForm.remove();
+            }
 
-            });
+        } else {
+            htmlCode += `<span id="error" style="color: red;">${data.error}</span>`;
+            button.insertAdjacentHTML('afterend', htmlCode);
+        }
+
     }
 });

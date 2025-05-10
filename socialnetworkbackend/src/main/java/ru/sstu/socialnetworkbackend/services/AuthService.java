@@ -2,10 +2,11 @@ package ru.sstu.socialnetworkbackend.services;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-import ru.sstu.socialnetworkbackend.dtos.AuthRequest;
-import ru.sstu.socialnetworkbackend.dtos.AuthResponse;
+import ru.sstu.socialnetworkbackend.dtos.auth.AuthRequest;
+import ru.sstu.socialnetworkbackend.dtos.auth.AuthResponse;
 import ru.sstu.socialnetworkbackend.entities.User;
 
 @Service
@@ -24,12 +25,18 @@ public class AuthService {
     }
 
     public AuthResponse auth(AuthRequest authRequest) {
-        authenticationManager.authenticate(
+
+        try {
+            authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authRequest.username(),
-                        authRequest.password()
+                    authRequest.username(),
+                    authRequest.password()
                 )
-        );
+            );
+        } catch (Exception e) {
+            log.info("Неудачная попытка авторизации");
+            throw new BadCredentialsException("");
+        }
 
         User user = userService.getUserByUsername(authRequest.username());
 

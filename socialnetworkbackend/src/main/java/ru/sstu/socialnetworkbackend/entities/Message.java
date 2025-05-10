@@ -18,7 +18,7 @@ public class Message {
     @ManyToOne
     @JoinColumn(nullable = false)
     private User toUser;
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String message;
     @Column(nullable = false)
     @JsonFormat(pattern = "dd.MM.yyyy HH:mm")

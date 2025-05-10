@@ -3,7 +3,7 @@ package ru.sstu.socialnetworkbackend.services;
 import jakarta.transaction.Transactional;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.sstu.socialnetworkbackend.dtos.UserDto;
+import ru.sstu.socialnetworkbackend.dtos.users.UserDto;
 import ru.sstu.socialnetworkbackend.entities.ConfirmationToken;
 import ru.sstu.socialnetworkbackend.entities.User;
 

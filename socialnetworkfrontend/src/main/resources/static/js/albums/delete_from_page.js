@@ -1,21 +1,22 @@
-albumHeader.addEventListener('click', (e) => {
-    if (e.target && e.target.id === 'delete-album-button') {
-        const button = e.target;
+albumHeader.addEventListener('click', async (e) => {
 
-        fetch(`http://localhost:8081/api/v1/albums/delete/${albumId}`, {
+    const button = e.target;
+
+    if (button && button.id === 'delete-album-button') {
+
+        const response = await fetch(`http://localhost:8081/api/v1/albums/delete/${albumId}`, {
             method: 'DELETE',
             credentials: 'include'
-        })
-            .then(async response => {
+        });
 
-                if (response.ok) {
-                    window.location = '/my_albums';
-                } else {
-                    const data = await response.json();
-                    let htmlCode = `<span>${data.error}</span>`;
-                    button.insertAdjacentHTML('afterend', htmlCode);
-                }
-            });
+        if (response.ok) {
+            window.location = '/my_albums';
+        } else {
+            const data = await response.json();
+            let htmlCode = `<span>${data.error}</span>`;
+            button.insertAdjacentHTML('afterend', htmlCode);
+        }
+
     }
 
 });

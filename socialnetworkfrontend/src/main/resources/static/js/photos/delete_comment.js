@@ -1,32 +1,29 @@
-body.addEventListener('click', (e) => {
+body.addEventListener('click', async (e) => {
     const button = e.target;
 
     if (button && button.classList.contains('delete-comment-button')) {
 
-        fetch(`http://localhost:8081/api/v1/photos/delete_comment/${button.id}`, {
+        const response = await fetch(`http://localhost:8081/api/v1/photos/delete_comment/${button.id}`, {
             method: 'DELETE',
             credentials: 'include'
-        })
-            .then(async response => {
+        });
 
-                if (response.ok) {
+        if (response.ok) {
 
-                    removeErrorElements();
+            removeErrorElements();
 
-                    button.parentNode.remove();
+            button.parentNode.remove();
 
-                    const commentsDiv = document.querySelector('body').querySelector('#comments');
+            const commentsDiv = document.querySelector('body').querySelector('#comments');
 
-                    if (commentsDiv.childNodes.length === 0) {
-                        commentsDiv.innerHTML = '<p id="noOneComment">Нет комментариев</p>';
-                    }
+            if (commentsDiv.childNodes.length === 0) {
+                commentsDiv.innerHTML = '<p id="no-comments">Нет комментариев</p>';
+            }
 
-                } else {
-                    const data = await response.json();
-                    renderError(data, button);
-                }
-
-            });
+        } else {
+            const data = await response.json();
+            renderError(data, button);
+        }
 
     }
 
