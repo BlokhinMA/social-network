@@ -1,9 +1,7 @@
 package ru.sstu.socialnetworkbackend.controllers;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,16 +28,16 @@ public class AuthController {
         AuthResponse authResponse = service.auth(authRequest);
 
         ResponseCookie cookie = ResponseCookie.from("jwt", authResponse.token())
-                .httpOnly(true)
-                .secure(true)
-                .sameSite("strict")
-                .path("/")
-                .maxAge(24 * 60 * 60)
-                .build();
+            .httpOnly(true)
+            .secure(true)
+            .sameSite("strict")
+            .path("/")
+            .maxAge(24 * 60 * 60)
+            .build();
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(authResponse);
+            .header(HttpHeaders.SET_COOKIE, cookie.toString())
+            .body(authResponse);
     }
 
 }

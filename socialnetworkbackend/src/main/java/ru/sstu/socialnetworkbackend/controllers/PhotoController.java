@@ -30,10 +30,10 @@ public class PhotoController {
     public ResponseEntity<?> showEntity(@PathVariable Long id) {
         Photo photo = service.showEntity(id);
         return ResponseEntity.ok()
-                .header("fileName", photo.getOriginalFileName())
-                .contentType(MediaType.valueOf(photo.getContentType()))
-                .contentLength(photo.getSize())
-                .body(new InputStreamResource(new ByteArrayInputStream(photo.getBytes())));
+            .header("fileName", photo.getOriginalFileName())
+            .contentType(MediaType.valueOf(photo.getContentType()))
+            .contentLength(photo.getSize())
+            .body(new InputStreamResource(new ByteArrayInputStream(photo.getBytes())));
     }
 
     @GetMapping("/show/{id}")

@@ -28,14 +28,14 @@ public class FriendshipService {
         User user = userService.getCurrentUser();
         User friend = userService.getUserById(friendId);
         Friendship friendship = new Friendship(
-                user,
-                friend,
-                false
+            user,
+            friend,
+            false
         );
         Friendship createdFriendship = friendshipRepository.save(friendship);
         log.info("Пользователь {} отправил запрос на дружбу пользователю {}",
-                user,
-                friend);
+            user,
+            friend);
         return createdFriendship;
     }
 
@@ -60,12 +60,12 @@ public class FriendshipService {
         User currentUser = userService.getCurrentUser();
         User user = userService.getUserById(userId);
         Friendship friendship = friendshipRepository.findNotAcceptedByFirstUserIdAndSecondUserId(user.getId(), currentUser.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или вы уже друзья"));
+            .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или вы уже друзья"));
         friendship.setAccepted(true);
         Friendship acceptedFriendship = friendshipRepository.save(friendship);
         log.info("Пользователь {} принял заявку в друзья от пользователя {}",
-                currentUser,
-                user);
+            currentUser,
+            user);
         return acceptedFriendship;
     }
 
@@ -78,8 +78,8 @@ public class FriendshipService {
         User user = userService.getUserById(userId);
         List<User> friends = friendshipRepository.findAllAcceptedByUserId(user.getId());
         return new FriendsResponseDto(
-                user,
-                friends
+            user,
+            friends
         );
     }
 
@@ -87,11 +87,11 @@ public class FriendshipService {
         User user = userService.getCurrentUser();
         User friend = userService.getUserById(friendId);
         Friendship friendship = friendshipRepository.findAcceptedByFirstUserIdAndSecondUserId(user.getId(), friend.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или заявка в друзья не подтверждена"));
+            .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или заявка в друзья не подтверждена"));
         friendshipRepository.deleteById(friendship.getId());
         log.info("Пользователь {} удалил из друзей пользователя {}",
-                user,
-                friend);
+            user,
+            friend);
         return friendship;
     }
 
@@ -99,11 +99,11 @@ public class FriendshipService {
         User currentUser = userService.getCurrentUser();
         User user = userService.getUserById(userId);
         Friendship friendship = friendshipRepository.findNotAcceptedByFirstUserIdAndSecondUserId(user.getId(), currentUser.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или вы уже друзья"));
+            .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или вы уже друзья"));
         friendshipRepository.deleteById(friendship.getId());
         log.info("Пользователь {} отклонил заявку в друзья от пользователя {}",
-                currentUser,
-                user);
+            currentUser,
+            user);
         return friendship;
     }
 
@@ -111,11 +111,11 @@ public class FriendshipService {
         User currentUser = userService.getCurrentUser();
         User user = userService.getUserById(userId);
         Friendship friendship = friendshipRepository.findNotAcceptedByFirstUserIdAndSecondUserId(currentUser.getId(), user.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или вы уже друзья"));
+            .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или вы уже друзья"));
         friendshipRepository.deleteById(friendship.getId());
         log.info("Пользователь {} удалил заявку в друзья пользователю {}",
-                currentUser,
-                user);
+            currentUser,
+            user);
         return friendship;
     }
 

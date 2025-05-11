@@ -26,10 +26,10 @@ public class ConfirmationTokenService {
     public ConfirmationToken create(User user) {
         String token = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken = new ConfirmationToken(
-                token,
-                LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(15),
-                user
+            token,
+            LocalDateTime.now(),
+            LocalDateTime.now().plusMinutes(15),
+            user
         );
         return repository.save(confirmationToken);
     }
@@ -37,7 +37,7 @@ public class ConfirmationTokenService {
     @Transactional
     public ConfirmationToken update(String token) {
         ConfirmationToken confirmationToken = repository.findByToken(token)
-                .orElseThrow(() -> new ResourceNotFoundException("Токен не существует"));
+            .orElseThrow(() -> new ResourceNotFoundException("Токен не существует"));
         if (confirmationToken.getConfirmedAt() != null) {
             throw new TokenAlreadyConfirmed();
         }

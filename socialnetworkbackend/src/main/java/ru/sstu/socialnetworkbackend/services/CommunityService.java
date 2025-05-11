@@ -52,8 +52,8 @@ public class CommunityService {
     public CommunitiesResponseDto showAll(Long memberId) {
         User member = userService.getUserById(memberId);
         return new CommunitiesResponseDto(
-                member,
-                communityRepository.findAllByMemberId(member.getId())
+            member,
+            communityRepository.findAllByMemberId(member.getId())
         );
     }
 
@@ -66,11 +66,11 @@ public class CommunityService {
         Boolean isMember = communityMemberRepository.findByMemberAndCommunity(currentUser, community).isPresent();
         Boolean isCreator = currentUser.equals(community.getCreator());
         return new CommunityResponseDto(
-                community,
-                members,
-                posts,
-                isMember,
-                isCreator
+            community,
+            members,
+            posts,
+            isMember,
+            isCreator
         );
     }
 
@@ -78,12 +78,12 @@ public class CommunityService {
         List<CommunityPostResponseDto> posts = new ArrayList<>();
         for (CommunityPost postFromDB : postsFromDB) {
             CommunityPostResponseDto post = new CommunityPostResponseDto(
-                    postFromDB.getId(),
-                    postFromDB.getPostText(),
-                    postFromDB.getCreationTimeStamp(),
-                    postFromDB.getAuthor(),
-                    postFromDB.getCommunity(),
-                    currentUser.equals(postFromDB.getAuthor())
+                postFromDB.getId(),
+                postFromDB.getPostText(),
+                postFromDB.getCreationTimeStamp(),
+                postFromDB.getAuthor(),
+                postFromDB.getCommunity(),
+                currentUser.equals(postFromDB.getAuthor())
             );
             posts.add(post);
         }
@@ -93,13 +93,13 @@ public class CommunityService {
     public Community create(CommunityDto dto) {
         User currentUser = userService.getCurrentUser();
         Community community = new Community(
-                dto.name(),
-                currentUser
+            dto.name(),
+            currentUser
         );
         Community createdCommunity = communityRepository.save(community);
         log.info("Пользователь {} добавил сообщество {}",
-                currentUser,
-                createdCommunity);
+            currentUser,
+            createdCommunity);
         return createdCommunity;
     }
 
@@ -112,8 +112,8 @@ public class CommunityService {
         communityPostRepository.deleteAllByCommunityId(community.getId());
         communityRepository.deleteById(id);
         log.info("Пользователь {} удалил сообщество {}",
-                currentUser,
-                community);
+            currentUser,
+            community);
         return community;
     }
 
@@ -123,13 +123,13 @@ public class CommunityService {
         if (communityMemberRepository.findByMemberAndCommunity(currentUser, community).isPresent())
             throw new ResourceAlreadyExistsException("Вы уже являетесь участником сообщества");
         CommunityMember member = new CommunityMember(
-                currentUser,
-                community
+            currentUser,
+            community
         );
         CommunityMember joinedMember = communityMemberRepository.save(member);
         log.info("Пользователь {} стал участником сообщества {}",
-                currentUser,
-                joinedMember);
+            currentUser,
+            joinedMember);
         return joinedMember;
     }
 
@@ -137,24 +137,24 @@ public class CommunityService {
         User currentUser = userService.getCurrentUser();
         Community community = getCommunityFromDB(communityId);
         CommunityMember communityMember = communityMemberRepository.findByMemberAndCommunity(currentUser, community)
-                .orElseThrow(() -> new ResourceNotFoundException("Вы не являетесь участником сообщества"));
+            .orElseThrow(() -> new ResourceNotFoundException("Вы не являетесь участником сообщества"));
         communityMemberRepository.deleteById(communityMember.getId());
         log.info("Пользователь {} перестал быть участником сообщества {}",
-                currentUser,
-                communityMember);
+            currentUser,
+            communityMember);
         return communityMember;
     }
 
     public CommunityMember kick(Long id) {
         User currentUser = userService.getCurrentUser();
         CommunityMember member = communityMemberRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Данный пользователь не является участником " +
-                        "сообщества или этого пользователя или сообщества не существует"));
+            .orElseThrow(() -> new ResourceNotFoundException("Данный пользователь не является участником " +
+                "сообщества или этого пользователя или сообщества не существует"));
         checkRights(!currentUser.equals(member.getCommunity().getCreator()));
         communityMemberRepository.deleteById(id);
         log.info("Пользователь {} выгнал участника сообщества {}",
-                currentUser,
-                member);
+            currentUser,
+            member);
         return member;
     }
 
@@ -162,28 +162,28 @@ public class CommunityService {
         User currentUser = userService.getCurrentUser();
         Community community = getCommunityFromDB(dto.communityId());
         checkRights(communityMemberRepository.findByMemberAndCommunity(currentUser, community).isEmpty() &&
-                !currentUser.equals(community.getCreator()));
+            !currentUser.equals(community.getCreator()));
         CommunityPost post = new CommunityPost(
-                dto.postText(),
-                currentUser,
-                community
+            dto.postText(),
+            currentUser,
+            community
         );
         CommunityPost createdPost = communityPostRepository.save(post);
         log.info("Пользователь {} добавил пост {}",
-                currentUser,
-                createdPost);
+            currentUser,
+            createdPost);
         return createdPost;
     }
 
     public CommunityPost deletePost(Long id) {
         CommunityPost post = communityPostRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Пост сообщества не найден или его не существует"));
+            .orElseThrow(() -> new ResourceNotFoundException("Пост сообщества не найден или его не существует"));
         User currentUser = userService.getCurrentUser();
         checkRights(!currentUser.equals(post.getAuthor()));
         communityPostRepository.deleteById(id);
         log.info("Пользователь {} удалил пост {}",
-                currentUser,
-                post);
+            currentUser,
+            post);
         return post;
     }
 
@@ -195,7 +195,7 @@ public class CommunityService {
 
     private Community getCommunityFromDB(Long id) {
         return communityRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Сообщество не найдено"));
+            .orElseThrow(() -> new ResourceNotFoundException("Сообщество не найдено"));
     }
 
     private void checkRights(boolean condition) {
