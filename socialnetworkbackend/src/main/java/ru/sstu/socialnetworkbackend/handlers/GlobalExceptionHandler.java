@@ -20,19 +20,21 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getFieldErrors().forEach(error ->
-                errors.put(error.getField(), error.getDefaultMessage())
+            errors.put(error.getField(), error.getDefaultMessage())
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
     @ExceptionHandler({
-            PasswordsNotMatchException.class,
-            ResourceAlreadyExistsException.class,
-            EmptyFileException.class,
-            IncorrectKeywordException.class,
-            IncorrectSearchTermException.class,
-            ExpiredTokenException.class,
-            TokenAlreadyConfirmed.class
+        PasswordsNotMatchException.class,
+        ResourceAlreadyExistsException.class,
+        EmptyFileException.class,
+        IncorrectKeywordException.class,
+        IncorrectSearchTermException.class,
+        ExpiredTokenException.class,
+        TokenAlreadyConfirmed.class,
+        MaxFileSizeExceededException.class,
+        IllegalArgumentException.class
     })
     public ResponseEntity<?> handleBadRequest(Exception e) {
         Map<String, String> response = new HashMap<>();
@@ -48,7 +50,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
-        public ResponseEntity<?> handleUnauthorized(Exception e) {
+    public ResponseEntity<?> handleUnauthorized(Exception e) {
         Map<String, String> response = new HashMap<>();
         response.put("error", e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);

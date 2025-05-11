@@ -46,6 +46,7 @@ public class UserService {
             throw new ResourceAlreadyExistsException("Пользователь с таким login или email уже существует");
         if (!userDto.password().equals(userDto.confirmedPassword()))
             throw new PasswordsNotMatchException();
+        //@PastOrPresent(message = "Указанная дата должна быть либо в прошлом, либо в настоящем (сегодняшняя)") todo: сделать
         return userRepository.save(new User(
                 userDto.username(),
                 userDto.email(),

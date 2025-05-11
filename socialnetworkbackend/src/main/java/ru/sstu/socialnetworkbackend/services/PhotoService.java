@@ -13,6 +13,7 @@ import ru.sstu.socialnetworkbackend.repositories.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PhotoService extends SuperService {
@@ -24,7 +25,9 @@ public class PhotoService extends SuperService {
     private final AlbumRepository albumRepository;
     private final UserService userService;
 
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(PhotoService.class);
+    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(PhotoService.class);
+
+    private static final long FILE_MAX_SIZE = 10_485_760;
 
     public PhotoService(PhotoRepository photoRepository,
                         PhotoTagRepository photoTagRepository,
@@ -41,21 +44,27 @@ public class PhotoService extends SuperService {
     }
 
     public List<Photo> create(PhotoDto photoDto) { // todo: оптимизировать
-        if (photoDto.files().getFirst().getSize() == 0)
+        List<MultipartFile> files = photoDto.files();
+        if (files.getFirst().getSize() == 0)
             throw new EmptyFileException();
+        for (MultipartFile file : files) {
+            if (file.getSize() > FILE_MAX_SIZE)
+                throw new MaxFileSizeExceededException();
+            checkContentType(file);
+        }
         User currentUser = userService.getCurrentUser();
         Album album = albumRepository.findById(photoDto.albumId())
             .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
         checkRights(currentUser, album.getOwner());
         List<Photo> photos = new ArrayList<>();
         List<Photo> createdPhotos = new ArrayList<>();
-        for (int i = 0; i < photoDto.files().size(); i++) {
-            photos.add(toPhotoEntity(photoDto.files().get(i)));
+        for (int i = 0; i < files.size(); i++) {
+            photos.add(toPhotoEntity(files.get(i)));
             photos.get(i).setAlbum(album);
             Photo createdPhoto = photoRepository.save(photos.get(i));
             createdPhotos.add(createdPhoto);
         }
-        log.info("Пользователь {} добавил фотографии {}",
+        LOG.info("Пользователь {} добавил фотографии {}",
             currentUser,
             createdPhotos);
         return createdPhotos;
@@ -116,7 +125,7 @@ public class PhotoService extends SuperService {
         photoRatingRepository.deleteAllByPhotoId(photo.getId());
         photoTagRepository.deleteAllByPhotoId(photo.getId());
         photoRepository.deleteById(photo.getId());
-        log.info("Пользователь {} удалил фотографию {}",
+        LOG.info("Пользователь {} удалил фотографию {}",
             currentUser,
             photo);
         return photo;
@@ -144,7 +153,7 @@ public class PhotoService extends SuperService {
             photo
         );
         PhotoTag createdTag = photoTagRepository.save(tag);
-        log.info("Пользователь {} добавил тег {}",
+        LOG.info("Пользователь {} добавил тег {}",
             currentUser,
             createdTag);
         return createdTag;
@@ -159,7 +168,7 @@ public class PhotoService extends SuperService {
         User owner = album.getOwner();
         checkRights(currentUser, owner);
         photoTagRepository.deleteById(tag.getId());
-        log.info("Пользователь {} удалил тег {}",
+        LOG.info("Пользователь {} удалил тег {}",
             currentUser,
             tag);
         return tag;
@@ -181,7 +190,7 @@ public class PhotoService extends SuperService {
             createdRating,
             rating(dto.photoId())
         );
-        log.info("Пользователь {} поставил оценку фотографии {}",
+        LOG.info("Пользователь {} поставил оценку фотографии {}",
             currentUser,
             createdRating);
         return responseDto;
@@ -199,7 +208,7 @@ public class PhotoService extends SuperService {
             updatedRating,
             rating(photo.getId())
         );
-        log.info("Пользователь {} обновил оценку фотографии {}",
+        LOG.info("Пользователь {} обновил оценку фотографии {}",
             currentUser,
             updatedRating);
         return responseDto;
@@ -216,7 +225,7 @@ public class PhotoService extends SuperService {
             rating,
             rating(rating.getPhoto().getId())
         );
-        log.info("Пользователь {} удалил оценку фотографии {}",
+        LOG.info("Пользователь {} удалил оценку фотографии {}",
             currentUser,
             rating);
         return responseDto;
@@ -246,7 +255,7 @@ public class PhotoService extends SuperService {
             photo
         );
         PhotoComment createdComment = photoCommentRepository.save(comment);
-        log.info("Пользователь {} добавил комментарий {}",
+        LOG.info("Пользователь {} добавил комментарий {}",
             currentUser,
             createdComment);
         return createdComment;
@@ -259,7 +268,7 @@ public class PhotoService extends SuperService {
         User commentingUser = comment.getCommentingUser();
         checkRights(currentUser, commentingUser);
         photoCommentRepository.deleteById(id);
-        log.info("Пользователь {} удалил комментарий {}",
+        LOG.info("Пользователь {} удалил комментарий {}",
             currentUser,
             comment);
         return comment;
@@ -306,6 +315,17 @@ public class PhotoService extends SuperService {
             throw new RuntimeException(); // todo написать свое исключение
         }
         return photo;
+    }
+
+    private void checkContentType(MultipartFile file) {
+        String[] acceptableContentTypes = {"image/xbm", "image/tif", "image/jfif", "image/pjp", "image/apng",
+            "image/jpeg", "image/heif", "image/ico", "image/tiff", "image/webp", "image/svgz", "image/jpg", "image/heic",
+            "image/gif", "image/svg", "image/png", "image/bmp", "image/pjpeg", "image/avif"};
+        for (String acceptableContentType : acceptableContentTypes) {
+            if (!Objects.equals(file.getContentType(), acceptableContentType)) {
+                throw new IllegalArgumentException("Недопустимый формат файла");
+            }
+        }
     }
 
 }
