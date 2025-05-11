@@ -16,6 +16,14 @@ form.addEventListener('submit', async (e) => {
         body: JSON.stringify(dataFromForm)
     });
 
+    const errorElements = document.querySelector('body').querySelectorAll('.error');
+    if (errorElements) {
+        errorElements.forEach(el => {
+            let br = document.createElement('br');
+            el.replaceWith(br);
+        });
+    }
+
     const data = await response.json();
     if (response.ok) {
         localStorage.setItem('userId', data.user.id);
@@ -27,7 +35,7 @@ form.addEventListener('submit', async (e) => {
             div.style.color = 'red';
             div.textContent = value;
             if (key === 'error') {
-                document.querySelector('button').insertAdjacentElement('afterend', div);
+                document.querySelector('button').nextElementSibling.replaceWith(div);
             } else {
                 document.querySelector(`[name="${key}"]`).nextElementSibling.replaceWith(div);
             }

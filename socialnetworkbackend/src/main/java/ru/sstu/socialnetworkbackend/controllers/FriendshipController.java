@@ -4,8 +4,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.sstu.socialnetworkbackend.services.FriendshipService;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping("/api/v1/friendships")
 public class FriendshipController {
@@ -17,33 +15,33 @@ public class FriendshipController {
     }
 
     @GetMapping("/find/{keyword}")
-    public ResponseEntity<?> find(@PathVariable String keyword, Principal principal) {
-        return ResponseEntity.ok(service.find(keyword, principal));
+    public ResponseEntity<?> find(@PathVariable String keyword) {
+        return ResponseEntity.ok(service.find(keyword));
     }
 
     @GetMapping("/create/{friendId}")
-    public ResponseEntity<?> create(@PathVariable Long friendId, Principal principal) {
-        return ResponseEntity.ok(service.create(friendId, principal));
+    public ResponseEntity<?> create(@PathVariable Long friendId) {
+        return ResponseEntity.ok(service.create(friendId));
     }
 
     @GetMapping("/show_incoming_requests")
-    public ResponseEntity<?> showIncomingRequests(Principal principal) {
-        return ResponseEntity.ok(service.showIncomingRequests(principal));
+    public ResponseEntity<?> showIncomingRequests() {
+        return ResponseEntity.ok(service.showIncomingRequests());
     }
 
     @GetMapping("/show_outgoing_requests")
-    public ResponseEntity<?> showOutgoingRequests(Principal principal) {
-        return ResponseEntity.ok(service.showOutgoingRequests(principal));
+    public ResponseEntity<?> showOutgoingRequests() {
+        return ResponseEntity.ok(service.showOutgoingRequests());
     }
 
     @PatchMapping("/accept/{friendId}")
-    public ResponseEntity<?> accept(@PathVariable Long friendId, Principal principal) {
-        return ResponseEntity.ok(service.accept(friendId, principal));
+    public ResponseEntity<?> accept(@PathVariable Long friendId) {
+        return ResponseEntity.ok(service.accept(friendId));
     }
 
     @GetMapping("/show_mine")
-    public ResponseEntity<?> show(Principal principal) {
-        return ResponseEntity.ok(service.show(principal));
+    public ResponseEntity<?> show() {
+        return ResponseEntity.ok(service.show());
     }
 
     @GetMapping("/show/{userId}")
@@ -52,18 +50,18 @@ public class FriendshipController {
     }
 
     @DeleteMapping("/delete/{friendId}")
-    public ResponseEntity<?> delete(@PathVariable Long friendId, Principal principal) {
-        return ResponseEntity.ok(service.delete(friendId, principal));
+    public ResponseEntity<?> delete(@PathVariable Long friendId) {
+        return ResponseEntity.ok(service.delete(friendId));
     }
 
     @DeleteMapping("/reject/{friendId}")
-    public ResponseEntity<?> reject(@PathVariable Long friendId, Principal principal) {
-        return ResponseEntity.ok(service.reject(friendId, principal));
+    public ResponseEntity<?> reject(@PathVariable Long friendId) {
+        return ResponseEntity.ok(service.reject(friendId));
     }
 
     @DeleteMapping("/delete_outgoing_request/{friendId}")
-    public ResponseEntity<?> deleteOutgoingRequest(@PathVariable Long friendId, Principal principal) {
-        return ResponseEntity.ok(service.deleteOutgoingRequest(friendId, principal));
+    public ResponseEntity<?> deleteOutgoingRequest(@PathVariable Long friendId) {
+        return ResponseEntity.ok(service.deleteOutgoingRequest(friendId));
     }
 
 }

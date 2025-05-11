@@ -17,7 +17,7 @@ public class EmailService implements EmailSender {
     }
 
     @Override
-//    @Async
+    @Async
     public void send(String to, String message) {
         try {
             MimeMessage mimeMessage = sender.createMimeMessage();

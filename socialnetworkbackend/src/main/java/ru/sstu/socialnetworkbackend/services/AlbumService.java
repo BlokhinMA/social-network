@@ -17,7 +17,6 @@ import ru.sstu.socialnetworkbackend.exceptions.IncorrectKeywordException;
 import ru.sstu.socialnetworkbackend.exceptions.ResourceNotFoundException;
 import ru.sstu.socialnetworkbackend.repositories.AlbumRepository;
 
-import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -40,27 +39,27 @@ public class AlbumService {
         this.userService = userService;
     }
 
-    public Album create(AlbumDto albumDto, Principal principal) {
-        User owner = userService.getCurrentUser(principal);
+    public Album create(AlbumDto albumDto) {
+        User owner = userService.getCurrentUser();
         Album album = new Album(
-                albumDto.title(),
-                AccessType.valueOf(albumDto.accessType()),
-                owner
+            albumDto.title(),
+            AccessType.valueOf(albumDto.accessType()),
+            owner
         );
         Album createdAlbum = albumRepository.save(album);
         log.info("Пользователь {} добавил альбом {}",
-                owner,
-                createdAlbum);
+            owner,
+            createdAlbum);
         List<MultipartFile> files = albumDto.files();
         if (files != null && files.getFirst().getSize() != 0) {
             PhotoDto photoDto = new PhotoDto(albumDto.files(), createdAlbum.getId());
-            photoService.create(photoDto, principal);
+            photoService.create(photoDto);
         }
         return createdAlbum;
     }
 
-    public List<Album> showAll(Principal principal) {
-        User owner = userService.getCurrentUser(principal);
+    public List<Album> showAll() {
+        User owner = userService.getCurrentUser();
         return albumRepository.findAllByOwnerOrderByIdDesc(owner);
     }
 
@@ -68,38 +67,38 @@ public class AlbumService {
         User owner = userService.getUserById(ownerId);
         List<Album> albums = albumRepository.findAllByOwnerOrderByIdDesc(owner);
         return new AlbumsResponseDto(
-                owner,
-                albums
+            owner,
+            albums
         );
     }
 
-    public AlbumResponseDto show(Long id, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public AlbumResponseDto show(Long id) {
+        User currentUser = userService.getCurrentUser();
         Album album = getAlbumFromDB(id);
         if (!currentUser.equals(album.getOwner()) &&
-                album.getAccessType() == AccessType.FRIENDS &&
-                !friendshipService.isFriend(album.getOwner().getId(), principal)) {
+            album.getAccessType() == AccessType.FRIENDS &&
+            !friendshipService.isFriend(album.getOwner().getId())) {
             throw new AccessDeniedException("Этот альбом доступен только для друзей");
         }
         List<Long> photos = photoService.showAll(album.getId());
         return new AlbumResponseDto(
-                album,
-                photos,
-                currentUser.equals(album.getOwner())
+            album,
+            photos,
+            currentUser.equals(album.getOwner())
         );
     }
 
     @Transactional
-    public Album delete(Long id, Principal principal) {
+    public Album delete(Long id) {
         Album album = getAlbumFromDB(id);
-        User currentUser = userService.getCurrentUser(principal);
+        User currentUser = userService.getCurrentUser();
         User owner = album.getOwner();
         checkRights(!currentUser.equals(owner));
-        photoService.deleteAllByAlbumId(album.getId(), principal);
+        photoService.deleteAllByAlbumId(album.getId());
         albumRepository.deleteById(album.getId());
         log.info("Пользователь {} удалил альбом {}",
-                currentUser,
-                album);
+            currentUser,
+            album);
         return album;
     }
 
@@ -109,22 +108,22 @@ public class AlbumService {
         return albumRepository.findAllILikeName(keyword);
     }
 
-    public Album changeAccessType(ChangeAlbumAccessTypeDto dto, Principal principal) {
+    public Album changeAccessType(ChangeAlbumAccessTypeDto dto) {
         Album album = getAlbumFromDB(dto.id());
-        User currentUser = userService.getCurrentUser(principal);
+        User currentUser = userService.getCurrentUser();
         User owner = album.getOwner();
         checkRights(!currentUser.equals(owner));
         album.setAccessType(AccessType.valueOf(dto.accessType()));
         Album updatedAlbum = albumRepository.save(album);
         log.info("Пользователь {} обновил альбом {}",
-                currentUser,
-                updatedAlbum);
+            currentUser,
+            updatedAlbum);
         return updatedAlbum;
     }
 
     private Album getAlbumFromDB(Long id) {
         return albumRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
+            .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
     }
 
     private void checkRights(boolean condition) {

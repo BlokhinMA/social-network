@@ -19,13 +19,14 @@ form.addEventListener('submit', async (e) => {
         body: JSON.stringify(dataFromForm)
     });
 
-    const errorElements = document.querySelectorAll('.error');
+    const errorElements = document.querySelector('body').querySelectorAll('.error');
     if (errorElements) {
         errorElements.forEach(el => {
             let br = document.createElement('br');
             el.replaceWith(br);
         });
     }
+
     if (response.ok) {
         let htmlCode = '<div style="color: green;">Вы успешно зарегистрировались! ' +
             'Для подтверждения аккаунта перейдите по ссылке, отправленной на указанную почту</div>';

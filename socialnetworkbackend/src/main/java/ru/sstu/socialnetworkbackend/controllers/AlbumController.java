@@ -7,8 +7,6 @@ import ru.sstu.socialnetworkbackend.dtos.albums.AlbumDto;
 import ru.sstu.socialnetworkbackend.dtos.albums.ChangeAlbumAccessTypeDto;
 import ru.sstu.socialnetworkbackend.services.AlbumService;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping("/api/v1/albums")
 public class AlbumController {
@@ -20,13 +18,13 @@ public class AlbumController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@Valid @ModelAttribute AlbumDto albumDto, Principal principal) {
-        return ResponseEntity.ok(service.create(albumDto, principal));
+    public ResponseEntity<?> create(@Valid @ModelAttribute AlbumDto albumDto) {
+        return ResponseEntity.ok(service.create(albumDto));
     }
 
     @GetMapping("/show_mine")
-    public ResponseEntity<?> showMine(Principal principal) {
-        return ResponseEntity.ok(service.showAll(principal));
+    public ResponseEntity<?> showMine() {
+        return ResponseEntity.ok(service.showAll());
     }
 
     @GetMapping("/show_all/{ownerId}")
@@ -35,13 +33,13 @@ public class AlbumController {
     }
 
     @GetMapping("/show/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(service.show(id, principal));
+    public ResponseEntity<?> show(@PathVariable Long id) {
+        return ResponseEntity.ok(service.show(id));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(service.delete(id, principal));
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return ResponseEntity.ok(service.delete(id));
     }
 
     @GetMapping("/find/{keyword}")
@@ -50,8 +48,8 @@ public class AlbumController {
     }
 
     @PatchMapping("/change_access_type")
-    public ResponseEntity<?> changeAccessType(@RequestBody @Valid ChangeAlbumAccessTypeDto dto, Principal principal) {
-        return ResponseEntity.ok(service.changeAccessType(dto, principal));
+    public ResponseEntity<?> changeAccessType(@RequestBody @Valid ChangeAlbumAccessTypeDto dto) {
+        return ResponseEntity.ok(service.changeAccessType(dto));
     }
 
 }

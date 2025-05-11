@@ -10,7 +10,6 @@ import ru.sstu.socialnetworkbackend.entities.Photo;
 import ru.sstu.socialnetworkbackend.services.PhotoService;
 
 import java.io.ByteArrayInputStream;
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/photos")
@@ -23,8 +22,8 @@ public class PhotoController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@ModelAttribute @Valid PhotoDto photoDto, Principal principal) {
-        return ResponseEntity.ok(service.create(photoDto, principal));
+    public ResponseEntity<?> create(@ModelAttribute @Valid PhotoDto photoDto) {
+        return ResponseEntity.ok(service.create(photoDto));
     }
 
     @GetMapping("/show_entity/{id}")
@@ -38,53 +37,53 @@ public class PhotoController {
     }
 
     @GetMapping("/show/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(service.show(id, principal));
+    public ResponseEntity<?> show(@PathVariable Long id) {
+        return ResponseEntity.ok(service.show(id));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(service.delete(id, principal));
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return ResponseEntity.ok(service.delete(id));
     }
 
     @PostMapping("/create_tag")
-    public ResponseEntity<?> createTag(@RequestBody @Valid PhotoTagDto dto, Principal principal) {
-        return ResponseEntity.ok(service.createTag(dto, principal));
+    public ResponseEntity<?> createTag(@RequestBody @Valid PhotoTagDto dto) {
+        return ResponseEntity.ok(service.createTag(dto));
     }
 
     @DeleteMapping("/delete_tag/{id}")
-    public ResponseEntity<?> deleteTag(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(service.deleteTag(id, principal));
+    public ResponseEntity<?> deleteTag(@PathVariable Long id) {
+        return ResponseEntity.ok(service.deleteTag(id));
     }
 
     @PostMapping("/create_rating")
-    public ResponseEntity<?> createRating(@RequestBody @Valid PhotoRatingDto dto, Principal principal) {
-        return ResponseEntity.ok(service.createRating(dto, principal));
+    public ResponseEntity<?> createRating(@RequestBody @Valid PhotoRatingDto dto) {
+        return ResponseEntity.ok(service.createRating(dto));
     }
 
     @PatchMapping("/update_rating")
-    public ResponseEntity<?> updateRating(@RequestBody @Valid PhotoRatingDto dto, Principal principal) {
-        return ResponseEntity.ok(service.updateRating(dto, principal));
+    public ResponseEntity<?> updateRating(@RequestBody @Valid PhotoRatingDto dto) {
+        return ResponseEntity.ok(service.updateRating(dto));
     }
 
     @DeleteMapping("/delete_rating/{photoId}")
-    public ResponseEntity<?> deleteRating(@PathVariable Long photoId, Principal principal) {
-        return ResponseEntity.ok(service.deleteRating(photoId, principal));
+    public ResponseEntity<?> deleteRating(@PathVariable Long photoId) {
+        return ResponseEntity.ok(service.deleteRating(photoId));
     }
 
     @GetMapping("/user_rating/{photoId}")
-    public ResponseEntity<?> userRating(@PathVariable Long photoId, Principal principal) {
-        return ResponseEntity.ok(service.userRating(photoId, principal));
+    public ResponseEntity<?> userRating(@PathVariable Long photoId) {
+        return ResponseEntity.ok(service.userRating(photoId));
     }
 
     @PostMapping("/create_comment")
-    public ResponseEntity<?> createComment(@RequestBody @Valid PhotoCommentDto dto, Principal principal) {
-        return ResponseEntity.ok(service.createComment(dto, principal));
+    public ResponseEntity<?> createComment(@RequestBody @Valid PhotoCommentDto dto) {
+        return ResponseEntity.ok(service.createComment(dto));
     }
 
     @DeleteMapping("/delete_comment/{id}")
-    public ResponseEntity<?> deleteComment(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(service.deleteComment(id, principal));
+    public ResponseEntity<?> deleteComment(@PathVariable Long id) {
+        return ResponseEntity.ok(service.deleteComment(id));
     }
 
     @PostMapping("/find")

@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.sstu.socialnetworkbackend.entities.User;
 import ru.sstu.socialnetworkbackend.services.UserService;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
@@ -18,11 +16,6 @@ public class UserController {
 
     public UserController(UserService service) {
         this.service = service;
-    }
-
-    @GetMapping("/get_current_user")
-    public ResponseEntity<User> getCurrentUser(Principal principal) {
-        return ResponseEntity.ok(service.getCurrentUser(principal));
     }
 
     @GetMapping("/get_user/{id}")

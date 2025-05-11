@@ -41,10 +41,10 @@ public class PhotoService {
         this.userService = userService;
     }
 
-    public List<Photo> create(PhotoDto photoDto, Principal principal) { // todo: оптимизировать
+    public List<Photo> create(PhotoDto photoDto) { // todo: оптимизировать
         if (photoDto.files().getFirst().getSize() == 0)
             throw new EmptyFileException();
-        User currentUser = userService.getCurrentUser(principal);
+        User currentUser = userService.getCurrentUser();
         Album album = albumRepository.findById(photoDto.albumId())
                 .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
         checkRights(currentUser, album.getOwner());
@@ -66,8 +66,8 @@ public class PhotoService {
         return getPhotoFromDB(id);
     }
 
-    public PhotoResponseDto show(Long id, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public PhotoResponseDto show(Long id) {
+        User currentUser = userService.getCurrentUser();
         Photo photo = getPhotoFromDB(id);
         User owner = photo.getAlbum().getOwner();
 
@@ -107,10 +107,10 @@ public class PhotoService {
     }
 
     @Transactional
-    public Photo delete(Long id, Principal principal) {
+    public Photo delete(Long id) {
         Photo photo = getPhotoFromDB(id);
         Album album = getAlbumFromDB(photo.getAlbum().getId());
-        User currentUser = userService.getCurrentUser(principal);
+        User currentUser = userService.getCurrentUser();
         User owner = album.getOwner();
         checkRights(currentUser, owner);
         photoCommentRepository.deleteAllByPhotoId(photo.getId());
@@ -124,20 +124,20 @@ public class PhotoService {
     }
 
     @Transactional
-    public void deleteAllByAlbumId(Long albumId, Principal principal) {
+    public void deleteAllByAlbumId(Long albumId) {
         List<Long> photosIds = photoRepository.findAllIdByAlbumId(albumId);
         for (Long id : photosIds) {
-            delete(id, principal);
+            delete(id);
         }
     }
 
-    public PhotoTag createTag(PhotoTagDto dto, Principal principal) {
+    public PhotoTag createTag(PhotoTagDto dto) {
         Photo photo = getPhotoFromDB(dto.photoId());
         if (photoTagRepository.findByTagAndPhoto(dto.tag(), photo).isPresent()) {
             throw new ResourceAlreadyExistsException("Такой тег уже существует");
         }
         Album album = photo.getAlbum();
-        User currentUser = userService.getCurrentUser(principal);
+        User currentUser = userService.getCurrentUser();
         User owner = album.getOwner();
         checkRights(currentUser, owner);
         PhotoTag tag = new PhotoTag(
@@ -151,12 +151,12 @@ public class PhotoService {
         return createdTag;
     }
 
-    public PhotoTag deleteTag(Long id, Principal principal) {
+    public PhotoTag deleteTag(Long id) {
         PhotoTag tag = photoTagRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Тега не существует"));
         Photo photo = tag.getPhoto();
         Album album = photo.getAlbum();
-        User currentUser = userService.getCurrentUser(principal);
+        User currentUser = userService.getCurrentUser();
         User owner = album.getOwner();
         checkRights(currentUser, owner);
         photoTagRepository.deleteById(tag.getId());
@@ -166,8 +166,8 @@ public class PhotoService {
         return tag;
     }
 
-    public PhotoRatingResponseDto createRating(PhotoRatingDto dto, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public PhotoRatingResponseDto createRating(PhotoRatingDto dto) {
+        User currentUser = userService.getCurrentUser();
         Photo photo = getPhotoFromDB(dto.photoId());
         if (photoRatingRepository.findByRatingUserAndPhoto(currentUser, photo).isPresent()) {
             throw new ResourceAlreadyExistsException("Рейтинг уже существует");
@@ -188,8 +188,8 @@ public class PhotoService {
         return responseDto;
     }
 
-    public PhotoRatingResponseDto updateRating(PhotoRatingDto dto, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public PhotoRatingResponseDto updateRating(PhotoRatingDto dto) {
+        User currentUser = userService.getCurrentUser();
         Photo photo = getPhotoFromDB(dto.photoId());
         PhotoRating rating = getPhotoRatingFromDB(currentUser, photo);
         User ratingUser = rating.getRatingUser();
@@ -206,8 +206,8 @@ public class PhotoService {
         return responseDto;
     }
 
-    public PhotoRatingResponseDto deleteRating(Long photoId, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public PhotoRatingResponseDto deleteRating(Long photoId) {
+        User currentUser = userService.getCurrentUser();
         Photo photo = getPhotoFromDB(photoId);
         PhotoRating rating = getPhotoRatingFromDB(currentUser, photo);
         User ratingUser = rating.getRatingUser();
@@ -230,17 +230,17 @@ public class PhotoService {
         else return null;
     }
 
-    public UserRatingResponseDto userRating(Long photoId, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public UserRatingResponseDto userRating(Long photoId) {
+        User currentUser = userService.getCurrentUser();
         Photo photo = getPhotoFromDB(photoId);
         return new UserRatingResponseDto(
                 photoRatingRepository.userRatingByRatingUserIdAndPhotoId(currentUser.getId(), photo.getId())
         );
     }
 
-    public PhotoComment createComment(PhotoCommentDto dto, Principal principal) {
+    public PhotoComment createComment(PhotoCommentDto dto) {
         Photo photo = getPhotoFromDB(dto.photoId());
-        User currentUser = userService.getCurrentUser(principal);
+        User currentUser = userService.getCurrentUser();
         PhotoComment comment = new PhotoComment(
                 dto.comment(),
                 currentUser,
@@ -253,10 +253,10 @@ public class PhotoService {
         return createdComment;
     }
 
-    public PhotoComment deleteComment(Long id, Principal principal) {
+    public PhotoComment deleteComment(Long id) {
         PhotoComment comment = photoCommentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Комментарий не существует"));
-        User currentUser = userService.getCurrentUser(principal);
+        User currentUser = userService.getCurrentUser();
         User commentingUser = comment.getCommentingUser();
         checkRights(currentUser, commentingUser);
         photoCommentRepository.deleteById(id);

@@ -1,5 +1,6 @@
 package ru.sstu.socialnetworkbackend.services;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,12 +17,16 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
 
+    private final HttpServletRequest request;
+
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(AuthService.class);
 
-    public AuthService(UserService userService, JwtUtil jwtUtil, AuthenticationManager authenticationManager) {
+    public AuthService(UserService userService, JwtUtil jwtUtil, AuthenticationManager authenticationManager,
+                       HttpServletRequest request) {
         this.userService = userService;
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
+        this.request = request;
     }
 
     public AuthResponse auth(AuthRequest authRequest) {
@@ -34,7 +39,7 @@ public class AuthService {
                 )
             );
         } catch (Exception e) {
-            log.info("Неудачная попытка авторизации");
+            log.info("Неудачная попытка авторизации с ip {}", request.getRemoteAddr());
             throw new BadCredentialsException("");
         }
 

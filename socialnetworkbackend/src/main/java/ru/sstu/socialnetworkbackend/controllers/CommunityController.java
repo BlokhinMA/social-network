@@ -7,8 +7,6 @@ import ru.sstu.socialnetworkbackend.dtos.communities.CommunityDto;
 import ru.sstu.socialnetworkbackend.dtos.communities.CommunityPostDto;
 import ru.sstu.socialnetworkbackend.services.CommunityService;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping("/api/v1/communities")
 public class CommunityController {
@@ -20,13 +18,13 @@ public class CommunityController {
     }
 
     @GetMapping("/show_mine")
-    public ResponseEntity<?> showMine(Principal principal) {
-        return ResponseEntity.ok(service.showAllOwn(principal));
+    public ResponseEntity<?> showMine() {
+        return ResponseEntity.ok(service.showAllOwn());
     }
 
     @GetMapping("/show_my_subscriptions")
-    public ResponseEntity<?> showMySubscriptions(Principal principal) {
-        return ResponseEntity.ok(service.showAll(principal));
+    public ResponseEntity<?> showMySubscriptions() {
+        return ResponseEntity.ok(service.showAll());
     }
 
     @GetMapping("/show_subscriptions/{memberId}")
@@ -35,43 +33,43 @@ public class CommunityController {
     }
 
     @GetMapping("/show/{id}")
-    public ResponseEntity<?> show(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(service.show(id, principal));
+    public ResponseEntity<?> show(@PathVariable Long id) {
+        return ResponseEntity.ok(service.show(id));
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody @Valid CommunityDto dto, Principal principal) {
-        return ResponseEntity.ok(service.create(dto, principal));
+    public ResponseEntity<?> create(@RequestBody @Valid CommunityDto dto) {
+        return ResponseEntity.ok(service.create(dto));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(service.delete(id, principal));
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        return ResponseEntity.ok(service.delete(id));
     }
 
     @GetMapping("/join/{communityId}")
-    public ResponseEntity<?> join(@PathVariable Long communityId, Principal principal) {
-        return ResponseEntity.ok(service.join(communityId, principal));
+    public ResponseEntity<?> join(@PathVariable Long communityId) {
+        return ResponseEntity.ok(service.join(communityId));
     }
 
     @DeleteMapping("/leave/{communityId}")
-    public ResponseEntity<?> leave(@PathVariable Long communityId, Principal principal) {
-        return ResponseEntity.ok(service.leave(communityId, principal));
+    public ResponseEntity<?> leave(@PathVariable Long communityId) {
+        return ResponseEntity.ok(service.leave(communityId));
     }
 
     @DeleteMapping("/kick/{id}")
-    public ResponseEntity<?> kick(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(service.kick(id, principal));
+    public ResponseEntity<?> kick(@PathVariable Long id) {
+        return ResponseEntity.ok(service.kick(id));
     }
 
     @PostMapping("/create_post")
-    public ResponseEntity<?> createPost(@Valid @RequestBody CommunityPostDto communityPostDto, Principal principal) {
-        return ResponseEntity.ok(service.createPost(communityPostDto, principal));
+    public ResponseEntity<?> createPost(@Valid @RequestBody CommunityPostDto communityPostDto) {
+        return ResponseEntity.ok(service.createPost(communityPostDto));
     }
 
     @DeleteMapping("/delete_post/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable Long id, Principal principal) {
-        return ResponseEntity.ok(service.deletePost(id, principal));
+    public ResponseEntity<?> deletePost(@PathVariable Long id) {
+        return ResponseEntity.ok(service.deletePost(id));
     }
 
     @GetMapping("/find/{keyword}")

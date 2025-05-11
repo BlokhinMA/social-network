@@ -16,7 +16,6 @@ import ru.sstu.socialnetworkbackend.repositories.CommunityMemberRepository;
 import ru.sstu.socialnetworkbackend.repositories.CommunityPostRepository;
 import ru.sstu.socialnetworkbackend.repositories.CommunityRepository;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,13 +39,13 @@ public class CommunityService {
         this.userService = userService;
     }
 
-    public List<Community> showAllOwn(Principal principal) {
-        User creator = userService.getCurrentUser(principal);
+    public List<Community> showAllOwn() {
+        User creator = userService.getCurrentUser();
         return communityRepository.findAllByCreator(creator);
     }
 
-    public List<Community> showAll(Principal principal) {
-        User member = userService.getCurrentUser(principal);
+    public List<Community> showAll() {
+        User member = userService.getCurrentUser();
         return communityRepository.findAllByMemberId(member.getId());
     }
 
@@ -58,8 +57,8 @@ public class CommunityService {
         );
     }
 
-    public CommunityResponseDto show(Long id, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public CommunityResponseDto show(Long id) {
+        User currentUser = userService.getCurrentUser();
         Community community = getCommunityFromDB(id);
         List<CommunityMember> members = communityMemberRepository.findAllByCommunityOrderByIdDesc(community);
         List<CommunityPost> postsFromDB = communityPostRepository.findAllByCommunityOrderByCreationTimeStampDesc(community);
@@ -91,8 +90,8 @@ public class CommunityService {
         return posts;
     }
 
-    public Community create(CommunityDto dto, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public Community create(CommunityDto dto) {
+        User currentUser = userService.getCurrentUser();
         Community community = new Community(
                 dto.name(),
                 currentUser
@@ -105,8 +104,8 @@ public class CommunityService {
     }
 
     @Transactional
-    public Community delete(Long id, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public Community delete(Long id) {
+        User currentUser = userService.getCurrentUser();
         Community community = getCommunityFromDB(id);
         checkRights(!currentUser.equals(community.getCreator()));
         communityMemberRepository.deleteAllByCommunityId(community.getId());
@@ -118,8 +117,8 @@ public class CommunityService {
         return community;
     }
 
-    public CommunityMember join(Long communityId, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public CommunityMember join(Long communityId) {
+        User currentUser = userService.getCurrentUser();
         Community community = getCommunityFromDB(communityId);
         if (communityMemberRepository.findByMemberAndCommunity(currentUser, community).isPresent())
             throw new ResourceAlreadyExistsException("Вы уже являетесь участником сообщества");
@@ -134,8 +133,8 @@ public class CommunityService {
         return joinedMember;
     }
 
-    public CommunityMember leave(Long communityId, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public CommunityMember leave(Long communityId) {
+        User currentUser = userService.getCurrentUser();
         Community community = getCommunityFromDB(communityId);
         CommunityMember communityMember = communityMemberRepository.findByMemberAndCommunity(currentUser, community)
                 .orElseThrow(() -> new ResourceNotFoundException("Вы не являетесь участником сообщества"));
@@ -146,8 +145,8 @@ public class CommunityService {
         return communityMember;
     }
 
-    public CommunityMember kick(Long id, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public CommunityMember kick(Long id) {
+        User currentUser = userService.getCurrentUser();
         CommunityMember member = communityMemberRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Данный пользователь не является участником " +
                         "сообщества или этого пользователя или сообщества не существует"));
@@ -159,8 +158,8 @@ public class CommunityService {
         return member;
     }
 
-    public CommunityPost createPost(CommunityPostDto dto, Principal principal) {
-        User currentUser = userService.getCurrentUser(principal);
+    public CommunityPost createPost(CommunityPostDto dto) {
+        User currentUser = userService.getCurrentUser();
         Community community = getCommunityFromDB(dto.communityId());
         checkRights(communityMemberRepository.findByMemberAndCommunity(currentUser, community).isEmpty() &&
                 !currentUser.equals(community.getCreator()));
@@ -176,10 +175,10 @@ public class CommunityService {
         return createdPost;
     }
 
-    public CommunityPost deletePost(Long id, Principal principal) {
+    public CommunityPost deletePost(Long id) {
         CommunityPost post = communityPostRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Пост сообщества не найден или его не существует"));
-        User currentUser = userService.getCurrentUser(principal);
+        User currentUser = userService.getCurrentUser();
         checkRights(!currentUser.equals(post.getAuthor()));
         communityPostRepository.deleteById(id);
         log.info("Пользователь {} удалил пост {}",
