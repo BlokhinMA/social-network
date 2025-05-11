@@ -20,7 +20,7 @@ import ru.sstu.socialnetworkbackend.repositories.AlbumRepository;
 import java.util.List;
 
 @Service
-public class AlbumService {
+public class AlbumService extends SuperService {
 
     private final AlbumRepository albumRepository;
     private final PhotoService photoService;
@@ -93,7 +93,7 @@ public class AlbumService {
         Album album = getAlbumFromDB(id);
         User currentUser = userService.getCurrentUser();
         User owner = album.getOwner();
-        checkRights(!currentUser.equals(owner));
+        checkRights(currentUser, owner);
         photoService.deleteAllByAlbumId(album.getId());
         albumRepository.deleteById(album.getId());
         log.info("Пользователь {} удалил альбом {}",
@@ -112,7 +112,7 @@ public class AlbumService {
         Album album = getAlbumFromDB(dto.id());
         User currentUser = userService.getCurrentUser();
         User owner = album.getOwner();
-        checkRights(!currentUser.equals(owner));
+        checkRights(currentUser, owner);
         album.setAccessType(AccessType.valueOf(dto.accessType()));
         Album updatedAlbum = albumRepository.save(album);
         log.info("Пользователь {} обновил альбом {}",
@@ -124,12 +124,6 @@ public class AlbumService {
     private Album getAlbumFromDB(Long id) {
         return albumRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
-    }
-
-    private void checkRights(boolean condition) {
-        if (condition) {
-            throw new AccessDeniedException("У Вас недостаточно прав на выполнение данной операции");
-        }
     }
 
 }

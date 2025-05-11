@@ -2,7 +2,6 @@ package ru.sstu.socialnetworkbackend.services;
 
 import jakarta.transaction.Transactional;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import ru.sstu.socialnetworkbackend.dtos.communities.*;
 import ru.sstu.socialnetworkbackend.entities.Community;
@@ -20,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CommunityService {
+public class CommunityService extends SuperService {
 
     private final CommunityRepository communityRepository;
     private final CommunityMemberRepository communityMemberRepository;
@@ -107,7 +106,7 @@ public class CommunityService {
     public Community delete(Long id) {
         User currentUser = userService.getCurrentUser();
         Community community = getCommunityFromDB(id);
-        checkRights(!currentUser.equals(community.getCreator()));
+        checkRights(currentUser, community.getCreator());
         communityMemberRepository.deleteAllByCommunityId(community.getId());
         communityPostRepository.deleteAllByCommunityId(community.getId());
         communityRepository.deleteById(id);
@@ -150,7 +149,7 @@ public class CommunityService {
         CommunityMember member = communityMemberRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Данный пользователь не является участником " +
                 "сообщества или этого пользователя или сообщества не существует"));
-        checkRights(!currentUser.equals(member.getCommunity().getCreator()));
+        checkRights(currentUser, member.getCommunity().getCreator());
         communityMemberRepository.deleteById(id);
         log.info("Пользователь {} выгнал участника сообщества {}",
             currentUser,
@@ -161,8 +160,8 @@ public class CommunityService {
     public CommunityPost createPost(CommunityPostDto dto) {
         User currentUser = userService.getCurrentUser();
         Community community = getCommunityFromDB(dto.communityId());
-        checkRights(communityMemberRepository.findByMemberAndCommunity(currentUser, community).isEmpty() &&
-            !currentUser.equals(community.getCreator()));
+        checkRights(communityMemberRepository.findByMemberAndCommunity(currentUser, community).isPresent(), currentUser,
+            community.getCreator());
         CommunityPost post = new CommunityPost(
             dto.postText(),
             currentUser,
@@ -179,7 +178,7 @@ public class CommunityService {
         CommunityPost post = communityPostRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Пост сообщества не найден или его не существует"));
         User currentUser = userService.getCurrentUser();
-        checkRights(!currentUser.equals(post.getAuthor()));
+        checkRights(currentUser, post.getAuthor());
         communityPostRepository.deleteById(id);
         log.info("Пользователь {} удалил пост {}",
             currentUser,
@@ -196,11 +195,6 @@ public class CommunityService {
     private Community getCommunityFromDB(Long id) {
         return communityRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Сообщество не найдено"));
-    }
-
-    private void checkRights(boolean condition) {
-        if (condition)
-            throw new AccessDeniedException("У Вас недостаточно прав на выполнение данной операции");
     }
 
 }

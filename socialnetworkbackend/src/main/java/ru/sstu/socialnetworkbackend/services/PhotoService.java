@@ -11,12 +11,11 @@ import ru.sstu.socialnetworkbackend.exceptions.*;
 import ru.sstu.socialnetworkbackend.repositories.*;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PhotoService {
+public class PhotoService extends SuperService {
 
     private final PhotoRepository photoRepository;
     private final PhotoTagRepository photoTagRepository;
@@ -284,12 +283,6 @@ public class PhotoService {
     private Photo getPhotoFromDB(Long id) {
         return photoRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Фотография не найдена"));
-    }
-
-    private void checkRights(User currentUser, User user) {
-        if (!currentUser.equals(user)) {
-            throw new AccessDeniedException("У Вас недостаточно прав на выполнение данной операции");
-        }
     }
 
     private PhotoRating getPhotoRatingFromDB(User ratingUser, Photo photo) {
