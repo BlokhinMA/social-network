@@ -28,7 +28,8 @@ public record UserDto(
         "должна быть корректной и в формате гггг-мм-дд")
     String birthDate,
     @NotNull(message = "Поле \"Пароль\" должно быть заполнено")
-    @Size(min = 1, max = 255, message = "Поле \"Пароль\" должно содержать минимум 1 и максимум 255 символов")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,255}$",
+        message = "Пароль должен состоять из 8 символов минимум")
     String password,
     @NotNull(message = "Поле \"Подтвержденный пароль\" должно быть заполнено")
     String confirmedPassword
