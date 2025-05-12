@@ -1,6 +1,5 @@
 package ru.sstu.socialnetworkbackend.configs;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,9 +10,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.sstu.socialnetworkbackend.repositories.UserRepository;
 
 @Configuration
@@ -49,14 +45,5 @@ public class ApplicationConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(8);
     }
-
-//    @Bean
-//    public HttpServletRequest getCurrentRequest() {
-//        RequestAttributes attrs = RequestContextHolder.getRequestAttributes();
-//        if (attrs instanceof ServletRequestAttributes servletAttrs) {
-//            return servletAttrs.getRequest();
-//        }
-//        throw new IllegalStateException("No current request");
-//    }
 
 }
