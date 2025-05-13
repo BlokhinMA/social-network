@@ -1,5 +1,6 @@
 package ru.sstu.socialnetworkbackend.services;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.sstu.socialnetworkbackend.dtos.friends.FriendsResponseDto;
@@ -17,7 +18,7 @@ public class FriendshipService {
     private final FriendshipRepository friendshipRepository;
     private final UserService userService;
 
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(FriendshipService.class);
+    private static final Logger log = LoggerFactory.getLogger(FriendshipService.class);
 
     public FriendshipService(FriendshipRepository friendshipRepository, UserService userService) {
         this.friendshipRepository = friendshipRepository;

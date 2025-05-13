@@ -1,6 +1,7 @@
 package ru.sstu.socialnetworkbackend.services;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class AlbumService extends SuperService {
     private final FriendshipService friendshipService;
     private final UserService userService;
 
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(AlbumService.class);
+    private static final Logger log = LoggerFactory.getLogger(AlbumService.class);
 
     public AlbumService(AlbumRepository albumRepository,
                         PhotoService photoService,

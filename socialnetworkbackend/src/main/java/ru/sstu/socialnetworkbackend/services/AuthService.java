@@ -1,6 +1,7 @@
 package ru.sstu.socialnetworkbackend.services;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,7 +20,7 @@ public class AuthService {
 
     private final HttpServletRequest request;
 
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(AuthService.class);
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
 
     public AuthService(UserService userService, JwtUtil jwtUtil, AuthenticationManager authenticationManager,
                        HttpServletRequest request) {

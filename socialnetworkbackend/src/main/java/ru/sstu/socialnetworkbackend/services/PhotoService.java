@@ -1,6 +1,7 @@
 package ru.sstu.socialnetworkbackend.services;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class PhotoService extends SuperService {
     private final AlbumRepository albumRepository;
     private final UserService userService;
 
-    private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(PhotoService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(PhotoService.class);
 
     private static final long FILE_MAX_SIZE = 10_485_760;
 

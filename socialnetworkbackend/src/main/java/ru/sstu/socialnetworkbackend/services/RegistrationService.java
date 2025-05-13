@@ -1,6 +1,7 @@
 package ru.sstu.socialnetworkbackend.services;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.sstu.socialnetworkbackend.dtos.users.UserDto;
@@ -14,7 +15,7 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
 
-    private static final org.slf4j.Logger log = LoggerFactory.getLogger(RegistrationService.class);
+    private static final Logger log = LoggerFactory.getLogger(RegistrationService.class);
 
     public RegistrationService(UserService userService, ConfirmationTokenService confirmationTokenService,
                                EmailSender emailSender) {
