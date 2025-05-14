@@ -44,7 +44,7 @@ public class PhotoService extends SuperService {
         this.userService = userService;
     }
 
-    public List<Photo> create(PhotoDto photoDto) { // todo: оптимизировать
+    public List<Photo> create(PhotoDto photoDto) {
         List<MultipartFile> files = photoDto.files();
         if (files.getFirst().getSize() == 0)
             throw new EmptyFileException();
