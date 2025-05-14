@@ -179,7 +179,7 @@ public class CommunityService extends SuperService {
         CommunityPost post = communityPostRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Пост сообщества не найден или его не существует"));
         User currentUser = userService.getCurrentUser();
-        checkRights(currentUser, post.getAuthor());
+        checkRights(currentUser, post.getAuthor(), post.getCommunity().getCreator());
         communityPostRepository.deleteById(id);
         log.info("Пользователь {} удалил пост {}",
             currentUser,
