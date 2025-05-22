@@ -27,11 +27,10 @@ public class Message {
     public Message() {
     }
 
-    public Message(User fromUser, User toUser, String message, LocalDateTime writingTimeStamp) {
+    public Message(User fromUser, User toUser, String message) {
         this.fromUser = fromUser;
         this.toUser = toUser;
         this.message = message;
-        this.writingTimeStamp = writingTimeStamp;
     }
 
     public Long getId() {

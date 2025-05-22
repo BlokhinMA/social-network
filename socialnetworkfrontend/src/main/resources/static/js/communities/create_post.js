@@ -35,10 +35,11 @@ body.addEventListener('submit', async (e) => {
                 postsDiv.insertAdjacentHTML('afterbegin', htmlCode);
             }
             const firstChildPostsDiv = postsDiv.childNodes.item(0);
+            const author = data.author;
             htmlCode = `<div id="${data.id}">
                             <p>
-                                <a href="/profile/${data.author.id}">
-                                    ${data.author.firstName} ${data.author.lastName}
+                                <a href="/profile/${author.id}">
+                                    ${data.author.firstName} ${author.lastName}
                                 </a>
                             </p>
                             <p>${data.postText}</p>
@@ -49,7 +50,7 @@ body.addEventListener('submit', async (e) => {
             form.reset();
         } else {
             htmlCode += '<div id="error">';
-            for (const [key, value] of Object.entries(data)) {
+            for (const [_, value] of Object.entries(data)) {
                 htmlCode += `<p style="color: red;">${value}</p>`;
             }
             htmlCode += '</div>';

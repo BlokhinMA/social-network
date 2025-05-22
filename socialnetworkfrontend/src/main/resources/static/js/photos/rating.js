@@ -14,18 +14,18 @@ ratingsDiv.addEventListener('click', async (e) => {
         switch (userRating) {
             case true:
                 if (data.rating === 'true') {
-                    deleteRating(rating, button);
+                    await deleteRating(rating, button);
                 }
                 if (data.rating === 'false') {
-                    updateRating(rating, button, data, 'red');
+                    await updateRating(rating, button, data, 'red');
                 }
                 break;
             case false:
                 if (data.rating === 'true') {
-                    updateRating(rating, button, data, 'green');
+                    await updateRating(rating, button, data, 'green');
                 }
                 if (data.rating === 'false') {
-                    deleteRating(rating, button);
+                    await deleteRating(rating, button);
                 }
                 break;
             case null:

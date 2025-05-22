@@ -1,6 +1,4 @@
-const button = document.getElementById('find-friends');
-
-button.addEventListener('click', async () => {
+document.getElementById('find-friends').addEventListener('click', async () => {
 
     const keyword = document.getElementById('keyword');
 

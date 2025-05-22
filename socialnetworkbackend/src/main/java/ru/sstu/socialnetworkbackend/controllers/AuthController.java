@@ -25,9 +25,9 @@ public class AuthController {
     @PostMapping("/auth")
     public ResponseEntity<?> auth(@RequestBody @Valid AuthRequest authRequest) {
 
-        AuthResponse authResponse = service.auth(authRequest);
+        AuthResponse response = service.auth(authRequest);
 
-        ResponseCookie cookie = ResponseCookie.from("jwt", authResponse.token())
+        ResponseCookie cookie = ResponseCookie.from("jwt", response.token())
             .httpOnly(true)
             .secure(true)
             .sameSite("strict")
@@ -37,7 +37,7 @@ public class AuthController {
 
         return ResponseEntity.ok()
             .header(HttpHeaders.SET_COOKIE, cookie.toString())
-            .body(authResponse);
+            .body(response.user());
     }
 
 }

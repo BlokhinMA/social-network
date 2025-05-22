@@ -29,7 +29,9 @@ communityHeader.addEventListener("click", async (e) => {
                 noMembersP.remove();
             }
 
-            htmlCode = `<p id="${data.id}"><a href="/profile/${data.member.id}">${data.member.firstName} ${data.member.lastName}</a>`;
+            const member = data.member;
+
+            htmlCode = `<p id="${data.id}"><a href="/profile/${member.id}">${member.firstName} ${member.lastName}</a>`;
             const firstChildMembersDiv = membersDiv.childNodes.item(0);
             firstChildMembersDiv.insertAdjacentHTML('afterend', htmlCode);
 

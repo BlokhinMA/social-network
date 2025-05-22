@@ -20,7 +20,7 @@ public class LogoutService implements LogoutHandler {
     private final JwtUtil jwtUtil;
     private final UserService userService;
 
-    private static final Logger log = LoggerFactory.getLogger(LogoutService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LogoutService.class);
 
     public LogoutService(JwtUtil jwtUtil, UserService userService) {
         this.jwtUtil = jwtUtil;
@@ -50,7 +50,7 @@ public class LogoutService implements LogoutHandler {
                 .maxAge(0)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
-        log.info("Пользователь {} вышел из системы", user);
+        LOG.info("Пользователь {} вышел из системы", user);
     }
 
 }

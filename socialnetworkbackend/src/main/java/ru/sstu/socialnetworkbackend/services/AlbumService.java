@@ -28,7 +28,7 @@ public class AlbumService extends SuperService {
     private final FriendshipService friendshipService;
     private final UserService userService;
 
-    private static final Logger log = LoggerFactory.getLogger(AlbumService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AlbumService.class);
 
     public AlbumService(AlbumRepository albumRepository,
                         PhotoService photoService,
@@ -43,14 +43,14 @@ public class AlbumService extends SuperService {
     public Album create(AlbumDto albumDto) {
         User owner = userService.getCurrentUser();
         Album album = new Album(
-            albumDto.title(),
-            AccessType.valueOf(albumDto.accessType()),
-            owner
+                albumDto.title(),
+                AccessType.valueOf(albumDto.accessType()),
+                owner
         );
         Album createdAlbum = albumRepository.save(album);
-        log.info("Пользователь {} добавил альбом {}",
-            owner,
-            createdAlbum);
+        LOG.info("Пользователь {} добавил альбом {}",
+                owner,
+                createdAlbum);
         List<MultipartFile> files = albumDto.files();
         if (files != null && files.getFirst().getSize() != 0) {
             PhotoDto photoDto = new PhotoDto(albumDto.files(), createdAlbum.getId());
@@ -68,24 +68,24 @@ public class AlbumService extends SuperService {
         User owner = userService.getUserById(ownerId);
         List<Album> albums = albumRepository.findAllByOwnerOrderByIdDesc(owner);
         return new AlbumsResponseDto(
-            owner,
-            albums
+                owner,
+                albums
         );
     }
 
     public AlbumResponseDto show(Long id) {
         User currentUser = userService.getCurrentUser();
         Album album = getAlbumFromDB(id);
-        if (!currentUser.equals(album.getOwner()) &&
-            album.getAccessType() == AccessType.FRIENDS &&
-            !friendshipService.isFriend(album.getOwner().getId())) {
+        User owner = album.getOwner();
+        if (!currentUser.equals(owner) &&
+                album.getAccessType() == AccessType.FRIENDS &&
+                !friendshipService.areFriends(currentUser.getId(), owner.getId()))
             throw new AccessDeniedException("Этот альбом доступен только для друзей");
-        }
         List<Long> photos = photoService.showAll(album.getId());
         return new AlbumResponseDto(
-            album,
-            photos,
-            currentUser.equals(album.getOwner())
+                album,
+                photos,
+                currentUser.equals(album.getOwner())
         );
     }
 
@@ -97,9 +97,9 @@ public class AlbumService extends SuperService {
         checkRights(currentUser, owner);
         photoService.deleteAllByAlbumId(album.getId());
         albumRepository.deleteById(album.getId());
-        log.info("Пользователь {} удалил альбом {}",
-            currentUser,
-            album);
+        LOG.info("Пользователь {} удалил альбом {}",
+                currentUser,
+                album);
         return album;
     }
 
@@ -116,15 +116,15 @@ public class AlbumService extends SuperService {
         checkRights(currentUser, owner);
         album.setAccessType(AccessType.valueOf(dto.accessType()));
         Album updatedAlbum = albumRepository.save(album);
-        log.info("Пользователь {} обновил альбом {}",
-            currentUser,
-            updatedAlbum);
+        LOG.info("Пользователь {} обновил альбом {}",
+                currentUser,
+                updatedAlbum);
         return updatedAlbum;
     }
 
     private Album getAlbumFromDB(Long id) {
         return albumRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
+                .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
     }
 
 }

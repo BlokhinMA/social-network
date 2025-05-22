@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.sstu.socialnetworkbackend.dtos.photos.*;
 import ru.sstu.socialnetworkbackend.entities.*;
+import ru.sstu.socialnetworkbackend.entities.enums.AccessType;
 import ru.sstu.socialnetworkbackend.exceptions.*;
 import ru.sstu.socialnetworkbackend.repositories.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +24,7 @@ public class PhotoService extends SuperService {
     private final PhotoRatingRepository photoRatingRepository;
     private final PhotoCommentRepository photoCommentRepository;
     private final AlbumRepository albumRepository;
+    private final FriendshipService friendshipService;
     private final UserService userService;
 
     private static final Logger LOG = LoggerFactory.getLogger(PhotoService.class);
@@ -34,13 +35,14 @@ public class PhotoService extends SuperService {
                         PhotoTagRepository photoTagRepository,
                         PhotoRatingRepository photoRatingRepository,
                         PhotoCommentRepository photoCommentRepository,
-                        AlbumRepository albumRepository,
+                        AlbumRepository albumRepository, FriendshipService friendshipService,
                         UserService userService) {
         this.photoRepository = photoRepository;
         this.photoTagRepository = photoTagRepository;
         this.photoRatingRepository = photoRatingRepository;
         this.photoCommentRepository = photoCommentRepository;
         this.albumRepository = albumRepository;
+        this.friendshipService = friendshipService;
         this.userService = userService;
     }
 
@@ -55,7 +57,7 @@ public class PhotoService extends SuperService {
         }
         User currentUser = userService.getCurrentUser();
         Album album = albumRepository.findById(photoDto.albumId())
-            .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
+                .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
         checkRights(currentUser, album.getOwner());
         List<Photo> photos = new ArrayList<>();
         List<Photo> createdPhotos = new ArrayList<>();
@@ -66,8 +68,8 @@ public class PhotoService extends SuperService {
             createdPhotos.add(createdPhoto);
         }
         LOG.info("Пользователь {} добавил фотографии {}",
-            currentUser,
-            createdPhotos);
+                currentUser,
+                createdPhotos);
         return createdPhotos;
     }
 
@@ -78,11 +80,13 @@ public class PhotoService extends SuperService {
     public PhotoResponseDto show(Long id) {
         User currentUser = userService.getCurrentUser();
         Photo photo = getPhotoFromDB(id);
-        User owner = photo.getAlbum().getOwner();
+        Album album = photo.getAlbum();
+        User owner = album.getOwner();
 
-        if (!currentUser.equals(owner)) {
+        if (!currentUser.equals(owner) &&
+                album.getAccessType() == AccessType.FRIENDS &&
+                !friendshipService.areFriends(currentUser.getId(), owner.getId()))
             throw new AccessDeniedException("Данная фотография доступна только друзьям ее владельца");
-        }
 
         List<PhotoTag> tags = photoTagRepository.findAllByPhoto(photo);
 
@@ -91,8 +95,8 @@ public class PhotoService extends SuperService {
         PhotoCommentResponseDto commentDto;
         for (PhotoComment comment : commentsFromDb) {
             commentDto = new PhotoCommentResponseDto(
-                comment,
-                currentUser.equals(comment.getCommentingUser())
+                    comment,
+                    currentUser.equals(comment.getCommentingUser())
             );
             comments.add(commentDto);
         }
@@ -102,12 +106,12 @@ public class PhotoService extends SuperService {
         Boolean userRating = photoRatingRepository.userRatingByRatingUserIdAndPhotoId(currentUser.getId(), id);
         Boolean isOwner = currentUser.equals(owner);
         return new PhotoResponseDto(
-            photo,
-            tags,
-            comments,
-            rating,
-            userRating,
-            isOwner
+                photo,
+                tags,
+                comments,
+                rating,
+                userRating,
+                isOwner
         );
     }
 
@@ -127,8 +131,8 @@ public class PhotoService extends SuperService {
         photoTagRepository.deleteAllByPhotoId(photo.getId());
         photoRepository.deleteById(photo.getId());
         LOG.info("Пользователь {} удалил фотографию {}",
-            currentUser,
-            photo);
+                currentUser,
+                photo);
         return photo;
     }
 
@@ -150,19 +154,19 @@ public class PhotoService extends SuperService {
         User owner = album.getOwner();
         checkRights(currentUser, owner);
         PhotoTag tag = new PhotoTag(
-            dto.tag(),
-            photo
+                dto.tag(),
+                photo
         );
         PhotoTag createdTag = photoTagRepository.save(tag);
         LOG.info("Пользователь {} добавил тег {}",
-            currentUser,
-            createdTag);
+                currentUser,
+                createdTag);
         return createdTag;
     }
 
     public PhotoTag deleteTag(Long id) {
         PhotoTag tag = photoTagRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Тега не существует"));
+                .orElseThrow(() -> new ResourceNotFoundException("Тега не существует"));
         Photo photo = tag.getPhoto();
         Album album = photo.getAlbum();
         User currentUser = userService.getCurrentUser();
@@ -170,8 +174,8 @@ public class PhotoService extends SuperService {
         checkRights(currentUser, owner);
         photoTagRepository.deleteById(tag.getId());
         LOG.info("Пользователь {} удалил тег {}",
-            currentUser,
-            tag);
+                currentUser,
+                tag);
         return tag;
     }
 
@@ -182,18 +186,18 @@ public class PhotoService extends SuperService {
             throw new ResourceAlreadyExistsException("Рейтинг уже существует");
         }
         PhotoRating rating = new PhotoRating(
-            dto.rating(),
-            currentUser,
-            photo
+                dto.rating(),
+                currentUser,
+                photo
         );
         PhotoRating createdRating = photoRatingRepository.save(rating);
         PhotoRatingResponseDto responseDto = new PhotoRatingResponseDto(
-            createdRating,
-            rating(dto.photoId())
+                createdRating,
+                rating(dto.photoId())
         );
         LOG.info("Пользователь {} поставил оценку фотографии {}",
-            currentUser,
-            createdRating);
+                currentUser,
+                createdRating);
         return responseDto;
     }
 
@@ -206,12 +210,12 @@ public class PhotoService extends SuperService {
         rating.setRating(dto.rating());
         PhotoRating updatedRating = photoRatingRepository.save(rating);
         PhotoRatingResponseDto responseDto = new PhotoRatingResponseDto(
-            updatedRating,
-            rating(photo.getId())
+                updatedRating,
+                rating(photo.getId())
         );
         LOG.info("Пользователь {} обновил оценку фотографии {}",
-            currentUser,
-            updatedRating);
+                currentUser,
+                updatedRating);
         return responseDto;
     }
 
@@ -223,12 +227,12 @@ public class PhotoService extends SuperService {
         checkRights(currentUser, ratingUser);
         photoRatingRepository.deleteById(rating.getId());
         PhotoRatingResponseDto responseDto = new PhotoRatingResponseDto(
-            rating,
-            rating(rating.getPhoto().getId())
+                rating,
+                rating(rating.getPhoto().getId())
         );
         LOG.info("Пользователь {} удалил оценку фотографии {}",
-            currentUser,
-            rating);
+                currentUser,
+                rating);
         return responseDto;
     }
 
@@ -243,7 +247,7 @@ public class PhotoService extends SuperService {
         User currentUser = userService.getCurrentUser();
         Photo photo = getPhotoFromDB(photoId);
         return new UserRatingResponseDto(
-            photoRatingRepository.userRatingByRatingUserIdAndPhotoId(currentUser.getId(), photo.getId())
+                photoRatingRepository.userRatingByRatingUserIdAndPhotoId(currentUser.getId(), photo.getId())
         );
     }
 
@@ -251,27 +255,27 @@ public class PhotoService extends SuperService {
         Photo photo = getPhotoFromDB(dto.photoId());
         User currentUser = userService.getCurrentUser();
         PhotoComment comment = new PhotoComment(
-            dto.comment(),
-            currentUser,
-            photo
+                dto.comment(),
+                currentUser,
+                photo
         );
         PhotoComment createdComment = photoCommentRepository.save(comment);
         LOG.info("Пользователь {} добавил комментарий {}",
-            currentUser,
-            createdComment);
+                currentUser,
+                createdComment);
         return createdComment;
     }
 
     public PhotoComment deleteComment(Long id) {
         PhotoComment comment = photoCommentRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Комментарий не существует"));
+                .orElseThrow(() -> new ResourceNotFoundException("Комментарий не существует"));
         User currentUser = userService.getCurrentUser();
         User commentingUser = comment.getCommentingUser();
         checkRights(currentUser, commentingUser);
         photoCommentRepository.deleteById(id);
         LOG.info("Пользователь {} удалил комментарий {}",
-            currentUser,
-            comment);
+                currentUser,
+                comment);
         return comment;
     }
 
@@ -292,17 +296,17 @@ public class PhotoService extends SuperService {
 
     private Photo getPhotoFromDB(Long id) {
         return photoRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Фотография не найдена"));
+                .orElseThrow(() -> new ResourceNotFoundException("Фотография не найдена"));
     }
 
     private PhotoRating getPhotoRatingFromDB(User ratingUser, Photo photo) {
         return photoRatingRepository.findByRatingUserAndPhoto(ratingUser, photo)
-            .orElseThrow(() -> new ResourceNotFoundException("Рейтинга не существует"));
+                .orElseThrow(() -> new ResourceNotFoundException("Рейтинга не существует"));
     }
 
     private Album getAlbumFromDB(Long id) {
         return albumRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
+                .orElseThrow(() -> new ResourceNotFoundException("Альбома не существует"));
     }
 
     private Photo toPhotoEntity(MultipartFile file) {
@@ -312,7 +316,7 @@ public class PhotoService extends SuperService {
         photo.setContentType(file.getContentType());
         try {
             photo.setBytes(file.getBytes());
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(); // todo написать свое исключение
         }
         return photo;
@@ -320,13 +324,16 @@ public class PhotoService extends SuperService {
 
     private void checkContentType(MultipartFile file) {
         String[] acceptableContentTypes = {"image/xbm", "image/tif", "image/jfif", "image/pjp", "image/apng",
-            "image/jpeg", "image/heif", "image/ico", "image/tiff", "image/webp", "image/svgz", "image/jpg", "image/heic",
-            "image/gif", "image/svg", "image/png", "image/bmp", "image/pjpeg", "image/avif"};
+                "image/jpeg", "image/heif", "image/ico", "image/tiff", "image/webp", "image/svgz", "image/jpg", "image/heic",
+                "image/gif", "image/svg", "image/png", "image/bmp", "image/pjpeg", "image/avif"};
+        byte count = 0;
         for (String acceptableContentType : acceptableContentTypes) {
-            if (!Objects.equals(file.getContentType(), acceptableContentType)) {
-                throw new IllegalArgumentException("Недопустимый формат файла");
+            if (Objects.equals(file.getContentType(), acceptableContentType)) {
+                count++;
             }
         }
+        if (count == 0)
+            throw new IllegalArgumentException("Недопустимый формат файла");
     }
 
 }

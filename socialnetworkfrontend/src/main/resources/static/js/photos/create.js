@@ -54,7 +54,7 @@ function removeErrorElements() {
 
 function renderErrors(data, form) {
     let htmlCode = '<div id="error">';
-    for (const [key, value] of Object.entries(data)) {
+    for (const [_, value] of Object.entries(data)) {
         htmlCode += `<p style="color: red;">${value}</p>`;
     }
     htmlCode += '</div>';

@@ -18,7 +18,8 @@ public class FriendshipService {
     private final FriendshipRepository friendshipRepository;
     private final UserService userService;
 
-    private static final Logger log = LoggerFactory.getLogger(FriendshipService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FriendshipService.class);
+    private static final String NOT_FOUNT_OR_ALREADY_EXISTS_FRIENDSHIP_MSG = "Дружбы не существует или вы уже друзья";
 
     public FriendshipService(FriendshipRepository friendshipRepository, UserService userService) {
         this.friendshipRepository = friendshipRepository;
@@ -34,7 +35,7 @@ public class FriendshipService {
             false
         );
         Friendship createdFriendship = friendshipRepository.save(friendship);
-        log.info("Пользователь {} отправил запрос на дружбу пользователю {}",
+        LOG.info("Пользователь {} отправил запрос на дружбу пользователю {}",
             user,
             friend);
         return createdFriendship;
@@ -60,11 +61,12 @@ public class FriendshipService {
     public Friendship accept(Long userId) {
         User currentUser = userService.getCurrentUser();
         User user = userService.getUserById(userId);
-        Friendship friendship = friendshipRepository.findNotAcceptedByFirstUserIdAndSecondUserId(user.getId(), currentUser.getId())
-            .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или вы уже друзья"));
+        Friendship friendship = friendshipRepository.findNotAcceptedByFirstUserIdAndSecondUserId(user.getId(),
+                        currentUser.getId())
+            .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUNT_OR_ALREADY_EXISTS_FRIENDSHIP_MSG));
         friendship.setAccepted(true);
         Friendship acceptedFriendship = friendshipRepository.save(friendship);
-        log.info("Пользователь {} принял заявку в друзья от пользователя {}",
+        LOG.info("Пользователь {} принял заявку в друзья от пользователя {}",
             currentUser,
             user);
         return acceptedFriendship;
@@ -87,10 +89,11 @@ public class FriendshipService {
     public Friendship delete(Long friendId) {
         User user = userService.getCurrentUser();
         User friend = userService.getUserById(friendId);
-        Friendship friendship = friendshipRepository.findAcceptedByFirstUserIdAndSecondUserId(user.getId(), friend.getId())
-            .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или заявка в друзья не подтверждена"));
+        Friendship friendship = friendshipRepository.findAcceptedByFirstUserIdAndSecondUserId(user.getId(),
+                        friend.getId())
+            .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUNT_OR_ALREADY_EXISTS_FRIENDSHIP_MSG));
         friendshipRepository.deleteById(friendship.getId());
-        log.info("Пользователь {} удалил из друзей пользователя {}",
+        LOG.info("Пользователь {} удалил из друзей пользователя {}",
             user,
             friend);
         return friendship;
@@ -99,10 +102,11 @@ public class FriendshipService {
     public Friendship reject(Long userId) {
         User currentUser = userService.getCurrentUser();
         User user = userService.getUserById(userId);
-        Friendship friendship = friendshipRepository.findNotAcceptedByFirstUserIdAndSecondUserId(user.getId(), currentUser.getId())
-            .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или вы уже друзья"));
+        Friendship friendship = friendshipRepository.findNotAcceptedByFirstUserIdAndSecondUserId(user.getId(),
+                        currentUser.getId())
+            .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUNT_OR_ALREADY_EXISTS_FRIENDSHIP_MSG));
         friendshipRepository.deleteById(friendship.getId());
-        log.info("Пользователь {} отклонил заявку в друзья от пользователя {}",
+        LOG.info("Пользователь {} отклонил заявку в друзья от пользователя {}",
             currentUser,
             user);
         return friendship;
@@ -111,19 +115,18 @@ public class FriendshipService {
     public Friendship deleteOutgoingRequest(Long userId) {
         User currentUser = userService.getCurrentUser();
         User user = userService.getUserById(userId);
-        Friendship friendship = friendshipRepository.findNotAcceptedByFirstUserIdAndSecondUserId(currentUser.getId(), user.getId())
-            .orElseThrow(() -> new ResourceNotFoundException("Дружбы не существует или вы уже друзья"));
+        Friendship friendship = friendshipRepository.findNotAcceptedByFirstUserIdAndSecondUserId(currentUser.getId(),
+                        user.getId())
+            .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUNT_OR_ALREADY_EXISTS_FRIENDSHIP_MSG));
         friendshipRepository.deleteById(friendship.getId());
-        log.info("Пользователь {} удалил заявку в друзья пользователю {}",
+        LOG.info("Пользователь {} удалил заявку в друзья пользователю {}",
             currentUser,
             user);
         return friendship;
     }
 
-    public boolean isFriend(Long userId) {
-        User currentUser = userService.getCurrentUser();
-        User user = userService.getUserById(userId);
-        return friendshipRepository.findAcceptedByFirstUserIdAndSecondUserId(currentUser.getId(), user.getId()).isPresent();
+    public boolean areFriends(Long firstUserId, Long secondUserId) {
+        return friendshipRepository.findAcceptedByFirstUserIdAndSecondUserId(firstUserId, secondUserId).isPresent();
     }
 
 }

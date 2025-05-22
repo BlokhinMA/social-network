@@ -26,7 +26,7 @@ form.addEventListener('submit', async (e) => {
 
     const data = await response.json();
     if (response.ok) {
-        localStorage.setItem('userId', data.user.id);
+        localStorage.setItem('userId', data.id);
         window.location = '/my_profile';
     } else {
         for (const [key, value] of Object.entries(data)) {

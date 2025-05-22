@@ -15,7 +15,7 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
 
-    private static final Logger log = LoggerFactory.getLogger(RegistrationService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RegistrationService.class);
 
     public RegistrationService(UserService userService, ConfirmationTokenService confirmationTokenService,
                                EmailSender emailSender) {
@@ -30,7 +30,7 @@ public class RegistrationService {
         ConfirmationToken token = confirmationTokenService.create(user);
         String link = "http://localhost:8082/confirm_registration/" + token.getToken();
         emailSender.send(user.getEmail(), buildEmail(user.getFirstName(), link));
-        log.info("Пользователь с токеном {} зарегистрировался",
+        LOG.info("Пользователь с токеном {} зарегистрировался",
             token);
         return token;
     }
@@ -39,7 +39,7 @@ public class RegistrationService {
     public ConfirmationToken confirm(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.update(token);
         userService.update(confirmationToken.getUser());
-        log.info("Пользователь с токеном {} подтвердил аккаунт",
+        LOG.info("Пользователь с токеном {} подтвердил аккаунт",
             confirmationToken);
         return confirmationToken;
     }

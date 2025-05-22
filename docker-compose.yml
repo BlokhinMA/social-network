@@ -7,8 +7,8 @@ services:
     restart: always
     environment:
       POSTGRES_DB: social_network
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: mbgrnqb9gn
+      POSTGRES_PASSWORD: @Bc1345488954
 
   backend:
     container_name: social_network_backend
@@ -21,8 +21,8 @@ services:
       - db
     environment:
       SPRING_DATASOURCE_URL: 'jdbc:postgresql://db:5432/social_network'
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_DATASOURCE_USERNAME: mbgrnqb9gn
+      SPRING_DATASOURCE_PASSWORD: @Bc1345488954
 
   #  -----------------------------------
 

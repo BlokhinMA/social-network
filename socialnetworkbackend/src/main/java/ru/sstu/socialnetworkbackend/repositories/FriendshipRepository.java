@@ -37,6 +37,6 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     @Query(value = "SELECT * FROM friendships WHERE first_user_id IN (?1, ?2) AND second_user_id " +
             "IN (?1, ?2) AND accepted = true", nativeQuery = true)
-    Optional<Friendship> findAcceptedByFirstUserIdAndSecondUserId(Long firstUserId, Long SecondUserid);
+    Optional<Friendship> findAcceptedByFirstUserIdAndSecondUserId(Long firstUserId, Long secondUserid);
 
 }

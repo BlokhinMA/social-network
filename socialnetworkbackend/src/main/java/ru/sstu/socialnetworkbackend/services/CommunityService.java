@@ -27,12 +27,13 @@ public class CommunityService extends SuperService {
     private final CommunityPostRepository communityPostRepository;
     private final UserService userService;
 
-    private static final Logger log = LoggerFactory.getLogger(CommunityService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CommunityService.class);
 
     public CommunityService(CommunityRepository communityRepository,
                             CommunityMemberRepository communityMemberRepository,
                             CommunityPostRepository communityPostRepository,
                             UserService userService) {
+        super();
         this.communityRepository = communityRepository;
         this.communityMemberRepository = communityMemberRepository;
         this.communityPostRepository = communityPostRepository;
@@ -97,7 +98,7 @@ public class CommunityService extends SuperService {
             currentUser
         );
         Community createdCommunity = communityRepository.save(community);
-        log.info("Пользователь {} добавил сообщество {}",
+        LOG.info("Пользователь {} добавил сообщество {}",
             currentUser,
             createdCommunity);
         return createdCommunity;
@@ -111,7 +112,7 @@ public class CommunityService extends SuperService {
         communityMemberRepository.deleteAllByCommunityId(community.getId());
         communityPostRepository.deleteAllByCommunityId(community.getId());
         communityRepository.deleteById(id);
-        log.info("Пользователь {} удалил сообщество {}",
+        LOG.info("Пользователь {} удалил сообщество {}",
             currentUser,
             community);
         return community;
@@ -127,7 +128,7 @@ public class CommunityService extends SuperService {
             community
         );
         CommunityMember joinedMember = communityMemberRepository.save(member);
-        log.info("Пользователь {} стал участником сообщества {}",
+        LOG.info("Пользователь {} стал участником сообщества {}",
             currentUser,
             joinedMember);
         return joinedMember;
@@ -139,7 +140,7 @@ public class CommunityService extends SuperService {
         CommunityMember communityMember = communityMemberRepository.findByMemberAndCommunity(currentUser, community)
             .orElseThrow(() -> new ResourceNotFoundException("Вы не являетесь участником сообщества"));
         communityMemberRepository.deleteById(communityMember.getId());
-        log.info("Пользователь {} перестал быть участником сообщества {}",
+        LOG.info("Пользователь {} перестал быть участником сообщества {}",
             currentUser,
             communityMember);
         return communityMember;
@@ -152,7 +153,7 @@ public class CommunityService extends SuperService {
                 "сообщества или этого пользователя или сообщества не существует"));
         checkRights(currentUser, member.getCommunity().getCreator());
         communityMemberRepository.deleteById(id);
-        log.info("Пользователь {} выгнал участника сообщества {}",
+        LOG.info("Пользователь {} выгнал участника сообщества {}",
             currentUser,
             member);
         return member;
@@ -169,7 +170,7 @@ public class CommunityService extends SuperService {
             community
         );
         CommunityPost createdPost = communityPostRepository.save(post);
-        log.info("Пользователь {} добавил пост {}",
+        LOG.info("Пользователь {} добавил пост {}",
             currentUser,
             createdPost);
         return createdPost;
@@ -181,7 +182,7 @@ public class CommunityService extends SuperService {
         User currentUser = userService.getCurrentUser();
         checkRights(currentUser, post.getAuthor(), post.getCommunity().getCreator());
         communityPostRepository.deleteById(id);
-        log.info("Пользователь {} удалил пост {}",
+        LOG.info("Пользователь {} удалил пост {}",
             currentUser,
             post);
         return post;

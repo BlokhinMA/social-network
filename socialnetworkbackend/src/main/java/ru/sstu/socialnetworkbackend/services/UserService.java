@@ -6,6 +6,7 @@ import ru.sstu.socialnetworkbackend.configs.SecurityUtil;
 import ru.sstu.socialnetworkbackend.dtos.users.UserDto;
 import ru.sstu.socialnetworkbackend.entities.User;
 import ru.sstu.socialnetworkbackend.entities.enums.Role;
+import ru.sstu.socialnetworkbackend.exceptions.IncorrectDateException;
 import ru.sstu.socialnetworkbackend.exceptions.PasswordsNotMatchException;
 import ru.sstu.socialnetworkbackend.exceptions.ResourceAlreadyExistsException;
 import ru.sstu.socialnetworkbackend.exceptions.ResourceNotFoundException;
@@ -19,7 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
-    private static final String NOT_FOUND_MESSAGE = "Пользователь не найден";
+    private static final String NOT_FOUND_MSG = "Пользователь не найден";
 
     public UserService(UserRepository userRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
@@ -28,7 +29,7 @@ public class UserService {
 
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
-            .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MESSAGE));
+            .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MSG));
     }
 
     public User getCurrentUser() {
@@ -37,7 +38,7 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MESSAGE));
+            .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_MSG));
     }
 
     public User create(UserDto userDto) {
@@ -46,13 +47,15 @@ public class UserService {
             throw new ResourceAlreadyExistsException("Пользователь с таким login или email уже существует");
         if (!userDto.password().equals(userDto.confirmedPassword()))
             throw new PasswordsNotMatchException();
-        //@PastOrPresent(message = "Указанная дата должна быть либо в прошлом, либо в настоящем (сегодняшняя)") todo: сделать
+        LocalDate birthDate = LocalDate.parse(userDto.birthDate());
+        if (birthDate.isAfter(LocalDate.now()))
+            throw new IncorrectDateException("Дата рождения должна быть либо в прошлом, либо в настоящем (сегодняшняя)");
         return userRepository.save(new User(
                 userDto.username(),
                 userDto.email(),
                 userDto.firstName(),
                 userDto.lastName(),
-                LocalDate.parse(userDto.birthDate()),
+                birthDate,
                 encoder.encode(userDto.password()),
                 Role.ROLE_USER,
                 false

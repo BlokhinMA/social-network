@@ -28,9 +28,11 @@ public class SecurityConfig {
 
     private static final String API_URL = "/api/v1";
     private static final String[] WHITE_LIST_URLS = {
+            API_URL + "/registration/",
             API_URL + "/registration/register",
             API_URL + "/registration/confirm/*",
-            API_URL + "/auth"
+            API_URL + "/auth",
+            "/v3/api-docs.yaml"
     };
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, AuthenticationProvider authenticationProvider,
@@ -56,8 +58,8 @@ public class SecurityConfig {
                 .logout(logout ->
                         logout.logoutUrl("/api/v1/auth/logout")
                                 .addLogoutHandler(logoutHandler)
-                                .logoutSuccessHandler((_, _,
-                                                       _) -> SecurityContextHolder.clearContext()))
+                                .logoutSuccessHandler((request, response,
+                                                       authentication) -> SecurityContextHolder.clearContext()))
         ;
 
         return http.build();

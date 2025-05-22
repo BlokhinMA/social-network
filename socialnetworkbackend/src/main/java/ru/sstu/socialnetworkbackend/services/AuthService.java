@@ -20,7 +20,7 @@ public class AuthService {
 
     private final HttpServletRequest request;
 
-    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AuthService.class);
 
     public AuthService(UserService userService, JwtUtil jwtUtil, AuthenticationManager authenticationManager,
                        HttpServletRequest request) {
@@ -40,13 +40,13 @@ public class AuthService {
                 )
             );
         } catch (Exception e) {
-            log.info("Неудачная попытка авторизации с ip {}", request.getRemoteAddr());
+            LOG.info("Неудачная попытка авторизации с ip {}", request.getRemoteAddr());
             throw new BadCredentialsException("");
         }
 
         User user = userService.getUserByUsername(authRequest.username());
 
-        log.info("Пользователь {} успешно авторизовался", user);
+        LOG.info("Пользователь {} успешно авторизовался", user);
 
         String token = jwtUtil.generateToken(user);
 

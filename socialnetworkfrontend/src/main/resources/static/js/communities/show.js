@@ -62,10 +62,11 @@ async function show() {
         } else {
             htmlCode += '<p>Посты</p>';
             posts.forEach(post => {
+                const author = post.author;
                 htmlCode += `<div>
                                  <p>
-                                     <a href="/profile/${post.author.id}">
-                                         ${post.author.firstName} ${post.author.lastName}
+                                     <a href="/profile/${author.id}">
+                                         ${author.firstName} ${author.lastName}
                                      </a>
                                  </p>
                                  <p>${post.postText}</p>

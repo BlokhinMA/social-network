@@ -30,11 +30,7 @@ body.addEventListener('submit', async (e) => {
 
             const tagsEnumP = tagsDiv.querySelector('#tags-enum');
 
-            htmlCode += `<span>${data.tag}`; // todo: разобраться с запятыми
-            if (isOwner) {
-                htmlCode += ` <button id="${data.id}" class="delete-tag">x</button>`;
-            }
-            htmlCode += `</span>`;
+            htmlCode += `<span>${data.tag}<button id="${data.id}" class="delete-tag">x</button></span>`;
 
             tagsEnumP.insertAdjacentHTML('beforeend', htmlCode);
 
@@ -42,7 +38,7 @@ body.addEventListener('submit', async (e) => {
 
         } else {
             htmlCode += '<div id="error">';
-            for (const [key, value] of Object.entries(data)) {
+            for (const [_, value] of Object.entries(data)) {
                 htmlCode += `<p style="color: red;">${value}</p>`;
             }
             htmlCode += '</div>';

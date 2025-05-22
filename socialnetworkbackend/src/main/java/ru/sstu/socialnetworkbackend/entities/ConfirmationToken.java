@@ -12,12 +12,15 @@ public class ConfirmationToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     @JsonIgnore
     private String token;
+    @Column(nullable = false)
     private LocalDateTime createdAt;
+    @Column(nullable = false)
     private LocalDateTime expiresAt;
     private LocalDateTime confirmedAt;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(nullable = false)
     private User user;
 

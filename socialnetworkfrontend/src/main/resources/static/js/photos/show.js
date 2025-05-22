@@ -35,12 +35,13 @@ async function show() {
 }
 
 function renderPhoto(data, isOwner) {
-    let htmlCode = `<img alt="" src="http://localhost:8081/api/v1/photos/show_entity/${data.photo.id}" class="picture" />
-                           <p><a href="/album/${data.photo.album.id}">назад к альбому</a></p>`;
+    const photo = data.photo;
+    let htmlCode = `<img alt="" src="http://localhost:8081/api/v1/photos/show_entity/${photo.id}" class="picture" />
+                           <p><a href="/album/${photo.album.id}">назад к альбому</a></p>`;
     if (isOwner) {
         htmlCode += `<button id="delete-button">удалить фотографию</button>`;
     }
-    htmlCode += `<p>Фотография добавлена ${data.photo.creationTimeStamp}</p>`;
+    htmlCode += `<p>Фотография добавлена ${photo.creationTimeStamp}</p>`;
 
     photoDiv.insertAdjacentHTML('afterbegin', htmlCode);
 }
@@ -59,16 +60,21 @@ function renderTags(data, isOwner) {
                      </form>`;
     }
     htmlCode += `<p id="tags-enum">Теги: `;
-    if (data.tags.length === 0) {
+    let tags = data.tags;
+    let tagsSize = tags.length;
+    if (tagsSize === 0) {
         htmlCode += `<span id="no-tags">тегов еще не добавлено</span>`;
     } else {
-        data.tags.forEach(tag => {
-            htmlCode += `<span>${tag.tag}`;
+        for (let i = 0; i < tagsSize; i++) {
+            htmlCode += `<span>${tags[i].tag}`;
             if (isOwner) {
-                htmlCode += ` <button id="${tag.id}" class="delete-tag-button">x</button>`;
-            }
-            htmlCode += `,</span> `; // todo: исправить последнюю запятую
-        });
+                htmlCode += `<button id="${tags[i].id}" class="delete-tag-button">x</button>`;
+                htmlCode += `</span>`;
+            } else
+                if (i < tagsSize - 1) {
+                    htmlCode += `, </span>`;
+                } else htmlCode += `</span>`;
+        }
     }
 
     htmlCode += `</p>`;

@@ -59,7 +59,7 @@ async function show() {
         if (photos.length === 0) {
             htmlCode += `<p id="no-photos">Фотографий нет</p>`;
         } else {
-            data.photos.forEach((photo) => {
+            photos.forEach((photo) => {
                 htmlCode += `<a href="/photo/${photo}" class="reset">
                                  <img alt="" src="http://localhost:8081/api/v1/photos/show_entity/${photo}" class="pictures" />
                              </a>`;
