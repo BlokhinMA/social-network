@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/users/redirect_to_sign_in.js}"></script>
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title></title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1 id="header">Сообщества пользователя</h1>
+<div id="communities"></div>
+
+<script th:src="@{/js/communities/show_subscriptions.js}"></script>
+
+</body>
+
+</html>

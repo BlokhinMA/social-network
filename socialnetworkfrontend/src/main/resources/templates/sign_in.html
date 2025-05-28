@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/users/redirect_to_my_profile.js}"></script>
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Вход</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+
+<form class="center sign-form">
+
+    <p class="sign-text">Вход</p>
+
+    <label for="username">Логин</label><br>
+    <input type="text" id="username" name="username" placeholder="Логин" required><br>
+    <br>
+    <label for="password">Пароль</label><br>
+    <input type="password" id="password" name="password" placeholder="Пароль" required>
+    <br>
+    <br>
+
+    <button>Войти</button>
+    <br>
+    <p><a th:href="@{/sign_up}">Регистрация</a></p>
+
+</form>
+
+<script th:src="@{/js/users/auth.js}"></script>
+
+</body>
+
+</html>

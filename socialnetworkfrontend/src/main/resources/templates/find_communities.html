@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/users/redirect_to_sign_in.js}"></script>
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Найти сообщества</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Найти сообщества</h1>
+
+<label for="keyword">Введите ключевые слова (название)</label>
+<input type="search" id="keyword" required>
+<button id="button">искать</button>
+
+<div id="communities"></div>
+
+<script th:src="@{/js/communities/find.js}"></script>
+
+</body>
+
+</html>

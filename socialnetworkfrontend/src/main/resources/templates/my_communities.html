@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/users/redirect_to_sign_in.js}"></script>
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Мои сообщества</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Мои сообщества</h1>
+
+<p><a th:href="@{/community_management}">Управление сообществами</a></p>
+<p><a th:href="@{/find_communities}">Найти сообщества</a></p>
+
+<div id="communities"></div>
+
+<script th:src="@{/js/communities/show_my_subscriptions.js}"></script>
+
+</body>
+
+</html>

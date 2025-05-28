@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/users/redirect_to_sign_in.js}"></script>
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Найти фотографии</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Найти фотографии</h1>
+
+<form id="find-photos">
+    <span>Введите параметр поиска</span>
+    <input type="radio" id="creation-time-stamp" name="searchTerm" value="creationTimeStamp">
+    <label for="creation-time-stamp">по дате</label>
+    <input type="radio" id="tags" name="searchTerm" value="tag">
+    <label for="tags">по тегу</label>
+    <input type="radio" id="comments" name="searchTerm" value="comment">
+    <label for="comments">по комментарию</label>
+    <br>
+    <label for="word">Введите ключевые слова</label>
+    <input type="search" id="word" name="keyword" required>
+    <button id="submit">искать</button>
+</form>
+
+<div id="photos"></div>
+
+<script th:src="@{/js/photos/find.js}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/users/redirect_to_sign_in.js}"></script>
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Фотография</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<div id="photo"></div>
+<div id="tags"></div>
+<div id="ratings"></div>
+<div id="comments"></div>
+
+<script th:src="@{/js/photos/show.js}"></script>
+<script th:src="@{/js/photos/delete.js}"></script>
+<script th:src="@{/js/photos/rating.js}"></script>
+<script th:src="@{/js/photos/create_tag.js}"></script>
+<script th:src="@{/js/photos/delete_tag.js}"></script>
+<script th:src="@{/js/photos/create_comment.js}"></script>
+<script th:src="@{/js/photos/delete_comment.js}"></script>
+
+</body>
+
+</html>

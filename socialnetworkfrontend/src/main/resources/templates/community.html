@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/users/redirect_to_sign_in.js}"></script>
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title></title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<div id="community-header"></div>
+<div id="members"></div>
+<div id="posts"></div>
+
+<script th:src="@{/js/communities/show.js}"></script>
+<script th:src="@{/js/communities/join.js}"></script>
+<script th:src="@{/js/communities/leave.js}"></script>
+<script th:src="@{/js/communities/kick.js}"></script>
+<script th:src="@{/js/communities/create_post.js}"></script>
+<script th:src="@{/js/communities/delete_post.js}"></script>
+<script th:src="@{/js/communities/delete_from_page.js}"></script>
+
+</body>
+
+</html>

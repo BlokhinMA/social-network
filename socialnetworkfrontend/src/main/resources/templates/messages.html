@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"
+            integrity="sha256-Hg830HNmYZawhI/X2A1SUmjVrfR+oexFljLwW7+OH1Q="></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"
+            integrity="sha256-nkP8cj5xaTdWK/BsZl+57ZCE/Y/i4UNtbNTpgH+6Taw="></script>
+    <title>Мои сообщения</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Диалог с пользователем</h1>
+
+<div id="messages"></div>
+
+<script th:src="@{/js/messages/show.js}"></script>
+<script th:src="@{/js/messages/chat.js}"></script>
+
+</body>
+
+</html>

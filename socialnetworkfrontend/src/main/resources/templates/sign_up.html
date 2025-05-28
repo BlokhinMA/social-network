@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/users/redirect_to_my_profile.js}"></script>
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Регистрация</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+
+<form id="register" class="center sign-form">
+
+    <p class="sign-text">Регистрация</p>
+
+    <label for="username">Логин</label><br>
+    <input type="text" id="username" name="username" placeholder="Например, ivan_ivanov" required><br>
+    <br>
+    <label for="email">E-mail</label><br>
+    <input type="email" id="email" name="email" placeholder="Например, ivan_ivanov@gmail.com" required><br>
+    <br>
+    <label for="first-name">Имя</label><br>
+    <input type="text" id="first-name" name="firstName" placeholder="Например, Иван" required><br>
+    <br>
+    <label for="last-name">Фамилия</label><br>
+    <input type="text" id="last-name" name="lastName" placeholder="Например, Иванов" required><br>
+    <br>
+    <label for="birth-date">Дата рождения</label><br>
+    <input type="date" id="birth-date" name="birthDate" required><br>
+    <br>
+    <label for="password">Пароль</label><br>
+    <input type="password" id="password" name="password" required><br>
+    <br>
+    <label for="confirmed-password">Пароль еще раз</label><br>
+    <input type="password" id="confirmed-password" name="confirmedPassword" required><br>
+    <br>
+
+    <button>Зарегистрироваться</button>
+    <br>
+
+    <p id="sign-in"><a th:href="@{/sign_in}">Вход</a></p>
+
+</form>
+
+<script th:src="@{/js/users/register.js}"></script>
+
+</body>
+
+</html>

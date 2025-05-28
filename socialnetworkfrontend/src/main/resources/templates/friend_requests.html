@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/users/redirect_to_sign_in.js}"></script>
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Заявки в друзья</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Входящие заявки</h1>
+<div id="incoming-requests"></div>
+
+<h1>Исходящие заявки</h1>
+<div id="outgoing-requests"></div>
+
+<script th:src="@{/js/friends/show_incoming_requests.js}"></script>
+<script th:src="@{/js/friends/show_outgoing_requests.js}"></script>
+<script th:src="@{/js/friends/accept.js}"></script>
+<script th:src="@{/js/friends/reject.js}"></script>
+<script th:src="@{/js/friends/delete_outgoing_request.js}"></script>
+
+</body>
+
+</html>

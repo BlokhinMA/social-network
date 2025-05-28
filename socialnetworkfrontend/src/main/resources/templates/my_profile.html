@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/users/redirect_to_sign_in.js}"></script>
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Главная</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+
+<th:block th:fragment="menu">
+
+    <header class="header">
+
+        <div class="right">
+            <button id="logout">выйти</button>
+        </div>
+
+        <p><a th:href="@{/my_profile}">Профиль</a></p>
+        <p><a th:href="@{/my_friends}">Друзья</a></p>
+        <p><a th:href="@{/my_albums}">Альбомы</a></p>
+        <p><a th:href="@{/my_communities}">Сообщества</a></p>
+
+        <hr>
+
+    </header>
+
+    <script th:src="@{/js/users/logout.js}"></script>
+
+</th:block>
+
+<h1>Мой профиль</h1>
+
+<script th:src="@{/js/users/get_current_user.js}"></script>
+
+</body>
+
+</html>

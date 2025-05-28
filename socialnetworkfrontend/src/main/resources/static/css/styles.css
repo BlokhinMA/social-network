@@ -1,0 +1,131 @@
+body {
+    background-color: #222222;
+    color: white;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+input {
+    border: 1px solid gray;
+    border-radius: 5px;
+    color: white;
+    background-color: #222222;
+}
+
+input:hover {
+    border: 1px solid white;
+}
+
+/* полоса сверху */
+
+.strip {
+    width: 100%;
+    height: 10px;
+    background-color: white;
+    border-radius: 20px;
+}
+
+/* заголовок "Социальная сеть" */
+
+.social-media-label {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+/* ссылки */
+
+a {
+    background-color: black;
+    font-size: larger;
+    padding: 5px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    background-color: #222222;
+}
+
+/* центровка элементов */
+
+.center {
+    text-align: center;
+}
+
+/* элементы на страницах регистрации и авторизации */
+
+.sign-text {
+    font-size: larger;
+}
+
+.sign-form label {
+    position: absolute;
+    margin-left: -165px;
+}
+
+.sign-form input {
+    font-size: 20px;
+    width: 330px;
+}
+
+.sign-form button {
+    border: 2px solid black;
+    border-radius: 5px;
+    font-size: 25px;
+}
+
+.sign-form button:hover {
+    background-color: rgb(175, 175, 175);
+}
+
+/* смещение элементов вправо */
+
+.right {
+    text-align: right;
+}
+
+/* заголовки после шапки */
+
+.header {
+    display: inline;
+    margin-right: 5px;
+}
+
+/* изначальный стиль ссылки */
+
+a.reset {
+    all: unset;
+    cursor: pointer;
+}
+
+/* фотография */
+
+.picture {
+    width: 50%;
+    height: 28.125%;
+    border: 5px solid black;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+/* фотографии в альбоме */
+
+.pictures {
+    width: 25%;
+    height: 25%;
+    transition: 0.5s;
+}
+
+.pictures:hover {
+    opacity: 50%;
+}
+
+/* очистка float */
+
+.clear-fix {
+    clear: both;
+}

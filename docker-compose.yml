@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: social_network_db
+    ports:
+      - '127.0.0.1:5433:5432'
+    restart: always
+    environment:
+      POSTGRES_DB: 'social_network'
+      POSTGRES_USER: 'mbgrnqb9gn'
+      POSTGRES_PASSWORD:
+
+  backend:
+    container_name: social_network_backend
+    build:
+      context: ./socialnetworkbackend
+      dockerfile: Dockerfile
+    ports:
+      - '127.0.0.1:8081:8081'
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://db:5432/social_network'
+      SPRING_DATASOURCE_USERNAME: 'mbgrnqb9gn'
+      SPRING_DATASOURCE_PASSWORD:
+
+  #  -----------------------------------
+
+  frontend:
+    container_name: social_network_frontend
+    build:
+      context: ./socialnetworkfrontend
+      dockerfile: Dockerfile
+    ports:
+      - '127.0.0.1:8082:8082'

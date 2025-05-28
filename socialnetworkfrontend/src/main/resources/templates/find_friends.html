@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/users/redirect_to_sign_in.js}"></script>
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Найти друзей</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Найти друзей</h1>
+
+<label for="keyword">Введите имя и/или фамилию пользователя</label>
+<input type="search" id="keyword" placeholder="Например, Иван Иванов" required>
+<button id="find-friends">искать</button>
+
+<div id="possible-friends"></div>
+
+<script th:src="@{/js/friends/find.js}"></script>
+<script th:src="@{/js/friends/create.js}"></script>
+
+</body>
+
+</html>

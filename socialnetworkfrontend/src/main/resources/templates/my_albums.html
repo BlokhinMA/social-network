@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/users/redirect_to_sign_in.js}"></script>
+
+<head>
+    <th:block th:replace="~{index :: meta}"></th:block>
+    <title>Мои альбомы</title>
+</head>
+
+<body>
+
+<th:block th:replace="~{index :: header}"></th:block>
+<th:block th:replace="~{my_profile :: menu}"></th:block>
+
+<h1>Мои альбомы</h1>
+
+<p><a th:href="@{/find_albums}">Найти альбомы</a></p>
+<p><a th:href="@{/find_photos}">Найти фотографии</a></p>
+
+<p>Создать альбом</p>
+<form enctype="multipart/form-data" id="create-album">
+    <label for="title">Название альбома</label>
+    <input type="text" id="title" name="title" placeholder="Название альбома" required>
+    <div>Выбрать тип доступа к альбому</div>
+    <div id="radio-buttons">
+        <input type="radio" id="all" name="accessType" value="ALL" required>
+        <label for="all">для всех</label>
+        <input type="radio" id="friends" name="accessType" value="FRIENDS">
+        <label for="friends">для друзей</label>
+    </div>
+    <label for="files">Фотографии</label>
+    <input type="file" id="files" name="files" accept="image/*" multiple>
+    <br>
+    <button>Создать альбом</button>
+</form>
+
+<div id="albums"></div>
+
+<script th:src="@{/js/albums/create.js}"></script>
+<script th:src="@{/js/albums/show_mine.js}"></script>
+<script th:src="@{/js/albums/delete.js}"></script>
+
+</body>
+
+</html>
