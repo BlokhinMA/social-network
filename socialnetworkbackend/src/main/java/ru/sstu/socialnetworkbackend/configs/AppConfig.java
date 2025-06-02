@@ -13,11 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.sstu.socialnetworkbackend.repositories.UserRepository;
 
 @Configuration
-public class ApplicationConfig {
+public class AppConfig {
 
     private final UserRepository userRepository;
 
-    public ApplicationConfig(UserRepository userRepository) {
+    public AppConfig(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

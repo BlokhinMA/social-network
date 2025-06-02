@@ -145,7 +145,7 @@ function renderComments(data) {
                              </p>
                              <p>${comment.comment}</p>
                              <p>${comment.commentingTimeStamp}</p>`;
-            if (commentDto.commentingUser) {
+            if (commentDto.isCommentingUser) {
                 htmlCode += `<button id="${comment.id}" class="delete-comment-button">удалить комментарий</button>`;
             }
             htmlCode += '</div>';

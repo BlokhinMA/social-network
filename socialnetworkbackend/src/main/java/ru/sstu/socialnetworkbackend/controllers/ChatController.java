@@ -1,7 +1,7 @@
 package ru.sstu.socialnetworkbackend.controllers;
 
-import jakarta.validation.Valid;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import ru.sstu.socialnetworkbackend.dtos.messages.MessageDto;
@@ -17,9 +17,9 @@ public class ChatController {
         this.service = service;
     }
 
-    @MessageMapping("/sendMessage")
+    @MessageMapping("app/sendMessage")
     @SendTo("/topic/messages")
-    public Message sendMessage(@Valid MessageDto dto) {
+    public Message sendMessage(@Payload/*@Valid*/ MessageDto dto) {
         return service.create(dto);
     }
 

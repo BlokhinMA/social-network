@@ -7,10 +7,6 @@ import java.security.Principal;
 
 public class SecurityUtil {
 
-    private SecurityUtil() {
-        throw new IllegalStateException("Utility class");
-    }
-
     private static Principal getPrincipal() {
         return SecurityContextHolder.getContext().getAuthentication();
     }

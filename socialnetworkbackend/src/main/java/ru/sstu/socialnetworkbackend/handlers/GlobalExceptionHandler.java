@@ -16,10 +16,10 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final String ERROR_MSG = "error";
+    private static final String INCORRECT_USERNAME_OR_PASSWORD = "Неправильный логин или пароль";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException e) {
+    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getFieldErrors().forEach(error ->
             errors.put(error.getField(), error.getDefaultMessage())
@@ -38,37 +38,37 @@ public class GlobalExceptionHandler {
         MaxFileSizeExceededException.class,
         IllegalArgumentException.class
     })
-    public ResponseEntity<Map<String, String>> handleBadRequest(Exception e) {
+    public ResponseEntity<?> handleBadRequest(Exception e) {
         Map<String, String> response = new HashMap<>();
-        response.put(ERROR_MSG, e.getMessage());
+        response.put("error", e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Map<String, String>> handleBadCredentialsException() {
+    public ResponseEntity<?> handleBadCredentialsException() {
         Map<String, String> response = new HashMap<>();
-        response.put(ERROR_MSG, "Неправильный логин или пароль");
+        response.put("error", INCORRECT_USERNAME_OR_PASSWORD);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleUnauthorized(Exception e) {
+    public ResponseEntity<?> handleUnauthorized(Exception e) {
         Map<String, String> response = new HashMap<>();
-        response.put(ERROR_MSG, e.getMessage());
+        response.put("error", e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleUserNotFoundException(ResourceNotFoundException e) {
+    public ResponseEntity<?> handleUserNotFoundException(ResourceNotFoundException e) {
         Map<String, String> response = new HashMap<>();
-        response.put(ERROR_MSG, e.getMessage());
+        response.put("error", e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Map<String, String>> handleAccessDeniedException(AccessDeniedException e) {
+    public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException e) {
         Map<String, String> response = new HashMap<>();
-        response.put(ERROR_MSG, e.getMessage());
+        response.put("error", e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
