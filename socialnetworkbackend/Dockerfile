@@ -5,9 +5,9 @@ COPY src /app/src
 RUN mvn clean install -DskipTests
 
 FROM amazoncorretto:24
-#RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
+RUN addgroup -S nonroot && adduser -S nonroot -G nonroot
 WORKDIR /app
 COPY --from=build /app/target/*.jar /app/app.jar
-#RUN chown -R nonroot:nonroot /app
-#USER nonroot
+RUN chown -R nonroot:nonroot /app
+USER nonroot
 ENTRYPOINT ["java", "-jar", "app.jar"]
