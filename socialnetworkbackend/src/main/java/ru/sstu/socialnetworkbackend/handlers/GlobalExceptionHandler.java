@@ -16,6 +16,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final String ERROR_MSG = "error";
     private static final String INCORRECT_USERNAME_OR_PASSWORD = "Неправильный логин или пароль";
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -40,35 +41,35 @@ public class GlobalExceptionHandler {
     })
     public ResponseEntity<?> handleBadRequest(Exception e) {
         Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
+        response.put(ERROR_MSG, e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentialsException() {
         Map<String, String> response = new HashMap<>();
-        response.put("error", INCORRECT_USERNAME_OR_PASSWORD);
+        response.put(ERROR_MSG, INCORRECT_USERNAME_OR_PASSWORD);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
     public ResponseEntity<?> handleUnauthorized(Exception e) {
         Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
+        response.put(ERROR_MSG, e.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleUserNotFoundException(ResourceNotFoundException e) {
         Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
+        response.put(ERROR_MSG, e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException e) {
         Map<String, String> response = new HashMap<>();
-        response.put("error", e.getMessage());
+        response.put(ERROR_MSG, e.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
