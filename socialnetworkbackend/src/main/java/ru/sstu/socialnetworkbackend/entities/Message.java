@@ -19,7 +19,7 @@ public class Message {
     @JoinColumn(nullable = false)
     private User toUser;
     @Column(columnDefinition = "TEXT", nullable = false)
-    private String message;
+    private String msg;
     @Column(nullable = false)
     @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
     private LocalDateTime writingTimeStamp;
@@ -27,10 +27,10 @@ public class Message {
     public Message() {
     }
 
-    public Message(User fromUser, User toUser, String message) {
+    public Message(User fromUser, User toUser, String msg) {
         this.fromUser = fromUser;
         this.toUser = toUser;
-        this.message = message;
+        this.msg = msg;
     }
 
     public Long getId() {
@@ -57,12 +57,12 @@ public class Message {
         this.toUser = toUser;
     }
 
-    public String getMessage() {
-        return message;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public LocalDateTime getWritingTimeStamp() {
@@ -86,7 +86,7 @@ public class Message {
                 "id=" + id +
                 ", fromUser=" + fromUser +
                 ", toUser=" + toUser +
-                ", message='" + message + '\'' +
+                ", msg='" + msg + '\'' +
                 ", writingTimeStamp=" + writingTimeStamp +
                 '}';
     }
