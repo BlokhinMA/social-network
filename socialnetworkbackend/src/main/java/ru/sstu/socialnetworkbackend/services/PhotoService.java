@@ -12,6 +12,7 @@ import ru.sstu.socialnetworkbackend.entities.enums.AccessType;
 import ru.sstu.socialnetworkbackend.exceptions.*;
 import ru.sstu.socialnetworkbackend.repositories.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -285,7 +286,8 @@ public class PhotoService extends SuperService {
             case "creationTimeStamp" -> {
                 if (!keyword.matches("(\\d{4})-(0[1-9]|1[0-2]|[1-9])-([1-9]|0[1-9]|[1-2]\\d|3[0-1])"))
                     throw new IncorrectKeywordException("Указанная дата должна быть корректной и в формате гггг-мм-дд");
-                yield photoRepository.findAllIdLikeCreationTimeStamp(keyword);
+                LocalDate date = LocalDate.parse(keyword);
+                yield photoRepository.findAllIdLikeCreationTimeStamp(date);
             }
             case "tag" -> photoRepository.findAllIdILikeTag(keyword);
             case "comment" -> photoRepository.findAllIdILikeComment(keyword);

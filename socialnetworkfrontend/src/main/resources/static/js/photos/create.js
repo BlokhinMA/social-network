@@ -37,6 +37,8 @@ document.addEventListener('submit', async (e) => {
 
         document.getElementById('photos').insertAdjacentHTML('beforeend', htmlCode);
 
+        form.reset();
+
     } else {
         renderErrors(data, form);
     }

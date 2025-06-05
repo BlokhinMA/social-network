@@ -119,7 +119,7 @@ public class FriendshipService {
                         user.getId())
             .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUNT_OR_ALREADY_EXISTS_FRIENDSHIP_MSG));
         friendshipRepository.deleteById(friendship.getId());
-        LOG.info("Пользователь {} удалил заявку в друзья пользователю {}",
+        LOG.info("Пользователь {} удалил заявку в друзья от пользователя {}",
             currentUser,
             user);
         return friendship;

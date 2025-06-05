@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sstu.socialnetworkbackend.dtos.auth.AuthRequest;
 import ru.sstu.socialnetworkbackend.dtos.auth.AuthResponse;
+import ru.sstu.socialnetworkbackend.entities.User;
 import ru.sstu.socialnetworkbackend.services.AuthService;
 
 @RestController()
@@ -23,7 +24,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<?> auth(@RequestBody @Valid AuthRequest authRequest) {
+    public ResponseEntity<User> auth(@RequestBody @Valid AuthRequest authRequest) {
 
         AuthResponse response = service.auth(authRequest);
 

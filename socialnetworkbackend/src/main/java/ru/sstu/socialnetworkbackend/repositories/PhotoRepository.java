@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.sstu.socialnetworkbackend.entities.Photo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -14,7 +15,7 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
     List<Long> findAllIdByAlbumId(Long albumId);
 
     @Query(value = "SELECT id FROM photos WHERE creation_time_stamp::DATE = ?1", nativeQuery = true)
-    List<Long> findAllIdLikeCreationTimeStamp(String keyword);
+    List<Long> findAllIdLikeCreationTimeStamp(LocalDate date);
 
     @Query(value = "SELECT p.id FROM photos p JOIN photo_tags ON p.id = photo_id WHERE tag ILIKE %?1%", nativeQuery = true)
     List<Long> findAllIdILikeTag(String keyword);
