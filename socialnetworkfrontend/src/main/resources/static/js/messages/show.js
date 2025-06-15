@@ -13,7 +13,7 @@ async function show(companionId) {
         let htmlCode = ``;
 
         data.forEach((msg) => {
-            if (msg.fromUser.id == localStorage.getItem('userId')) {
+            if (msg.fromUser.id === localStorage.getItem('userId')) {
                 htmlCode += `<p style="text-align: right;">${msg.msg}</p>`;
             } else htmlCode += `<p style="text-align: left;">${msg.msg}</p>`;
         });

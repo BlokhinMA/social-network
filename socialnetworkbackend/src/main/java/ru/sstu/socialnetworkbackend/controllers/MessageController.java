@@ -1,9 +1,10 @@
 package ru.sstu.socialnetworkbackend.controllers;
 
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import ru.sstu.socialnetworkbackend.dtos.messages.MessageDto;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.sstu.socialnetworkbackend.dtos.messages.MessageResponseDto;
 import ru.sstu.socialnetworkbackend.entities.Message;
 import ru.sstu.socialnetworkbackend.services.MessageService;
@@ -18,11 +19,6 @@ public class MessageController {
 
     public MessageController(MessageService service) {
         this.service = service;
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<Message> create(@RequestBody @Valid MessageDto dto) {
-        return ResponseEntity.ok(service.create(dto));
     }
 
     @GetMapping("/show_all")

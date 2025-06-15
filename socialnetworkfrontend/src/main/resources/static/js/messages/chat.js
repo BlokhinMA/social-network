@@ -1,9 +1,9 @@
-const socket = new SockJS('http://localhost:8081/chat'/*, null, {
+const socket = new SockJS('http://localhost:8081/chat', null, {
     transports: ['websocket'],
     xhrFields: {
         withCredentials: true
     }
-}*/);
+});
 const stompClient = Stomp.over(socket);
 
 stompClient.connect({}, function () {
@@ -12,7 +12,7 @@ stompClient.connect({}, function () {
 
         let htmlCode;
 
-        if (msg.fromUser.id == localStorage.getItem('userId')) {
+        if (msg.fromUser.id === localStorage.getItem('userId')) {
             htmlCode = `<p style="text-align: right;">${msg.msg}</p>`;
         } else htmlCode = `<p style="text-align: left;">${msg.msg}</p>`;
 
